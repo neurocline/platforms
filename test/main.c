@@ -29,3 +29,18 @@ void output(size_t v)
 #ifndef _POSIX_ON_WIN32__FCNTL_H
 #error "did not include the correct <fcntl.h>"
 #endif
+
+// Make sure our pwd.h got included
+#include <pwd.h>
+#ifndef _POSIX_ON_WIN32__PWD_H
+#error "did not include the correct <pwd.h>"
+#endif
+
+#include <stddef.h>
+#include <stdarg.h>
+
+// Make sure our stdio.h got included
+#include <stdio.h>
+#ifndef _POSIX_ON_WIN32__STDIO_H
+#error "did not include the correct <stdio.h>"
+#endif

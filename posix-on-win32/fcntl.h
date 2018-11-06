@@ -135,7 +135,11 @@
 
 // --------------------------------------
 
+#ifdef _WIN64
+typedef unsigned long long off_t;
+#else
 typedef unsigned long off_t;
+#endif
 typedef unsigned long pid_t;
 typedef unsigned long mode_t;
 
