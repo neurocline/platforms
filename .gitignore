@@ -1,0 +1,10 @@
+# build folder only has generated files
+/build/
+
+# Ignore binary tool artifacts (don't get checked in)
+/bin/premake5
+/bin/premake5-mac
+/bin/premake5.exe
+
+# Git creates this
+/.dircache/

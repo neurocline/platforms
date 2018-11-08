@@ -1,0 +1,5 @@
+# Text files have platform-friendly endings
+* text=auto
+
+*.gz binary
+*.zip binary

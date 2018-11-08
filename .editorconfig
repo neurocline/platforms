@@ -1,0 +1,13 @@
+root = true
+
+# Default in the platform project is spaces
+[*]
+indent_style = spaces
+indent_size = 4
+tab_width = 4
+trim_trailing_whitespace = true
+end_of_line = crlf
+insert_final_newline = true
+
+[reference/linux]
+end_of_line = lf

@@ -16,6 +16,11 @@ def show_files(found, headers):
 	for L in sorted(found):
 		i = L.rfind("\\")
 		leaf = L[i+1:]
+		if leaf.lower() not in headers:
+			j = L.rfind("\\", 0, i-1)
+			if j == -1:
+				raise Exception("don't understand %s" % L)
+			leaf = L[j+1:i] + "/" + L[i+1:]
 		if leaf not in byfile:
 			byfile[leaf] = []
 		byfile[leaf].append(L)
@@ -47,12 +52,21 @@ def find_files(headers):
 	dot = 0
 	n = 0
 	for root, dirs, files in os.walk(sys.argv[1]):
+		par = root.rfind("/")
+		if par == -1:
+			par = root.rfind("\\")
+		par = root[par+1:] if par != -1 else ""
 		for f in files:
 			n = n + 1
 			if f.lower() in headers:
 				path = os.path.join(root, f)
-				# print("%s" % path)
+				#print("%s" % path)
 				found.append(path)
+			elif (par+"/"+f).lower() in headers:
+				path = os.path.join(root, f)
+				#print("%s" % path)
+				found.append(path)
+
 			count = count + 1
 			if count > 1000:
 				print(".", end="", file=sys.stderr, flush=True)
@@ -71,7 +85,7 @@ def build():
 	add(headers, C99_headers, 'C99')
 	add(headers, C11_headers, 'C11')
 	add(headers, POSIX_2017_headers, 'POSIX.1-2017')
-	# print(headers)
+	#print(headers)
 	return headers
 
 def test_out():
