@@ -26,6 +26,8 @@ with output that can be scraped and coalesced to create reports.
 
 This is in `include/diagnostic`.
 
+The same sets of knobs work on the diagnostic headers for platform emulation.
+
 ## POSIX
 
 IEEE Std 1003.1 and POSIX.1 refer to the same thing. We use the latter for brevity.
