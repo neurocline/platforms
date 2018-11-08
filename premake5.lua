@@ -29,9 +29,16 @@ project "test-cpp"
 	includedirs { "posix-on-win32" }
     files { "test/*.cpp", "test/*.h" }
 
+project "canonical"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++17"
+    includedirs { "include/canonical" }
+    files { "test/canonical/*" }
+
 project "carp"
     kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	includedirs { "canonical" }
+	includedirs { "include/diagnostic" }
     files { "test/carp/*" }
