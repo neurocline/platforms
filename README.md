@@ -92,3 +92,42 @@ Feature test (`WINVER` set to same value)
 - Windows 8: `WIN32_WINNT` is `0x0602` (`_WIN32_WINNT_WIN8`)
 - Windows 8.1: `WIN32_WINNT` is `0x0603` (`_WIN32_WINNT_WINBLUE`)
 - Windows 10: `WIN32_WINNT` is `0x0A00` (`_WIN32_WINNT_WIN10`, `_WIN32_WINNT_WINTHRESHOLD`)
+
+## ISO C Headers
+
+TBD we need the multiple levels of POSIX, I think. GLib has a number of levels, it looks like:
+`__USE_POSIX`, `__USE_POSIX2`, `__USE_XOPEN`, `__USE_XOPEN2K8`.
+
+Also, looks like I need one or more C++ columns. And this isn't all that helpful on its own.
+
+| Header       | C90 | C99 | C11 | POSIX | GNU |
+| ------       |:---:|:---:|:---:|:-----:|:---:|
+| <assert.h>   |  x  |  x  |  x  |       |  x  |
+| <complex.h>  |     |  x  |  x  |       |     |
+| <ctype.h>    |  x  |  x  |     |   x   |  x  |
+| <fenv.h>     |     |  x  |     |       |  x  |
+| <float.h>    |  x  |  x  |  x  |       |     |
+| <inttypes.h> |     |  x  |     |   1   |     |
+| <iso646.h>   |  2  |     |     |       |     |
+| <limits.h>   |  x  |  x  |     |   x   |     |
+| <locale.h>   |  x  |     |     |   x   |     |
+| <math.h>     |  x  |  x  |     |   x   |  x  |
+| <setjmp.h>   |  x  |     |     |   x   |     |
+| <signal.h>   |  x  |     |     |   x   |  x  |
+| <stdarg.h>   |  x  |     |     |       |     |
+| <stdbool.h>  |     |  x  |     |       |  x  |
+| <stddef.h>   |  x  |     |  x  |       |     |
+| <stdint.h>   |     |  x  |     |       |     |
+| <stdio.h>    |  x  |  x  |     |   x   |  x  |
+| <stdlib.h>   |  x  |  x  |  x  |   x   |  x  |
+| <string.h>   |  x  |     |     |   x   |  x  |
+| <tgmath.h>   |     |  x  |     |   x   |  x  |
+| <time.h>     |  x  |     |  x  |   x   |  x  |
+| <wchar.h>    |  2  |  x  |     |   x   |     |
+| <wctype.h>   |  x  |  x  |     |   x   |     |
+
+1. POSIX says `<inttypes.h>` should define `wchar_t` as defined in `<stddef.h>`
+and include the contents of `<stdint.h>`.
+2. This is really in NA1 1995.
+
+And then everything else is in POSIX or GNU. Or Win32. Or Mac OS X or BSD.

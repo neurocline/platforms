@@ -48,7 +48,7 @@
 // GNU extension
 // Their pattern is that system headers use __USE_GNU but that this is set
 // from _GNU_SOURCE by a prefix header (like <features.h>)
-#if defined(__USE_GNU)
+#if defined(_GNU_SOURCE)
 
 #if defined(NDEBUG)
 #define assert_perror(errnum) ((void)0)
@@ -57,7 +57,7 @@
     __canonical_assert_perror_impl((errnum), __FILE__, __LINE__, __FUNC__))
 #endif
 
-#endif // defined(__USE_GNU)
+#endif // defined(_GNU_SOURCE)
 
 
 // ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ void __canonical_assert_impl(const char* assertion, const char* file,
 
 // This is typically a function that converts the errnum to a error
 // message string and then calls __canonical_assert_impl.
-#if defined(__USE_GNU)
+#if defined(_GNU_SOURCE)
 void __canonical_assert_perror_impl(int errnum, const char* file,
                unsigned int line, const char* function);
 #endif
