@@ -22,7 +22,9 @@ project "canonical-test"
     language "C"
     cdialect "C11"
     includedirs { "include/canonical" }
-    files { "test/canonical/*.c" }
+    files { "test/canonical/*" }
+    defines { "TEST_CANONICAL" }
+    files { "test/inclusion/*" }
 
 project "diagnostic-test"
     kind "ConsoleApp"
@@ -31,7 +33,9 @@ project "diagnostic-test"
     language "C"
     cdialect "C11"
 	includedirs { "include/diagnostic" }
-    files { "test/diagnostic/*.c" }
+    files { "test/diagnostic/*" }
+    defines { "TEST_DIAGNOSTIC" }
+    files { "test/inclusion/*" }
 
 project "posix-on-win32-test"
     kind "ConsoleApp"
@@ -40,7 +44,9 @@ project "posix-on-win32-test"
     language "C"
     cdialect "C11"
     includedirs { "posix-on-win32" }
-    files { "test/posix/*.c" }
+    files { "test/posix/*" }
+    defines { "TEST_POSIX_ON_WIN32" }
+    files { "test/inclusion/*" }
 
 project "sandbox"
     kind "ConsoleApp"

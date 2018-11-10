@@ -61,6 +61,7 @@ Feature test
 - C95: `__STDC_VERSION__` is `199401L`
 - C99: `__STDC_VERSION__` is `199001L`
 - C11: `__STDC_VERSION__` is `201112L`
+- C18: `__STDC_VERSION__` is `201710L`
 
 ## ISO C++
 

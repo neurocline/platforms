@@ -1,11 +1,8 @@
 // test-stdarg-posix.c
 
-#include <assert.h>
 #include <stdarg.h>
 
-#ifndef _POSIX_ON_WIN32__STDARG_H
-#error "Expected the posix-on-win32 stdarg.h header"
-#endif
+#include <assert.h>
 
 int vargs(char* fmt, ...)
 {

@@ -2,10 +2,6 @@
 
 #include <stdlib.h>
 
-#ifndef _POSIX_ON_WIN32__STDLIB_H
-#error "Expected the posix-on-win32 stdlib.h header"
-#endif
-
 #include <assert.h>
 #include <float.h>
 
