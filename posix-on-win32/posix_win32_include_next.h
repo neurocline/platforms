@@ -13,4 +13,4 @@
 
 // Macros that emulate include_next for specific groups of headers
 #define _MICROSOFT_UCRT_INCLUDE_NEXT(HEADER) <C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/ucrt/HEADER>
-#define _MICROSOFT_VC_INCLUDE_NEXT(HEADER) <C:/Dev/VC15/Community/VC/Tools/MSVC/14.13.26128/HEADER>
+#define _MICROSOFT_VC_INCLUDE_NEXT(HEADER) <C:/Dev/VC15/Community/VC/Tools/MSVC/14.13.26128/include/HEADER>
