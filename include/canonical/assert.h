@@ -1,4 +1,5 @@
-// assert.h
+// <assert.h>
+// - verify program assertion
 //
 // Defined in ISO C18 Standard: 7.2 Diagnostics <assert.h>.
 // Unchanged since C11, where static_assert was added.
@@ -44,8 +45,8 @@
 #endif
 
 // ----------------------------
-//
 // GNU extension
+
 // Their pattern is that system headers use __USE_GNU but that this is set
 // from _GNU_SOURCE by a prefix header (like <features.h>)
 #if defined(_GNU_SOURCE)
