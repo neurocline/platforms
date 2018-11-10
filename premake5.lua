@@ -15,30 +15,35 @@ workspace "platform"
 	filter { "action:xcode* or toolset:clang*" }
 		buildoptions { "-mlzcnt" }
 
-project "test-c"
+project "canonical-test"
     kind "ConsoleApp"
-	language "C"
-	cdialect "C11"
-	includedirs { "posix-on-win32" }
-    files { "test/*.c", "test/*.h" }
+    --language "C++"
+    --cppdialect "C++17"
+    language "C"
+    cdialect "C11"
+    includedirs { "include/canonical" }
+    files { "test/canonical/*.c" }
 
-project "test-cpp"
+project "diagnostic-test"
     kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	includedirs { "posix-on-win32" }
-    files { "test/*.cpp", "test/*.h" }
+    --language "C++"
+    --cppdialect "C++17"
+    language "C"
+    cdialect "C11"
+	includedirs { "include/diagnostic" }
+    files { "test/diagnostic/*.c" }
 
-project "canonical"
+project "posix-on-win32-test"
+    kind "ConsoleApp"
+    --language "C++"
+    --cppdialect "C++17"
+    language "C"
+    cdialect "C11"
+    includedirs { "posix-on-win32" }
+    files { "test/posix/*.c" }
+
+project "sandbox"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
-    includedirs { "include/canonical" }
-    files { "test/canonical/*" }
-
-project "carp"
-    kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	includedirs { "include/diagnostic" }
-    files { "test/carp/*" }
+    files { "test/sandbox/*" }

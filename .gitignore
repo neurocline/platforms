@@ -1,10 +1,10 @@
 # build folder only has generated files
 /build/
 
+# reference folder contains stuff we don't want checked in
+/reference/
+
 # Ignore binary tool artifacts (don't get checked in)
 /bin/premake5
 /bin/premake5-mac
 /bin/premake5.exe
-
-# Git creates this
-/.dircache/

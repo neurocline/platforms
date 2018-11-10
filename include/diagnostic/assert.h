@@ -19,6 +19,11 @@
 #define assert(condition) \
     __diagnostic_assert_impl(#condition, __FILE__, __LINE__, __FUNC__)
 
+#ifndef DIAGNOSTIC_ISO_C18_ASSERT_H
+#define DIAGNOSTIC_ISO_C18_ASSERT_H
+
 void CARP("ISO C99: assert()") \
 __diagnostic_assert_impl(const char* assertion, const char* file,
                unsigned int line, const char* function);
+
+#endif // DIAGNOSTIC_ISO_C18_ASSERT_H
