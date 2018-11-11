@@ -7,6 +7,10 @@ int test_stdarg(); // in test-stdarg-posix.c
 int test_stddef(); // in test-stddef-posix.c
 int test_stdio();  // in test-stdio-posix.c
 int test_stdlib(); // in test-stdlib-posix.c
+int test_string(); // in test-string-posix.c
+int test_sys_mman(); // in test-sys_mman-posix.c
+int test_sys_stat(); // in test-sys_stat-posix.c
+int test_sys_types(); // in int test-sys_types-posix.c
 
 int main(int argc, char** argv)
 {
@@ -19,6 +23,10 @@ int main(int argc, char** argv)
     test_stddef();
     test_stdio();
     test_stdlib();
+    test_string();
+    test_sys_mman();
+    test_sys_stat();
+    test_sys_types();
 
     return 0;
 }

@@ -1,16 +1,13 @@
 // <sys/mman.h>
+// - memory management declarations
 //
-// POSIX.1-2008.7 sys/mman.h header file
-// memory management declarations
-// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_mman.h.html
+// Defined in POSIX.1-2017 <sys/mman.h>
 
-#pragma once
-#ifndef _POSIX_ON_WIN32__SYS_MMAN_H
-#define _POSIX_ON_WIN32__SYS_MMAN_H
+#ifndef CANONICAL_POSIX_2017_SYS_MMAN_H
+#define CANONICAL_POSIX_2017_SYS_MMAN_H
 
-// There is no Windows <mman.h> file, so we don't need to override anything.
-
-// -----------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Canonical header
 
 // protection options
 #define PROT_EXEC       1   // Page can be executed.
@@ -79,6 +76,4 @@ int posix_typed_mem_open(const char* name, int oflag, int tflag);
 int shm_open(const char* name, int oflag, mode_t mode);
 int shm_unlink(const char* name);
 
-// -----------------------------------------------------------------------------------------------
-
-#endif // _POSIX_ON_WIN32__SYS_MMAN_H
+#endif // CANONICAL_POSIX_2017_SYS_MMAN_H

@@ -24,7 +24,11 @@
 
 #if defined(_POSIX_ON_WIN32_USE_WIN32_ASSERT)
 
+#pragma push_macro("_CRT_NO_TIME_T")
+#undef _CRT_NO_TIME_T
+#define _CRT_NO_TIME_T
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(assert.h)
+#pragma pop_macro("_CRT_NO_TIME_T")
 
 #endif // defined(_POSIX_ON_WIN32_USE_WIN32_ASSERT)
 
