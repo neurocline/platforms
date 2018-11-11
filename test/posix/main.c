@@ -12,6 +12,7 @@ int test_sys_mman();  // in test-sys_mman-posix.c
 int test_sys_stat();  // in test-sys_stat-posix.c
 int test_sys_types(); // in test-sys_types-posix.c
 int test_time();      // in test-time-posix.c
+int test_unistd();    // in test-unistd-posix.c
 
 int main(int argc, char** argv)
 {
@@ -28,6 +29,8 @@ int main(int argc, char** argv)
     test_sys_mman();
     test_sys_stat();
     test_sys_types();
+    test_time();
+    test_unistd();
 
     return 0;
 }

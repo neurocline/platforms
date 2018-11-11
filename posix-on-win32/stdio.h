@@ -29,6 +29,8 @@
 #define __STDC__ 1
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
+#define _NO_CRT_STDIO_INLINE
+#pragma comment(lib, "legacy_stdio_definitions.lib")
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(stdio.h)
 #pragma pop_macro("__STDC__")
 #pragma pop_macro("_CRT_NO_TIME_T")

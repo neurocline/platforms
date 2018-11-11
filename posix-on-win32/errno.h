@@ -40,7 +40,10 @@
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
 #undef _CRT_NO_POSIX_ERROR_CODES
+#pragma push_macro("errno")
+#undef errno
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(errno.h)
+#pragma pop_macro("errno")
 #pragma pop_macro("__STDC__")
 #pragma pop_macro("_CRT_NO_TIME_T")
 #pragma pop_macro("_CRT_NO_POSIX_ERROR_CODES")
