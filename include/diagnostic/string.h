@@ -27,7 +27,7 @@ typedef unsigned int size_t;
 
 // Null as in stddef.h
 #ifndef __cplusplus
-#define NULL ((void*)0)
+#define NULL ((void*) 0)
 #else
 #define NULL 0
 #endif
