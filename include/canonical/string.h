@@ -104,10 +104,13 @@ size_t strlen(const char *s);
 // POSIX
 
 // as in locale.h
+#ifndef CANONICAL_LOCALE_HAS_LOCALE_T
+#define CANONICAL_LOCALE_HAS_LOCALE_T
 typedef struct _locale_struct
 {
     int dummy; // until we figure out what we want
 } *locale_t;
+#endif
 
 void *memccpy(void *restrict s1, const void *restrict s2, int c, size_t n);
 char *strdup(const char *s);

@@ -29,9 +29,9 @@
 #define FD_CLOEXEC          1   // Close the file descriptor upon execution of an exec family function.
 
 // values for l_whence argument as in stdio.h
-#define SEEK_SET            1
-#define SEEK_CUR            2
-#define SEEK_END            3
+#define SEEK_SET 0
+#define SEEK_CUR 1
+#define SEEK_END 2
 
 // arguments for l_type in fcntl(int cmd, int flags, int l_type)
 #define F_RDLCK             1   // Shared or read lock.

@@ -150,7 +150,10 @@ typedef struct { int v; } pthread_rwlock_t;    // Used for read-write locks.
 typedef struct { int v; } pthread_rwlockattr_t;    // Used for read-write lock attributes.
 typedef struct { int v; } pthread_spinlock_t;    // Used to identify a spin lock.
 typedef struct { int v; } pthread_t;    // Used to identify a thread.
+#ifndef POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
+#define POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
 typedef struct { int v; } timer_t;    // Used for timer ID returned by timer_create().
+#endif
 typedef struct { int v; } trace_attr_t;    // [OB TRC] Used to identify a trace stream attributes object.
 typedef struct { int v; } trace_event_id_t;    // [OB TRC] Used to identify a trace event type.
 typedef struct { int v; } trace_event_set_t;    // [OB TEF] Used to identify a trace event type set.

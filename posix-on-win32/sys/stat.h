@@ -59,10 +59,13 @@ typedef int time_t;
 // The <sys/stat.h> header shall define the timespec structure as described in <time.h>.
 // Times shall be given in seconds since the Epoch.
 
+#ifndef POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
+#define POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
 struct timespec {
     time_t tv_sec;       /* seconds */
     long tv_nsec;        /* nanoseconds */
 };
+#endif
 
 struct stat {
     dev_t st_dev;

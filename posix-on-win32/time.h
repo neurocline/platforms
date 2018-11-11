@@ -70,10 +70,13 @@ typedef int time_t;
 #endif
 
 // an interval specified in seconds and nanoseconds
+#ifndef POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
+#define POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
 struct timespec {
     time_t tv_sec; // seconds
     long tv_nsec;  // nanoseconds
 };
+#endif
 
 // the broken-down time
 // The value of tm_isdst is positive if Daylight Saving Time is in effect,
@@ -129,13 +132,19 @@ size_t strftime(char * s, size_t maxsize, const char * format, const struct tm *
 typedef int clockid_t;
 
 // as in locale.h
+#ifndef POSIX_ON_WIN32_LOCALE_HAS_LOCALE_T
+#define POSIX_ON_WIN32_LOCALE_HAS_LOCALE_T
 typedef struct _locale_struct
 {
     int dummy; // until we figure out what we want
 } *locale_t;
+#endif
 
 // as in sys/types.h
+#ifndef POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
+#define POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
 typedef struct { int v; } timer_t;
+#endif
 
 // as in sys/types.h
 typedef int pid_t;
