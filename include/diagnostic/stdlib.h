@@ -42,7 +42,12 @@ typedef struct lldiv_t
     long long rem;
 } lldiv_t;
 
-#define NULL 0L
+// Null as in stddef.h
+#ifndef __cplusplus
+#define NULL ((void*)0)
+#else
+#define NULL 0
+#endif
 
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0

@@ -48,6 +48,14 @@ typedef int nlink_t; // Used for link counts.
 typedef long long off_t; // Used for file sizes.
 typedef unsigned int uid_t; // Used for user IDs.
 
+// Make time_t be the largest natural size.
+// This is used for time in seconds.
+#ifdef _WIN64
+typedef long long time_t;
+#else
+typedef int time_t;
+#endif
+
 // The <sys/stat.h> header shall define the timespec structure as described in <time.h>.
 // Times shall be given in seconds since the Epoch.
 
@@ -133,14 +141,6 @@ int mkfifoat(int fd, const char *path, mode_t mode);
 int mknod(const char* path, mode_t mode, dev_t dev);
 int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
 mode_t umask(mode_t cmask);
-
-#if 0
-int _posix_on_win32_stat(const char* path, struct stat* buf);
-static inline int stat(const char* path, struct stat* buf)
-{
-    return _posix_on_win32_stat(path, buf);
-}
-#endif
 
 #endif // defined(_POSIX_ON_WIN32_USE_WIN32_SYS_STAT)
 
