@@ -2,7 +2,7 @@
 
 #include <sys/stat.h>
 
-int stat(const char* path, struct stat* buf)
+int _posix_on_win32_stat(const char* path, struct stat* buf)
 {
     path = NULL; buf = NULL;
     return -1;

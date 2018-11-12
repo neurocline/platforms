@@ -134,7 +134,8 @@ int fchmod(int fildes, mode_t mode);
 int fstat(int fildes, struct stat* buf);
 int fstatat(int fd, const char* path, struct stat* buf, int flag);
 int lstat(const char* path, struct stat* buf);
-int stat(const char* path, struct stat* buf);
+int _posix_on_win32_stat(const char* path, struct stat* buf);
+static inline int stat(const char* path, struct stat* buf) { return _posix_on_win32_stat(path, buf); }
 int futimens(int fd, const struct timespec times[2]);
 int utimensat(int fd, const char* path, const struct timespec times[2], int flag);
 int mkdir(const char* path, mode_t mode);
