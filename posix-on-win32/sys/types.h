@@ -1,29 +1,21 @@
 // <sys/types.h>
+// - data types
 //
-// POSIX.1-2008.7 sys/types.h header file
-// data types
+// Defined in POSIX.1-2017 <sys/types.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__SYS_TYPES_H
-#define _POSIX_ON_WIN32__SYS_TYPES_H
-
-// Get emulation of #include_next
-#include <posix_win32_include_next.h>
+#ifndef _POSIX_ON_WIN32_POSIX_SYS_TYPES_H
+#define _POSIX_ON_WIN32_POSIX_SYS_TYPES_H
 
 // Default to not using the Windows sys/types.h file
 #ifndef _POSIX_ON_WIN32_NO_WIN32_SYS_TYPES
-//#define _POSIX_ON_WIN32_USE_WIN32_SYS_TYPES
+// #define _POSIX_ON_WIN32_USE_WIN32_SYS_TYPES
 #endif
 
 // -----------------------------------------------------------------------------------------------
 
 #if defined(_POSIX_ON_WIN32_USE_WIN32_SYS_TYPES)
-
-// The Microsoft sys/types.h file itself is pretty much useless,
-// so we just bypass it. There are bits of sys/types.h in other
-// internal Microsoft header files, and we deal with them as we
-// can.
 
 #error "This path not supported"
 
@@ -31,9 +23,15 @@
 
 // -----------------------------------------------------------------------------------------------
 
-// Otherwise, we have to declare a complete <sys/types.h> environment
-// that works for both POSIX and Windows-kinda-POSIX
 #if !defined(_POSIX_ON_WIN32_USE_WIN32_SYS_TYPES)
+
+// The Microsoft sys/types.h file itself is pretty much useless,
+// so we just bypass it. There are bits of sys/types.h in other
+// internal Microsoft header files, and we deal with them as we
+// can.
+
+// ----------------------------
+// Microsoft
 
 // Microsoft internal type compatibility - we have to define these
 // because we've made their header inaccessible
@@ -41,7 +39,8 @@ typedef unsigned short _ino_t;
 typedef unsigned int _dev_t;
 typedef long _off_t;
 
-// --------------
+// ----------------------------
+// POSIX
 
 // Used for file block counts.
 // blkcnt_t and off_t shall be signed integer types.
@@ -125,8 +124,6 @@ typedef int                ssize_t;
 // Make time_t be the largest natural size.
 // This is used for time in seconds.
 // time_t shall be an integer type.
-// Note that we have some conflict with MSVCRT over the size of this, so we
-// prevent their time_t from being defined.
 #ifdef _WIN64
 typedef long long time_t;
 #else
@@ -150,8 +147,8 @@ typedef struct { int v; } pthread_rwlock_t;    // Used for read-write locks.
 typedef struct { int v; } pthread_rwlockattr_t;    // Used for read-write lock attributes.
 typedef struct { int v; } pthread_spinlock_t;    // Used to identify a spin lock.
 typedef struct { int v; } pthread_t;    // Used to identify a thread.
-#ifndef POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
-#define POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
+#ifndef _HEADER_SYS_TYPES_DEFINED_TIMER_T
+#define _HEADER_SYS_TYPES_DEFINED_TIMER_T
 typedef struct { int v; } timer_t;    // Used for timer ID returned by timer_create().
 #endif
 typedef struct { int v; } trace_attr_t;    // [OB TRC] Used to identify a trace stream attributes object.
@@ -163,4 +160,4 @@ typedef struct { int v; } trace_id_t;    // [OB TRC] Used to identify a trace st
 
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__SYS_TYPES_H
+#endif // _POSIX_ON_WIN32_POSIX_SYS_TYPES_H

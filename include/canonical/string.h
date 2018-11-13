@@ -2,8 +2,10 @@
 // - string operations
 //
 // Defined in ISO C18 Standard: 7.24 String handling <string.h>.
-// Expanded in POSIX.1-2017 <string.h>
+// Extended in POSIX.1-2017 <string.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/string.h.html
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_STRING_H
 #define CANONICAL_ISO_C18_STRING_H
 
@@ -17,9 +19,6 @@
 #define _Noreturn
 #endif
 
-// ----------------------------
-// C18
-
 // size_t as in stddef.h
 #ifdef _WIN64
 typedef unsigned long long size_t;
@@ -28,10 +27,17 @@ typedef unsigned int size_t;
 #endif
 
 // Null as in stddef.h
+#ifndef NULL
 #ifndef __cplusplus
 #define NULL ((void*) 0)
 #else
 #define NULL 0
+#endif
+#endif
+
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
 #endif
 
 // 7.24.2.1
@@ -100,32 +106,45 @@ char *strerror(int errnum);
 // 7.24.6.3
 size_t strlen(const char *s);
 
+#ifdef  __cplusplus
+}
+#endif
+
 // ----------------------------
 // POSIX
 
 // as in locale.h
-#ifndef CANONICAL_LOCALE_HAS_LOCALE_T
-#define CANONICAL_LOCALE_HAS_LOCALE_T
+#ifndef _HEADER_LOCALE_DEFINED_LOCALE_T
+#define _HEADER_LOCALE_DEFINED_LOCALE_T
 typedef struct _locale_struct
 {
     int dummy; // until we figure out what we want
 } *locale_t;
 #endif
 
-void *memccpy(void *restrict s1, const void *restrict s2, int c, size_t n);
-char *strdup(const char *s);
-size_t strnlen(const char *s, size_t maxlen);
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
-char *stpcpy(char *restrict s1, const char *restrict s2);
-char *stpncpy(char *restrict s1, const char *restrict s2, size_t n);
-int strcoll_l(const char *s1, const char *s2, locale_t locale);
-char *strndup(const char *s, size_t size);
-char *strerror_l(int errnum, locale_t locale);
-int strerror_r(int errnum, char *strerrbuf, size_t buflen);
-char *strsignal(int signum);
-char *strtok_r(char *restrict s, const char *restrict sep, char **restrict state);
-size_t strxfrm_l(char *restrict s1, const char *restrict s2, size_t n, locale_t locale);
+void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
+char* strdup(const char* s);
+size_t strnlen(const char* s, size_t maxlen);
 
-// ---------------------------------------------------------------------------
+char* stpcpy(char* restrict s1, const char* restrict s2);
+char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
+int strcoll_l(const char* s1, const char* s2, locale_t locale);
+char* strndup(const char* s, size_t size);
+char* strerror_l(int errnum, locale_t locale);
+int strerror_r(int errnum, char* strerrbuf, size_t buflen);
+char* strsignal(int signum);
+char* strtok_r(char* restrict s, const char* restrict sep, char** restrict state);
+size_t strxfrm_l(char* restrict s1, const char* restrict s2, size_t n, locale_t locale);
+
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_STRING_H

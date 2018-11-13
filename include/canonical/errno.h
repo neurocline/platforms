@@ -1,17 +1,16 @@
 // <errno.h>
 // - system error numbers
 //
-// Defined in ISO C18 Standard: 7.5 Input/output <errno.h>.
-// Expanded in POSIX.1-2017 <errno.h>
+// Defined in ISO C18 Standard: 7.5 Errors <errno.h>.
+// Extended in POSIX.1-2017 <errno.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_ERRNO_H
 #define CANONICAL_ISO_C18_ERRNO_H
 
 // ---------------------------------------------------------------------------
 // Canonical header
-
-// ----------------------------
-// C18
 
 // All identifiers matching the pattern E[A-Z0-9].+ are reserved for
 // future use.
@@ -121,7 +120,10 @@ extern int errno;
 #define EWOULDBLOCK     80  // Operation would block (may be the same value as EAGAIN).
 #define EXDEV           81  // Cross-device link.
 
-// Microsft defines this for some reason. Removed from POSIX? I can't find
+// ----------------------------
+// Microsoft
+
+// Microsoft defines this for some reason. Removed from POSIX? I can't find
 // any mention of it. Maybe this is just a mistake on Microsoft's part.
 #define EOTHER          82
 
@@ -132,5 +134,7 @@ extern int errno;
 
 // Support EDEADLOCK for compatibility
 #define EDEADLOCK EDEADLK
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_ERRNO_H

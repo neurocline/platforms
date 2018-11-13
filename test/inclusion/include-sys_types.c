@@ -10,7 +10,7 @@
 #error "Expected the diagnostic sys/types.h header"
 #endif
 
-#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32__SYS_TYPES_H)
+#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32_POSIX_SYS_TYPES_H)
 #error "Expected the posix-on-win32 sys/types.h header"
 #endif
 

@@ -10,7 +10,7 @@
 #error "Expected the diagnostic stdlib.h header"
 #endif
 
-#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32__STDDEF_H)
+#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32_ISO_STDDEF_H)
 #error "Expected the posix-on-win32 stdlib.h header"
 #endif
 

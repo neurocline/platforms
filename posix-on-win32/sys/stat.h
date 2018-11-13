@@ -1,39 +1,47 @@
 // <sys/stat.h>
+// - data returned by the stat() function
 //
-// POSIX.1-2008.7 sys/stat.h header file
-// data returned by the stat() function
+// Defined in POSIX.1-2017 <sys/stat.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_stat.h.html
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__SYS_STAT_H
-#define _POSIX_ON_WIN32__SYS_STAT_H
+#ifndef _POSIX_ON_WIN32_POSIX_SYS_STAT_H
+#define _POSIX_ON_WIN32_POSIX_SYS_STAT_H
 
-// Get emulation of #include_next
-#include <posix_win32_include_next.h>
-
-// Do we want to use the Windows sys/stat.h or not?
+// Default to using the Windows sys/stat.h file
 #ifndef _POSIX_ON_WIN32_NO_WIN32_SYS_STAT
 #define _POSIX_ON_WIN32_USE_WIN32_SYS_STAT
 #endif
 
 // -----------------------------------------------------------------------------------------------
 
-// If we are piggybacking on top of the Windows <sys/stat.h>, just
-// define what's missing. We have to include it first.
 #if defined(_POSIX_ON_WIN32_USE_WIN32_SYS_STAT)
+// Get MSVC emulation of #include_next
+#include <posix_win32_include_next.h>
 
-// When we include the Windows <sys/stat.h>, do not let it
-// introduce the standard types stat etc into the system. Their
-// code doesn't use these, and their definitions clash with ours.
-#pragma push_macro("__STDC__")
 #pragma push_macro("_CRT_NO_TIME_T")
-#undef __STDC__
-#define __STDC__ 1
+#pragma push_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
+#undef _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(sys/stat.h)
-#pragma pop_macro("__STDC__")
+#pragma pop_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #pragma pop_macro("_CRT_NO_TIME_T")
+
+// Undefine Microsoft stat constants because they will conflict with ours
+#if !__STDC__
+#undef S_IFMT
+#undef S_IFDIR
+#undef S_IFCHR
+#undef S_IFREG
+#undef S_IREAD
+#undef S_IWRITE
+#undef S_IEXEC
+#endif
+
+// ----------------------------
+// POSIX
 
 // The <sys/stat.h> header shall define the [XSI] [Option Start] blkcnt_t, blksize_t, [Option End]
 // dev_t, ino_t, mode_t, nlink_t, uid_t, gid_t, off_t, and time_t types as described in <sys/types.h>.
@@ -59,8 +67,8 @@ typedef int time_t;
 // The <sys/stat.h> header shall define the timespec structure as described in <time.h>.
 // Times shall be given in seconds since the Epoch.
 
-#ifndef POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
-#define POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
+#ifndef _HEADER_SYS_STAT_DEFINED_TIMESPEC
+#define _HEADER_SYS_STAT_DEFINED_TIMESPEC
 struct timespec {
     time_t tv_sec;       /* seconds */
     long tv_nsec;        /* nanoseconds */
@@ -128,14 +136,17 @@ struct stat {
 #define S_TYPEISSHM(buf) (((buf)->st_mode & S_IFSHMEM) == S_IFSHMEM) // Test for a shared memory object
 #define S_TYPEISTMO(buf) (((buf)->st_mode & S_IFTYPEMEM) == S_IFTYPEMEM) // Test macro for a typed memory object
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 int chmod(const char* path, mode_t mode);
 int fchmodat(int fd, const char* path, mode_t mode, int flag);
 int fchmod(int fildes, mode_t mode);
 int fstat(int fildes, struct stat* buf);
 int fstatat(int fd, const char* path, struct stat* buf, int flag);
 int lstat(const char* path, struct stat* buf);
-int _posix_on_win32_stat(const char* path, struct stat* buf);
-static inline int stat(const char* path, struct stat* buf) { return _posix_on_win32_stat(path, buf); }
 int futimens(int fd, const struct timespec times[2]);
 int utimensat(int fd, const char* path, const struct timespec times[2], int flag);
 int mkdir(const char* path, mode_t mode);
@@ -146,11 +157,21 @@ int mknod(const char* path, mode_t mode, dev_t dev);
 int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
 mode_t umask(mode_t cmask);
 
+int _posix_on_win32_stat(const char* path, struct stat* buf);
+
+static inline int stat(const char* path, struct stat* buf) {
+    return _posix_on_win32_stat(path, buf);
+}
+
+
+#ifdef  __cplusplus
+}
+#endif
+
 #endif // defined(_POSIX_ON_WIN32_USE_WIN32_SYS_STAT)
 
 // -----------------------------------------------------------------------------------------------
 
-// Otherwise, we have to declare a complete <sys/stat.h> environment
 #if !defined(_POSIX_ON_WIN32_USE_WIN32_SYS_STAT)
 
 #error "This path not supported"
@@ -159,4 +180,4 @@ mode_t umask(mode_t cmask);
 
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__SYS_STAT_H
+#endif // _POSIX_ON_WIN32_POSIX_SYS_STAT_H

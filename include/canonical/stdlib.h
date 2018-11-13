@@ -2,8 +2,10 @@
 // - standard library definitions
 //
 // Defined in ISO C18 Standard: 7.22 General utilities <stdlib.h>.
-// Expanded in POSIX.1-2017 <stdlib.h>
+// Extended in POSIX.1-2017 <stdlib.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799.2018edition/basedefs/stdlib.h.html
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_STDLIB_H
 #define CANONICAL_ISO_C18_STDLIB_H
 
@@ -16,9 +18,6 @@
 #define restrict
 #define _Noreturn
 #endif
-
-// ----------------------------
-// C18 (update to bin functions and types by C version)
 
 // 7.22
 // size_t as in stddef.h
@@ -65,24 +64,29 @@ typedef struct lldiv_t
 
 #define MB_CUR_MAX 8
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 // 7.22.1.1
-double atof(const char *nptr);
+double atof(const char* nptr);
 
 // 7.22.1.2
-int atoi(const char *nptr);
-long int atol(const char *nptr);
-long long int atoll(const char *nptr);
+int atoi(const char* nptr);
+long int atol(const char* nptr);
+long long int atoll(const char* nptr);
 
 // 7.22.1.3
-double strtod(const char * restrict nptr, char ** restrict endptr);
-float strtof(const char * restrict nptr, char ** restrict endptr);
-long double strtold(const char * restrict nptr, char ** restrict endptr);
+double strtod(const char* restrict nptr, char** restrict endptr);
+float strtof(const char* restrict nptr, char** restrict endptr);
+long double strtold(const char* restrict nptr, char** restrict endptr);
 
 // 7.22.1.4
-long int strtol(const char * restrict nptr, char ** restrict endptr, int base);
-long long int strtoll(const char * restrict nptr, char ** restrict endptr, int base);
-unsigned long int strtoul(const char * restrict nptr, char ** restrict endptr, int base);
-unsigned long long int strtoull(const char * restrict nptr, char ** restrict endptr, int base);
+long int strtol(const char* restrict nptr, char** restrict endptr, int base);
+long long int strtoll(const char* restrict nptr, char** restrict endptr, int base);
+unsigned long int strtoul(const char* restrict nptr, char** restrict endptr, int base);
+unsigned long long int strtoull(const char* restrict nptr, char** restrict endptr, int base);
 
 // 7.22.2.1
 int rand(void);
@@ -91,19 +95,19 @@ int rand(void);
 void srand(unsigned int seed);
 
 // 7.22.3.1
-void *aligned_alloc(size_t alignment, size_t size);
+void* aligned_alloc(size_t alignment, size_t size);
 
 // 7.22.3.2
-void *calloc(size_t nmemb, size_t size);
+void* calloc(size_t nmemb, size_t size);
 
 // 7.22.3.3
 void free(void *ptr);
 
 // 7.22.3.4
-void *malloc(size_t size);
+void* malloc(size_t size);
 
 // 7.22.3.5
-void *realloc(void *ptr, size_t size);
+void* realloc(void* ptr, size_t size);
 
 // 7.22.4.1
 _Noreturn void abort(void);
@@ -121,19 +125,19 @@ _Noreturn void exit(int status);
 _Noreturn void _Exit(int status);
 
 // 7.22.4.6
-char *getenv(const char *name);
+char* getenv(const char *name);
 
 // 7.22.4.7
 _Noreturn void quick_exit(int status);
 
 // 7.22.4.8
-int system(const char *string);
+int system(const char* string);
 
 // 7.22.5.1
-void *bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
+void* bsearch(const void* key, const void* base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
 
 // 7.22.5.2
-void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
+void qsort(void* base, size_t nmemb, size_t size, int (*compar)(const void*, const void*));
 
 // 7.22.6.1
 int abs(int j);
@@ -146,23 +150,26 @@ ldiv_t ldiv(long int numer, long int denom);
 lldiv_t lldiv(long long int numer, long long int denom);
 
 // 7.22.7.1
-int mblen(const char *s, size_t n);
+int mblen(const char* s, size_t n);
 
 // 7.22.7.2
-int mbtowc(wchar_t * restrict pwc, const char * restrict s, size_t n);
+int mbtowc(wchar_t* restrict pwc, const char* restrict s, size_t n);
 
 // 7.22.7.3
-int wctomb(char *s, wchar_t wc);
+int wctomb(char* s, wchar_t wc);
 
 // 7.22.8.1
-size_t mbstowcs(wchar_t * restrict pwcs, const char * restrict s, size_t n);
+size_t mbstowcs(wchar_t* restrict pwcs, const char* restrict s, size_t n);
 
 // 7.22.8.2
-size_t wcstombs(char * restrict s, const wchar_t * restrict pwcs, size_t n);
+size_t wcstombs(char* restrict s, const wchar_t* restrict pwcs, size_t n);
 
+#ifdef  __cplusplus
+}
+#endif
 
 // ----------------------------
-// POSIX extension
+// POSIX
 
 // as in sys/wait.h
 #define WEXITSTATUS     1
@@ -174,8 +181,13 @@ size_t wcstombs(char * restrict s, const wchar_t * restrict pwcs, size_t n);
 #define WTERMSIG        1
 #define WUNTRACED       1
 
-long a64l(const char *s);
-char *l64a(long value);
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+long a64l(const char* s);
+char* l64a(long value);
 
 double drand48(void);
 double erand48(unsigned short xsubi[3]);
@@ -184,27 +196,31 @@ void lcong48(unsigned short param[7]);
 long lrand48(void);
 long mrand48(void);
 long nrand48(unsigned short xsubi[3]);
-unsigned short *seed48(unsigned short seed16v[3]);
+unsigned short* seed48(unsigned short seed16v[3]);
 void srand48(long seedval);
-int getsubopt(char **optionp, char * const *keylistp, char **valuep);
+int getsubopt(char** optionp, char* const* keylistp, char** valuep);
 int grantpt(int fildes);
-char *initstate(unsigned seed, char *state, size_t size);
+char* initstate(unsigned seed, char* state, size_t size);
 long random(void);
-char *setstate(char *state);
+char* setstate(char* state);
 void srandom(unsigned seed);
-char *mkdtemp(char *template_);
-int mkstemp(char *template_);
-int posix_memalign(void **memptr, size_t alignment, size_t size);
+char* mkdtemp(char* template_);
+int mkstemp(char* template_);
+int posix_memalign(void** memptr, size_t alignment, size_t size);
 int posix_openpt(int oflag);
-char *ptsname(int fildes);
-int putenv(char *string);
-int rand_r(unsigned *seed);
-char *realpath(const char * restrict file_name, char * restrict resolved_name);
-int setenv(const char *envname, const char *envval, int overwrite);
-void setkey(const char *key);
+char* ptsname(int fildes);
+int putenv(char* string);
+int rand_r(unsigned* seed);
+char* realpath(const char* restrict file_name, char* restrict resolved_name);
+int setenv(const char* envname, const char* envval, int overwrite);
+void setkey(const char* key);
 int unlockpt(int fildes);
-int unsetenv(const char *name);
+int unsetenv(const char* name);
 
-// ---------------------------------------------------------------------------
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_STDLIB_H

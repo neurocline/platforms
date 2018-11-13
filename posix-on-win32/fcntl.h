@@ -1,24 +1,17 @@
 // <fcntl.h>
+// - file control options
 //
 // Defined in POSIX.1-2017 <fcntl.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__FCNTL_H
-#define _POSIX_ON_WIN32__FCNTL_H
-
-// Get emulation of #include_next
-#include <posix_win32_include_next.h>
+#ifndef _POSIX_ON_WIN32_POSIX_FCNTL_H
+#define _POSIX_ON_WIN32_POSIX_FCNTL_H
 
 // Default to not using the Windows fcntl.h file
 #ifndef _POSIX_ON_WIN32_NO_WIN32_FCNTL
 // #define _POSIX_ON_WIN32_USE_WIN32_FCNTL
 #endif
-
-// Microsoft doesn't really have fcntl.h. The functions that are supposed to be
-// in fcntl.h are in other, nonstandard, header files. Only two fcntl.h
-// functions exist in Microsoft world: _creat and _open are in <io.h>.
-// So we just don't use the Microsoft fcnt.h and we wrap everything else.
 
 // -----------------------------------------------------------------------------------------------
 
@@ -26,36 +19,19 @@
 
 #error "This path not supported"
 
-// This is for future documentation purposes.
-// When we include the Windows <fcntl.h>, do not let it
-// introduce specific types. Maybe we shouldn't even bother including
-// the Microsoft fcntl.h, since it brings nothing to the table.
-#pragma push_macro("__STDC__")
-#pragma push_macro("_CRT_NO_TIME_T")
-#pragma push_macro("_CRT_INTERNAL_NONSTDC_NAMES")
-#pragma push_macro("_CRT_DECLARE_NONSTDC_NAMES")
-#undef __STDC__
-#define __STDC__ 1
-#undef _CRT_NO_TIME_T
-#define _CRT_NO_TIME_T
-#undef _CRT_INTERNAL_NONSTDC_NAMES
-#undef _CRT_DECLARE_NONSTDC_NAMES
-
-#include _MICROSOFT_UCRT_INCLUDE_NEXT(fcntl.h)
-
-#pragma pop_macro("__STDC__")
-#pragma pop_macro("_CRT_NO_TIME_T")
-#pragma pop_macro("_CRT_INTERNAL_NONSTDC_NAMES")
-#pragma pop_macro("_CRT_DECLARE_NONSTDC_NAMES")
-
 #endif // defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
 
 // -----------------------------------------------------------------------------------------------
 
 #if !defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
 
+// Microsoft doesn't really have fcntl.h. The functions that are supposed to be
+// in fcntl.h are in other, nonstandard, header files. Only two fcntl.h
+// functions exist in Microsoft world: _creat and _open are in <io.h>.
+// So we just don't use the Microsoft fcnt.h and we wrap everything else.
+
 // ----------------------------
-// POSIX.1-2017
+// POSIX
 
 // values for cmd argument in fcntl(int cmd, int flags, ...)
 #define F_DUPFD             1   // Duplicate file descriptor.
@@ -186,8 +162,7 @@ int posix_fallocate(int fd, off_t offset, off_t len);
 // posix_madvise is in <sys/mman.h>
 
 // ----------------------------
-// Linux
-// TBD add Linux extensions
+// Glibc
 
 typedef long long off64_t; // as in sys/types.h
 
@@ -195,7 +170,7 @@ int posix_fadvise64(int fd, off64_t offset, off64_t len, int advice);
 int posix_fallocate64(int fd, off64_t offset, off64_t len);
 
 // ----------------------------
-// Microsoft Windows
+// Microsoft
 
 // Windows-only (not in POSIX standard, or in Linux)
 // In non-Windows systems, these would just be zeros
@@ -218,4 +193,4 @@ int posix_fallocate64(int fd, off64_t offset, off64_t len);
 
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__FCNTL_H
+#endif // _POSIX_ON_WIN32_POSIX_FCNTL_H

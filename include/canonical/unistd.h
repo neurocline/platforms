@@ -2,9 +2,14 @@
 // - standard symbolic constants and types
 //
 // Defined in POSIX.1-2017 <unistd.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/unistd.h.html
 
+#pragma once
 #ifndef CANONICAL_POSIX_2017_UNISTD_H
 #define CANONICAL_POSIX_2017_UNISTD_H
+
+// *** WARNING ***
+// Not finished.
 
 // The standard says we can "make visible all symbols from" these three headers,
 // so instead of duplicate definitions, we just include them.
@@ -14,6 +19,9 @@
 
 // ---------------------------------------------------------------------------
 // Canonical header
+
+// ----------------------------
+// POSIX
 
 // Integer value indicating version of this standard (C-language binding) to
 // which the implementation conforms. For implementations conforming to
@@ -540,7 +548,13 @@ typedef int     pid_t;
 // -------------
 // Declarations
 
-// The following shall be declared as functions and may also be defined as macros. Function prototypes shall be provided.
+// The following shall be declared as functions and may also be defined as macros.
+// Function prototypes shall be provided.
+
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 int          access(const char *, int);
 unsigned     alarm(unsigned);
@@ -556,7 +570,7 @@ int          dup(int);
 
 
 int          dup2(int, int);
-void         _exit(int);
+void         _exit(int status);
 
 // [XSI]
 void         encrypt(char [64], int);
@@ -671,5 +685,11 @@ extern char  *optarg;
 extern int    opterr;
 extern int    optind;
 extern int    optopt;
+
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_POSIX_2017_UNISTD_H

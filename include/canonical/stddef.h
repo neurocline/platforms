@@ -4,6 +4,7 @@
 // Defined in ISO C18 Standard: 7.19 Common definitions <stddef.h>.
 // Aligned with POSIX.1-2017 <stddef.h>
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_STDDEF_H
 #define CANONICAL_ISO_C18_STDDEF_H
 
@@ -48,5 +49,7 @@ typedef unsigned long long size_t;
 #else
 typedef unsigned int size_t;
 #endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_STDDEF_H

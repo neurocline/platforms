@@ -1,12 +1,17 @@
 // <stddef.h>
+// - standard type definitions
 //
-// Diagnostic header that prints out usage of items
-// See canonical stddef.h for documentation on contents
+// Defined in ISO C18 Standard: 7.19 Common definitions <stddef.h>.
+// Aligned with POSIX.1-2017 <stddef.h>
 
+#pragma once
 #ifndef DIAGNOSTIC_ISO_C18_STDDEF_H
 #define DIAGNOSTIC_ISO_C18_STDDEF_H
 
 #include <internal/carp.h>
+
+// ---------------------------------------------------------------------------
+// Diagnostic header
 
 // Null pointer constant.
 // [CX] The macro shall expand to an integer constant expression with the value 0 cast to type void *.
@@ -46,5 +51,7 @@ typedef unsigned long long size_t;
 #else
 typedef unsigned int size_t;
 #endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // DIAGNOSTIC_ISO_C18_STDDEF_H

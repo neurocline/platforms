@@ -10,7 +10,7 @@
 #error "Expected the diagnostic pwd.h header"
 #endif
 
-#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32__PWD_H)
+#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32_POSIX_PWD_H)
 #error "Expected the posix-on-win32 pwd.h header"
 #endif
 

@@ -3,16 +3,15 @@
 //
 // Defined in ISO C18 Standard: 7.10 Sizes of integer types <limits.h>.
 // (and really defined in 5.2.4.2.1)
-// Expanded in POSIX.1-2017 <limits.h>
+// Extended in POSIX.1-2017 <limits.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/limits.h.html
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_LIMITS_H
 #define CANONICAL_ISO_C18_LIMITS_H
 
 // ---------------------------------------------------------------------------
 // Canonical header
-
-// ----------------------------
-// C18
 
 // number of bits for smallest object that is not a bit-field (byte)
 // [CX] Value: 8
@@ -20,15 +19,15 @@
 
 // minimum value for an object of type signed char
 // [CX] Value: -128
-#define SCHAR_MIN -128 // −(2^7 − 1)
+#define SCHAR_MIN -128 // -(2^7 - 1)
 
 // maximum value for an object of type signed char
 // [CX] Value: +127
-#define SCHAR_MAX +127 // +(2^7 − 1)
+#define SCHAR_MAX +127 // +(2^7 - 1)
 
 // maximum value for an object of type unsigned char
 // [CX] Value: 255
-#define UCHAR_MAX 255 // 2^8 − 1
+#define UCHAR_MAX 255 // 2^8 - 1
 
 // If an object of type char can hold negative values, the value
 // of CHAR_MIN shall be the same as that of SCHAR_MIN and the value
@@ -54,15 +53,15 @@
 
 // minimum value for an object of type short int
 // POSIX: Maximum Acceptable Value: -32 767
-#define SHRT_MIN -32767 // −(2^15 − 1)
+#define SHRT_MIN -32767 // -(2^15 - 1)
 
 // maximum value for an object of type short int
 // POSIX: Minimum Acceptable Value: +32 767
-#define SHRT_MAX +32767 // +(2^15 − 1)
+#define SHRT_MAX +32767 // +(2^15 - 1)
 
 // maximum value for an object of type unsigned short int
 // POSIX: Minimum Acceptable Value: 65 535
-#define USHRT_MAX 65535 // 2^16 − 1
+#define USHRT_MAX 65535 // 2^16 - 1
 
 // minimum value for an object of type int
 // [CX] Maximum Acceptable Value: -2 147 483 647
@@ -74,34 +73,34 @@
 
 // maximum value for an object of type unsigned int
 // [CX]  Minimum Acceptable Value: 4 294 967 295
-#define UINT_MAX 4294967295 // 2^32 − 1
+#define UINT_MAX 4294967295 // 2^32 - 1
 
 // define minimum value for an object of type long int
 // POSIX: Maximum Acceptable Value: -2 147 483 647
-#define LONG_MIN -2147483647 // −(2^31 − 1)
+#define LONG_MIN -2147483647 // −(2^31 - 1)
 
 // maximum value for an object of type long int
 // POSIX: Minimum Acceptable Value: +2 147 483 647
-#define LONG_MAX +2147483647 // +(2^31 − 1)
+#define LONG_MAX +2147483647 // +(2^31 - 1)
 
 // maximum value for an object of type unsigned long int
 // POSIX: Minimum Acceptable Value: 4 294 967 295
-#define ULONG_MAX 4294967295 // 2^32 − 1
+#define ULONG_MAX 4294967295 // 2^32 - 1
 
 // minimum value for an object of type long long int
 // POSIX: Maximum Acceptable Value: -9223372036854775807
-#define LLONG_MIN -9223372036854775807 // −(2^63 − 1)
+#define LLONG_MIN -9223372036854775807 // -(2^63 - 1)
 
 // maximum value for an object of type long long int
 // POSIX: Must be at least: +9223372036854775807
-#define LLONG_MAX +9223372036854775807 // +(2^63 − 1)
+#define LLONG_MAX +9223372036854775807 // +(2^63 - 1)
 
 // maximum value for an object of type unsigned long long int
 // POSIX: Minimum Acceptable Value: 18446744073709551615
-#define ULLONG_MAX 18446744073709551615 // 2^64 − 1
+#define ULLONG_MAX 18446744073709551615 // 2^64 - 1
 
 // ----------------------------
-// POSIX.1-2017
+// POSIX
 
 // Note: limits here are constrained by values found in <unistd.h>;
 // all these values are names prefixed with _POSIX
@@ -694,6 +693,6 @@
 // The LEGACY symbols {PASS_MAX} and {TMP_MAX} are removed.
 // NL_NMAX is removed.
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_LIMITS_H

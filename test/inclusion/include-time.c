@@ -10,7 +10,7 @@
 #error "Expected the diagnostic time.h header"
 #endif
 
-#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32__TIME_H)
+#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32_ISO_TIME_H)
 #error "Expected the posix-on-win32 time.h header"
 #endif
 

@@ -10,7 +10,7 @@
 #error "Expected the diagnostic string.h header"
 #endif
 
-#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32__STRING_H)
+#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32_ISO_STRING_H)
 #error "Expected the posix-on-win32 string.h header"
 #endif
 

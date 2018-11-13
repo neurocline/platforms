@@ -1,12 +1,20 @@
 // <sys/stat.h>
+// - data returned by the stat() function
 //
-// Diagnostic header that prints out usage of items
-// See canonical sys/stat.h for documentation on contents
+// Defined in POSIX.1-2017 <sys/stat.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_stat.h.html
 
+#pragma once
 #ifndef DIAGNOSTIC_POSIX_2017_SYS_STAT_H
 #define DIAGNOSTIC_POSIX_2017_SYS_STAT_H
 
 #include <internal/carp.h>
+
+// ---------------------------------------------------------------------------
+// Diagnostic header
+
+// ----------------------------
+// POSIX
 
 // The <sys/stat.h> header shall define the [XSI] [Option Start] blkcnt_t, blksize_t, [Option End]
 // dev_t, ino_t, mode_t, nlink_t, uid_t, gid_t, off_t, and time_t types as described in <sys/types.h>.
@@ -32,8 +40,8 @@ typedef int time_t;
 // The <sys/stat.h> header shall define the timespec structure as described in <time.h>.
 // Times shall be given in seconds since the Epoch.
 
-#ifndef DIAGNOSTIC_SYS_STAT_HAS_TIMESPEC
-#define DIAGNOSTIC_SYS_STAT_HAS_TIMESPEC
+#ifndef _HEADER_SYS_STAT_DEFINED_TIMESPEC
+#define _HEADER_SYS_STAT_DEFINED_TIMESPEC
 struct timespec {
     time_t tv_sec;       /* seconds */
     long tv_nsec;        /* nanoseconds */
@@ -101,21 +109,32 @@ struct stat {
 #define S_TYPEISSHM(buf) (((buf)->st_mode & S_IFSHMEM) == S_IFSHMEM) // Test for a shared memory object
 #define S_TYPEISTMO(buf) (((buf)->st_mode & S_IFTYPEMEM) == S_IFTYPEMEM) // Test macro for a typed memory object
 
-CARP("ISO C18: chmod()") int chmod(const char* path, mode_t mode);
-CARP("ISO C18: fchmodat()") int fchmodat(int fd, const char* path, mode_t mode, int flag);
-CARP("ISO C18: fchmod()") int fchmod(int fildes, mode_t mode);
-CARP("ISO C18: fstat()") int fstat(int fildes, struct stat* buf);
-CARP("ISO C18: fstatat()") int fstatat(int fd, const char* path, struct stat* buf, int flag);
-CARP("ISO C18: lstat()") int lstat(const char* path, struct stat* buf);
-CARP("ISO C18: stat()") int stat(const char* path, struct stat* buf);
-CARP("ISO C18: futimens()") int futimens(int fd, const struct timespec times[2]);
-CARP("ISO C18: utimensat()") int utimensat(int fd, const char* path, const struct timespec times[2], int flag);
-CARP("ISO C18: mkdir()") int mkdir(const char* path, mode_t mode);
-CARP("ISO C18: mkdirat()") int mkdirat(int fd, const char *path, mode_t mode);
-CARP("ISO C18: mkfifo()") int mkfifo(const char* path, mode_t mode);
-CARP("ISO C18: mkfifoat()") int mkfifoat(int fd, const char *path, mode_t mode);
-CARP("ISO C18: mknod()") int mknod(const char* path, mode_t mode, dev_t dev);
-CARP("ISO C18: mknodat()") int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
-CARP("ISO C18: umask()") mode_t umask(mode_t cmask);
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+CARP("POSIX 2017.1: chmod()") int chmod(const char* path, mode_t mode);
+CARP("POSIX 2017.1: fchmodat()") int fchmodat(int fd, const char* path, mode_t mode, int flag);
+CARP("POSIX 2017.1: fchmod()") int fchmod(int fildes, mode_t mode);
+CARP("POSIX 2017.1: fstat()") int fstat(int fildes, struct stat* buf);
+CARP("POSIX 2017.1: fstatat()") int fstatat(int fd, const char* path, struct stat* buf, int flag);
+CARP("POSIX 2017.1: lstat()") int lstat(const char* path, struct stat* buf);
+CARP("POSIX 2017.1: stat()") int stat(const char* path, struct stat* buf);
+CARP("POSIX 2017.1: futimens()") int futimens(int fd, const struct timespec times[2]);
+CARP("POSIX 2017.1: utimensat()") int utimensat(int fd, const char* path, const struct timespec times[2], int flag);
+CARP("POSIX 2017.1: mkdir()") int mkdir(const char* path, mode_t mode);
+CARP("POSIX 2017.1: mkdirat()") int mkdirat(int fd, const char *path, mode_t mode);
+CARP("POSIX 2017.1: mkfifo()") int mkfifo(const char* path, mode_t mode);
+CARP("POSIX 2017.1: mkfifoat()") int mkfifoat(int fd, const char *path, mode_t mode);
+CARP("POSIX 2017.1: mknod()") int mknod(const char* path, mode_t mode, dev_t dev);
+CARP("POSIX 2017.1: mknodat()") int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
+CARP("POSIX 2017.1: umask()") mode_t umask(mode_t cmask);
+
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // DIAGNOSTIC_POSIX_2017_SYS_STAT_H

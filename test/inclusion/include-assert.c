@@ -10,7 +10,7 @@
 #error "Expected the diagnostic assert.h header"
 #endif
 
-#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32__ASSERT_H)
+#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32_ISO_ASSERT_H)
 #error "Expected the posix-on-win32 assert.h header"
 #endif
 

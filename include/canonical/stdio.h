@@ -2,8 +2,10 @@
 // - standard buffered input/output
 //
 // Defined in ISO C18 Standard: 7.21 Input/output <stdio.h>.
-// Expanded in POSIX.1-2017 <stdio.h>
+// Extended in POSIX.1-2017 <stdio.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799.2018edition/basedefs/stdio.h.html
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_STDIO_H
 #define CANONICAL_ISO_C18_STDIO_H
 
@@ -17,9 +19,6 @@
 #define _Noreturn
 #endif
 
-// ----------------------------
-// C18
-
 // va_list as in stdarg.h
 typedef char* va_list;
 
@@ -29,6 +28,9 @@ typedef unsigned long long size_t;
 #else
 typedef unsigned int size_t;
 #endif
+
+// as in sys/types.h
+typedef long long off_t;
 
 // An object type capable of recording all the information needed to control a stream
 typedef struct _FILE
@@ -40,14 +42,13 @@ typedef struct _FILE
 // all the information needed to specify uniquely every position within a file
 typedef long long fpos_t;
 
-// as in sys/types.h
-typedef long long off_t;
-
 // Null as in stddef.h
+#ifndef NULL
 #ifndef __cplusplus
 #define NULL ((void*) 0)
 #else
 #define NULL 0
+#endif
 #endif
 
 // used for third argument to setvbuf
@@ -82,6 +83,11 @@ typedef long long off_t;
 extern FILE* stderr;
 extern FILE* stdin;
 extern FILE* stdout;
+
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 // 7.21.4.1
 int remove(const char *filename);
@@ -218,6 +224,10 @@ int ferror(FILE *stream);
 // 7.21.10.4
 void perror(const char *s);
 
+#ifdef  __cplusplus
+}
+#endif
+
 // ----------------------------
 // POSIX
 
@@ -233,6 +243,11 @@ typedef int ssize_t;
 
 // Default directory prefix for tempnam().
 extern char* P_tmpdir;
+
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 char* ctermid(char *s);
 int dprintf(int fildes, const char* restrict format, ...);
@@ -263,13 +278,18 @@ int renameat(int oldfd, const char* old, int newfd, const char* new);
 int vdprintf(int fildes, const char* restrict format, va_list ap);
 
 // ----------------------------
-// Linux
+// Glibc
 
 typedef long long off64_t;
 
 int fseeko64(FILE *stream, off64_t offset, int whence);
 off64_t ftello64(FILE *stream);
 
-// ---------------------------------------------------------------------------
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_STDIO_H

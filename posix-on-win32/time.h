@@ -1,26 +1,18 @@
 // <time.h>
+// - time types
 //
-// Defined in ISO C18 Standard: 7.24 Date and time <time.h>.
-// time types
-// Extended by POSIX.1-2017 <time.h>
+// Defined in ISO C18 Standard: 7.27 Date and time <time.h>.
+// Extended in POSIX.1-2017 <time.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__TIME_H
-#define _POSIX_ON_WIN32__TIME_H
-
-// Get emulation of #include_next
-#include <posix_win32_include_next.h>
+#ifndef _POSIX_ON_WIN32_ISO_TIME_H
+#define _POSIX_ON_WIN32_ISO_TIME_H
 
 // Default to not using the Windows time.h file
 #ifndef _POSIX_ON_WIN32_NO_WIN32_TIME
-//#define _POSIX_ON_WIN32_USE_WIN32_TIME
+// #define _POSIX_ON_WIN32_USE_WIN32_TIME
 #endif
-
-// The Windows <time.h> functionality is just broken enough that we don't want to
-// expose any of it to potential POSIX programmers. So we just implement all the
-// interfaces directly. We will re-use some Windows code where possible, but
-// that's an implementation detail.
 
 // -----------------------------------------------------------------------------------------------
 
@@ -34,14 +26,25 @@
 
 #if !defined(_POSIX_ON_WIN32_USE_WIN32_TIME)
 
-// ----------------------------
-// C18
+// The Windows <time.h> functionality is just broken enough that we don't want to
+// expose any of it to potential POSIX programmers. So we just implement all the
+// interfaces directly. We will re-use some Windows code where possible, but
+// that's an implementation detail.
+
+// If we don't have at least C11, then make new keywords vanish
+// so older compilers still work (notably MSVC))
+#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 201112L
+#define restrict
+#define _Noreturn
+#endif
 
 // Null as in stddef.h
+#ifndef NULL
 #ifndef __cplusplus
 #define NULL ((void *)0)
 #else
 #define NULL 0
+#endif
 #endif
 
 // the number per second of the value returned by the clock function
@@ -70,8 +73,8 @@ typedef int time_t;
 #endif
 
 // an interval specified in seconds and nanoseconds
-#ifndef POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
-#define POSIX_ON_WIN32_SYS_STAT_HAS_TIMESPEC
+#ifndef _HEADER_SYS_STAT_DEFINED_TIMESPEC
+#define _HEADER_SYS_STAT_DEFINED_TIMESPEC
 struct timespec {
     time_t tv_sec; // seconds
     long tv_nsec;  // nanoseconds
@@ -123,7 +126,7 @@ struct tm *gmtime(const time_t *timer);
 struct tm *localtime(const time_t *timer);
 
 // 7.27.3.5
-size_t strftime(char * s, size_t maxsize, const char * format, const struct tm * timeptr);
+size_t strftime(char * restrict s, size_t maxsize, const char * restrict format, const struct tm * restrict timeptr);
 
 // ----------------------------
 // POSIX
@@ -132,8 +135,8 @@ size_t strftime(char * s, size_t maxsize, const char * format, const struct tm *
 typedef int clockid_t;
 
 // as in locale.h
-#ifndef POSIX_ON_WIN32_LOCALE_HAS_LOCALE_T
-#define POSIX_ON_WIN32_LOCALE_HAS_LOCALE_T
+#ifndef _HEADER_LOCALE_DEFINED_LOCALE_T
+#define _HEADER_LOCALE_DEFINED_LOCALE_T
 typedef struct _locale_struct
 {
     int dummy; // until we figure out what we want
@@ -141,8 +144,8 @@ typedef struct _locale_struct
 #endif
 
 // as in sys/types.h
-#ifndef POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
-#define POSIX_ON_WIN32_SYS_TYPES_HAS_TIMER_T
+#ifndef _HEADER_SYS_TYPES_DEFINED_TIMER_T
+#define _HEADER_SYS_TYPES_DEFINED_TIMER_T
 typedef struct { int v; } timer_t;
 #endif
 
@@ -191,7 +194,12 @@ extern long   timezone;
 // set by tzset
 extern char*  tzname[];
 
-char *asctime_r(const struct tm * tm, char * buf);
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+char *asctime_r(const struct tm *restrict tm, char *restrict buf);
 
 int clock_getcpuclockid(pid_t pid, clockid_t *clock_id);
 
@@ -205,28 +213,32 @@ char *ctime_r(const time_t *clock, char *buf);
 
 struct tm *getdate(const char *string);
 
-struct tm *gmtime_r(const time_t * timer, struct tm * result);
+struct tm *gmtime_r(const time_t *restrict timer, struct tm *restrict result);
 
-struct tm *localtime_r(const time_t * timer, struct tm * result);
+struct tm *localtime_r(const time_t *restrict timer, struct tm *restrict result);
 
 int nanosleep(const struct timespec *rqtp, struct timespec *rmtp);
 
-size_t strftime_l(char * s, size_t maxsize, const char * format, const struct tm * timeptr, locale_t locale);
+size_t strftime_l(char *restrict s, size_t maxsize, const char *restrict format, const struct tm *restrict timeptr, locale_t locale);
 
-char *strptime(const char * buf, const char * format, struct tm * tm);
+char *strptime(const char *restrict buf, const char *restrict format, struct tm *restrict tm);
 
-int timer_create(clockid_t clockid, struct sigevent * evp, timer_t * timerid);
+int timer_create(clockid_t clockid, struct sigevent *restrict evp, timer_t *restrict timerid);
 
 int timer_delete(timer_t timerid);
 
 int timer_getoverrun(timer_t timerid);
 int timer_gettime(timer_t timerid, struct itimerspec *value);
-int timer_settime(timer_t timerid, int flags, const struct itimerspec * value, struct itimerspec * ovalue);
+int timer_settime(timer_t timerid, int flags, const struct itimerspec *restrict value, struct itimerspec *restrict ovalue);
 
 void tzset(void);
+
+#ifdef  __cplusplus
+}
+#endif
 
 #endif // !defined(_POSIX_ON_WIN32_USE_WIN32_TIME)
 
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__TIME_H
+#endif // _POSIX_ON_WIN32_ISO_TIME_H

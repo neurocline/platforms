@@ -1,12 +1,17 @@
 // <pwd.h>
+// - password structure
 //
-// Diagnostic header that prints out usage of items
-// See canonical pwd.h for documentation on contents
+// Defined in POSIX.1-2017 <pwd.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pwd.h.html
 
+#pragma once
 #ifndef DIAGNOSTIC_POSIX_2017_PWD_H
 #define DIAGNOSTIC_POSIX_2017_PWD_H
 
 #include <internal/carp.h>
+
+// ---------------------------------------------------------------------------
+// Diagnostic header
 
 // gid_t, uid_t, and size_t, as in <sys/types.h>
 typedef unsigned int gid_t; // Used for group IDs
@@ -33,6 +38,11 @@ struct passwd
     char* pw_gecos;     // User realname (and other personal data)
 };
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 void endpwent(void);
 struct passwd* getpwent(void);
 
@@ -43,5 +53,11 @@ struct passwd* getpwuid(uid_t uid);
 int getpwuid_r(uid_t uid, struct passwd* pwd, char* buffer, size_t bufsize, struct passwd** result);
 
 void setpwent(void);
+
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // DIAGNOSTIC_POSIX_2017_PWD_H

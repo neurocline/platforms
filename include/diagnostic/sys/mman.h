@@ -1,12 +1,19 @@
 // <sys/mman.h>
+// - memory management declarations
 //
-// Diagnostic header that prints out usage of items
-// See canonical sys/mman.h for documentation on contents
+// Defined in POSIX.1-2017 <sys/mman.h>
 
+#pragma once
 #ifndef DIAGNOSTIC_POSIX_2017_SYS_MMAN_H
 #define DIAGNOSTIC_POSIX_2017_SYS_MMAN_H
 
 #include <internal/carp.h>
+
+// ---------------------------------------------------------------------------
+// Diagnostic header
+
+// ----------------------------
+// POSIX
 
 // protection options
 #define PROT_EXEC       1   // Page can be executed.
@@ -60,6 +67,11 @@ struct posix_typed_mem_info
     size_t  posix_tmi_length;   // Maximum length which may be allocated from a typed memory object.
 };
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 int mlock(const void* addr, size_t len);
 int munlock(const void* addr, size_t len);
 int mlockall(int flags);
@@ -74,5 +86,11 @@ int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
 int posix_typed_mem_open(const char* name, int oflag, int tflag);
 int shm_open(const char* name, int oflag, mode_t mode);
 int shm_unlink(const char* name);
+
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // DIAGNOSTIC_POSIX_2017_SYS_MMAN_H

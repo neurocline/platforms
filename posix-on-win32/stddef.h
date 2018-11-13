@@ -1,21 +1,33 @@
 // <stddef.h>
+// - standard type definitions
 //
 // Defined in ISO C18 Standard: 7.19 Common definitions <stddef.h>.
-// Also defined in POSIX.1-2017 <stddef.h>, identical to ISO C99.
-// standard type definitions
-// See http://pubs.opengroup.org/onlinepubs/9699919799.2018edition/basedefs/stddef.h.html
+// Aligned with POSIX.1-2017 <stddef.h>
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__STDDEF_H
-#define _POSIX_ON_WIN32__STDDEF_H
-
-// Get emulation of #include_next
-#include <posix_win32_include_next.h>
+#ifndef _POSIX_ON_WIN32_ISO_STDDEF_H
+#define _POSIX_ON_WIN32_ISO_STDDEF_H
 
 // Default to using the Windows stddef.h file
 #ifndef _POSIX_ON_WIN32_NO_WIN32_STDDEF
 #define _POSIX_ON_WIN32_USE_WIN32_STDDEF
 #endif
+
+// -----------------------------------------------------------------------------------------------
+
+#if defined(_POSIX_ON_WIN32_USE_WIN32_STDDEF)
+// Get MSVC emulation of #include_next
+#include <posix_win32_include_next.h>
+
+#pragma push_macro("_CRT_NO_TIME_T")
+#pragma push_macro("_CRT_NONSTDC_NO_DEPRECATE")
+#undef _CRT_NO_TIME_T
+#define _CRT_NO_TIME_T
+#undef _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE
+#include _MICROSOFT_UCRT_INCLUDE_NEXT(stddef.h)
+#pragma pop_macro("_CRT_NONSTDC_NO_DEPRECATE")
+#pragma pop_macro("_CRT_NO_TIME_T")
 
 // There's not much reason in actually wrapping this, other than symmetry, because
 // the Windows stddef.h makes a complete ISO C and POSIX header. The only reason to
@@ -23,18 +35,10 @@
 // files, puts things in the wrong places, and that's more of a maintenance issue,
 // not a correctness issue.
 
-// -----------------------------------------------------------------------------------------------
-
-#if defined(_POSIX_ON_WIN32_USE_WIN32_STDDEF)
-
-#include _MICROSOFT_UCRT_INCLUDE_NEXT(stddef.h)
-
 #endif // defined(_POSIX_ON_WIN32_USE_WIN32_STDDEF)
 
 // -----------------------------------------------------------------------------------------------
 
-// Otherwise, we have to declare a complete <assert.h> environment
-// that works for both POSIX and Windows-kinda-POSIX
 #if !defined(_POSIX_ON_WIN32_USE_WIN32_STDDEF)
 
 #error "This path not supported"
@@ -43,4 +47,4 @@
 
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__STDDEF_H
+#endif // _POSIX_ON_WIN32_ISO_STDDEF_H

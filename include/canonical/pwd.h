@@ -2,7 +2,9 @@
 // - password structure
 //
 // Defined in POSIX.1-2017 <pwd.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pwd.h.html
 
+#pragma once
 #ifndef CANONICAL_POSIX_2017_PWD_H
 #define CANONICAL_POSIX_2017_PWD_H
 
@@ -34,6 +36,11 @@ struct passwd
     char* pw_gecos;     // User realname (and other personal data)
 };
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 void endpwent(void);
 struct passwd* getpwent(void);
 
@@ -44,5 +51,11 @@ struct passwd* getpwuid(uid_t uid);
 int getpwuid_r(uid_t uid, struct passwd* pwd, char* buffer, size_t bufsize, struct passwd** result);
 
 void setpwent(void);
+
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_POSIX_2017_PWD_H

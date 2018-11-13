@@ -2,8 +2,10 @@
 // - time types
 //
 // Defined in ISO C18 Standard: 7.27 Date and time <time.h>.
-// Expanded in POSIX.1-2017 <time.h>
+// Extended in POSIX.1-2017 <time.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_TIME_H
 #define CANONICAL_ISO_C18_TIME_H
 
@@ -17,14 +19,13 @@
 #define _Noreturn
 #endif
 
-// ----------------------------
-// C18
-
 // Null as in stddef.h
+#ifndef NULL
 #ifndef __cplusplus
-#define NULL ((void*) 0)
+#define NULL ((void *)0)
 #else
 #define NULL 0
+#endif
 #endif
 
 // the number per second of the value returned by the clock function
@@ -53,8 +54,8 @@ typedef int time_t;
 #endif
 
 // an interval specified in seconds and nanoseconds
-#ifndef CANONICAL_SYS_STAT_HAS_TIMESPEC
-#define CANONICAL_SYS_STAT_HAS_TIMESPEC
+#ifndef _HEADER_SYS_STAT_DEFINED_TIMESPEC
+#define _HEADER_SYS_STAT_DEFINED_TIMESPEC
 struct timespec {
     time_t tv_sec; // seconds
     long tv_nsec;  // nanoseconds
@@ -115,8 +116,8 @@ size_t strftime(char * restrict s, size_t maxsize, const char * restrict format,
 typedef int clockid_t;
 
 // as in locale.h
-#ifndef CANONICAL_LOCALE_HAS_LOCALE_T
-#define CANONICAL_LOCALE_HAS_LOCALE_T
+#ifndef _HEADER_LOCALE_DEFINED_LOCALE_T
+#define _HEADER_LOCALE_DEFINED_LOCALE_T
 typedef struct _locale_struct
 {
     int dummy; // until we figure out what we want
@@ -124,8 +125,8 @@ typedef struct _locale_struct
 #endif
 
 // as in sys/types.h
-#ifndef CANONICAL_SYS_TYPES_HAS_TIMER_T
-#define CANONICAL_SYS_TYPES_HAS_TIMER_T
+#ifndef _HEADER_SYS_TYPES_DEFINED_TIMER_T
+#define _HEADER_SYS_TYPES_DEFINED_TIMER_T
 typedef struct { int v; } timer_t;
 #endif
 
@@ -174,6 +175,11 @@ extern long   timezone;
 // set by tzset
 extern char*  tzname[];
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 char *asctime_r(const struct tm *restrict tm, char *restrict buf);
 
 int clock_getcpuclockid(pid_t pid, clockid_t *clock_id);
@@ -208,6 +214,10 @@ int timer_settime(timer_t timerid, int flags, const struct itimerspec *restrict 
 
 void tzset(void);
 
-// ---------------------------------------------------------------------------
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_TIME_H

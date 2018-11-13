@@ -1,16 +1,15 @@
 // <unistd.h>
+// - standard symbolic constants and types
 //
 // Defined in POSIX.1-2017 <unistd.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/unistd.h.html
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__UNISTD_H
-#define _POSIX_ON_WIN32__UNISTD_H
-
-// There is no Windows <unistd.h> file, so we don't need to override anything.
+#ifndef _POSIX_ON_WIN32_POSIX_UNISTD_H
+#define _POSIX_ON_WIN32_POSIX_UNISTD_H
 
 // *** WARNING ***
-// This isn't fully implemented yet, so fix canonical version first, then copy over.
+// Not finished.
 
 // The standard says we can "make visible all symbols from" these three headers,
 // so instead of duplicate definitions, we just include them.
@@ -18,8 +17,13 @@
 #include <stdint.h>
 #include <stdio.h>
 
+// There is no Windows <unistd.h> file, so we don't need to override anything.
+
 // ---------------------------------------------------------------------------
-// Canonical header
+// POSIX on Win32 header
+
+// ----------------------------
+// POSIX
 
 // Integer value indicating version of this standard (C-language binding) to
 // which the implementation conforms. For implementations conforming to
@@ -546,7 +550,13 @@ typedef int     pid_t;
 // -------------
 // Declarations
 
-// The following shall be declared as functions and may also be defined as macros. Function prototypes shall be provided.
+// The following shall be declared as functions and may also be defined as macros.
+// Function prototypes shall be provided.
+
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 int          access(const char *, int);
 unsigned     alarm(unsigned);
@@ -562,7 +572,7 @@ int          dup(int);
 
 
 int          dup2(int, int);
-// void         _exit(int); -- this is clashing with Microsoft stdlib.h definition. Fix TBD
+// _exit(int status); is found in Microsoft's <stlib.h> and <process.h> headers
 
 // [XSI]
 void         encrypt(char [64], int);
@@ -627,8 +637,8 @@ int          pipe(int [2]);
 ssize_t      pread(int, void *, size_t, off_t);
 ssize_t      pwrite(int, const void *, size_t, off_t);
 ssize_t      read(int, void *, size_t);
-ssize_t      readlink(const char *, char *, size_t);
-ssize_t      readlinkat(int, const char *, char *, size_t);
+ssize_t      readlink(const char *restrict, char *restrict, size_t);
+ssize_t      readlinkat(int, const char *restrict, char *restrict, size_t);
 int          rmdir(const char *);
 int          setegid(gid_t);
 int          seteuid(uid_t);
@@ -649,7 +659,7 @@ int          setuid(uid_t);
 unsigned     sleep(unsigned);
 
 // [XSI]
-void         swab(const void *, void *, ssize_t);
+void         swab(const void *restrict, void *restrict, ssize_t);
 
 int          symlink(const char *, const char *);
 int          symlinkat(const char *, int, const char *);
@@ -663,7 +673,7 @@ int          tcsetpgrp(int, pid_t);
 int          truncate(const char *, off_t);
 char        *ttyname(int);
 int          ttyname_r(int, char *, size_t);
-int          unlink(const char *);
+// int unlink(const char *) is found in Microsoft's <stdio.h> header
 int          unlinkat(int, const char *, int);
 ssize_t      write(int, const void *, size_t);
 
@@ -678,6 +688,10 @@ extern int    opterr;
 extern int    optind;
 extern int    optopt;
 
+#ifdef  __cplusplus
+}
+#endif
+
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__UNISTD_H
+#endif // _POSIX_ON_WIN32_POSIX_UNISTD_H

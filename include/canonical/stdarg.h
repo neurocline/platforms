@@ -4,6 +4,7 @@
 // Defined in ISO C18 Standard: 7.16 Input/output <stdarg.h>.
 // Aligned with POSIX.1-2017 <stdarg.h>
 
+#pragma once
 #ifndef CANONICAL_ISO_C18_STDARG_H
 #define CANONICAL_ISO_C18_STDARG_H
 
@@ -39,5 +40,7 @@ typedef char* va_list;
 
 // 7.16.1.4
 #define va_start(VA_LIST, VA_PARAM) (void)(VA_LIST = (char*)&VA_PARAM)
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_STDARG_H

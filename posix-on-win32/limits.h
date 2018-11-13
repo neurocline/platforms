@@ -1,16 +1,14 @@
 // <limits.h>
+// - implementation-defined constants
 //
 // Defined in ISO C18 Standard: 7.10 Sizes of integer types <limits.h>.
-// implementation-defined constants
-// Extended by POSIX.1-2017 <limits.h>
+// (and really defined in 5.2.4.2.1)
+// Extended in POSIX.1-2017 <limits.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/limits.h.html
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__LIMITS_H
-#define _POSIX_ON_WIN32__LIMITS_H
-
-// Get emulation of #include_next
-#include <posix_win32_include_next.h>
+#ifndef _POSIX_ON_WIN32_ISO_LIMITS_H
+#define _POSIX_ON_WIN32_ISO_LIMITS_H
 
 // Default to using the Windows limits.h file
 #ifndef _POSIX_ON_WIN32_NO_WIN32_LIMITS
@@ -20,116 +18,21 @@
 // -----------------------------------------------------------------------------------------------
 
 #if defined(_POSIX_ON_WIN32_USE_WIN32_LIMITS)
+// Get MSVC emulation of #include_next
+#include <posix_win32_include_next.h>
 
-// Microsoft has a mostly-ISO C limits.h that has its compiler sizes
-// delineated, so we should use it. We just have to augment it a lot.
-
-// When we include the Windows <limits.h>, do not let it
-// introduce specific types
-#pragma push_macro("__STDC__")
 #pragma push_macro("_CRT_NO_TIME_T")
-#pragma push_macro("_CRT_NO_POSIX_ERROR_CODES")
-#undef __STDC__
-#define __STDC__ 1
+#pragma push_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
-#undef _CRT_NO_POSIX_ERROR_CODES
+#undef _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE
 #include _MICROSOFT_VC_INCLUDE_NEXT(limits.h)
-#pragma pop_macro("__STDC__")
+#pragma pop_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #pragma pop_macro("_CRT_NO_TIME_T")
-#pragma pop_macro("_CRT_NO_POSIX_ERROR_CODES")
 
 // ----------------------------
-// C18
-
-// number of bits for smallest object that is not a bit-field (byte)
-// [CX] Value: 8
-//#define CHAR_BIT 8
-
-// minimum value for an object of type signed char
-// [CX] Value: -128
-//#define SCHAR_MIN -128 // −(2^7 − 1)
-
-// maximum value for an object of type signed char
-// [CX] Value: +127
-//#define SCHAR_MAX +127 // +(2^7 − 1)
-
-// maximum value for an object of type unsigned char
-// [CX] Value: 255
-//#define UCHAR_MAX 255 // 2^8 − 1
-
-// If an object of type char can hold negative values, the value
-// of CHAR_MIN shall be the same as that of SCHAR_MIN and the value
-// of CHAR_MAX shall be the same as that of SCHAR_MAX. Otherwise,
-// the value of CHAR_MIN shall be 0 and the value of CHAR_MAX shall
-// be the same as that of UCHAR_MAX.
-
-// Some compilers that have plain char as unsigned: Cray T90, Cray SV1,
-// Cray T3E, SGI MIPS IRIX, IBM PowerPC AIX. Also apparently anything
-// that still uses EBCDIC. So, big TBD.
-
-// minimum value for an object of type char
-// Value: SCHAR_MIN or 0
-//#define CHAR_MIN -128
-
-// maximum value for an object of type char
-// Value: UCHAR_MAX or SCHAR_MAX
-//#define CHAR_MAX +127
-
-// maximum number of bytes in a multibyte character, for any supported locale
-// POSIX: Minimum Acceptable Value: 1
-//#define MB_LEN_MAX 1
-
-// minimum value for an object of type short int
-// POSIX: Maximum Acceptable Value: -32 767
-//#define SHRT_MIN -32767 // −(2^15 − 1)
-
-// maximum value for an object of type short int
-// POSIX: Minimum Acceptable Value: +32 767
-//#define SHRT_MAX +32767 // +(2^15 − 1)
-
-// maximum value for an object of type unsigned short int
-// POSIX: Minimum Acceptable Value: 65 535
-//#define USHRT_MAX 65535 // 2^16 − 1
-
-// minimum value for an object of type int
-// [CX] Maximum Acceptable Value: -2 147 483 647
-//#define INT_MIN -2147483647
-
-// maximum value for an object of type int
-// [CX] Must be at least: 2 147 483 647
-//#define INT_MAX +2147483647
-
-// maximum value for an object of type unsigned int
-// [CX]  Minimum Acceptable Value: 4 294 967 295
-//#define UINT_MAX 4294967295 // 2^32 − 1
-
-// define minimum value for an object of type long int
-// POSIX: Maximum Acceptable Value: -2 147 483 647
-//#define LONG_MIN -2147483647 // −(2^31 − 1)
-
-// maximum value for an object of type long int
-// POSIX: Minimum Acceptable Value: +2 147 483 647
-//#define LONG_MAX +2147483647 // +(2^31 − 1)
-
-// maximum value for an object of type unsigned long int
-// POSIX: Minimum Acceptable Value: 4 294 967 295
-//#define ULONG_MAX 4294967295 // 2^32 − 1
-
-// minimum value for an object of type long long int
-// POSIX: Maximum Acceptable Value: -9223372036854775807
-//#define LLONG_MIN -9223372036854775807 // −(2^63 − 1)
-
-// maximum value for an object of type long long int
-// POSIX: Must be at least: +9223372036854775807
-//#define LLONG_MAX +9223372036854775807 // +(2^63 − 1)
-
-// maximum value for an object of type unsigned long long int
-// POSIX: Minimum Acceptable Value: 18446744073709551615
-//#define ULLONG_MAX 18446744073709551615 // 2^64 − 1
-
-// ----------------------------
-// POSIX.1-2017
+// POSIX
 
 // Note: limits here are constrained by values found in <unistd.h>;
 // all these values are names prefixed with _POSIX
@@ -734,4 +637,4 @@
 
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__LIMITS_H
+#endif // _POSIX_ON_WIN32_ISO_LIMITS_H

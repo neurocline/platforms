@@ -1,19 +1,20 @@
 // <fcntl.h>
+// - file control options
 //
-// Diagnostic header that prints out usage of items
-// See canonical fcntl.h for documentation on contents
+// Defined in POSIX.1-2017 <fcntl.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html
 
+#pragma once
 #ifndef DIAGNOSTIC_POSIX_2017_FCNTL_H
 #define DIAGNOSTIC_POSIX_2017_FCNTL_H
 
 #include <internal/carp.h>
 
-
 // ---------------------------------------------------------------------------
-// Canonical header
+// Diagnostic header
 
 // ----------------------------
-// POSIX.1-2017
+// POSIX
 
 // values for cmd argument in fcntl(int cmd, int flags, ...)
 #define F_DUPFD             1   // Duplicate file descriptor.
@@ -144,8 +145,7 @@ int posix_fallocate(int fd, off_t offset, off_t len);
 // posix_madvise is in <sys/mman.h>
 
 // ----------------------------
-// Linux
-// TBD add Linux extensions
+// Glibc
 
 typedef long long off64_t; // as in sys/types.h
 
@@ -153,7 +153,7 @@ int posix_fadvise64(int fd, off64_t offset, off64_t len, int advice);
 int posix_fallocate64(int fd, off64_t offset, off64_t len);
 
 // ----------------------------
-// Microsoft Windows
+// Microsoft
 
 // Windows-only (not in POSIX standard, or in Linux)
 // In non-Windows systems, these would just be zeros
@@ -172,4 +172,6 @@ int posix_fallocate64(int fd, off64_t offset, off64_t len);
 #define O_SEQUENTIAL    (1 << 26)
 #define O_RANDOM        (1 << 27)
 
-#endif // CANONICAL_POSIX_2017_FCNTL_H
+// -----------------------------------------------------------------------------------------------
+
+#endif // DIAGNOSTIC_POSIX_2017_FCNTL_H

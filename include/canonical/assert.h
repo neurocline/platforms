@@ -2,18 +2,11 @@
 // - verify program assertion
 //
 // Defined in ISO C18 Standard: 7.2 Diagnostics <assert.h>.
-// Unchanged since C11, where static_assert was added.
-// Also defined in POSIX.1-2017 <assert.h>, identical to ISO C99.
-// Glibc <assert.h> follows C11 standard.
-// Microsoft <assert.h> follows C95 standard (no __func__).
-// FreeBSD <assert.h> follows C99 standard (??).
-// C++ <assert.h> is identical to ISO C99, and typically accessed through <casssert> wrapper.
+// POSIX.1-2017 <assert.h> aligned with ISO C.
+// Glibc extensions.
 
 // ---------------------------------------------------------------------------
 // Canonical header
-
-// ----------------------------
-// C89
 
 // NDEBUG is used to compile out assertions
 #if defined(NDEBUG)
@@ -32,20 +25,19 @@
 #endif
 
 #define assert(condition) ((condition) ? ((void)0) : \
-    __canonical_assert_impl(#condition, __FILE__, __LINE__, __FUNC__))
+    __assert_impl(#condition, __FILE__, __LINE__, __FUNC__))
 
 #endif // !defined(NDEBUG)
 
 // ----------------------------
 // C11
 
-// (C++ already has static_assert)
-#if !defined __cplusplus
+#if !defined __cplusplus && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #define static_assert _Static_assert
 #endif
 
 // ----------------------------
-// GNU extension
+// Glibc
 
 // Their pattern is that system headers use __USE_GNU but that this is set
 // from _GNU_SOURCE by a prefix header (like <features.h>)
@@ -55,14 +47,16 @@
 #define assert_perror(errnum) ((void)0)
 #else
 #define assert_perror(errnum) (!(errnum) ? ((void)0) : \
-    __canonical_assert_perror_impl((errnum), __FILE__, __LINE__, __FUNC__))
+    __assert_perror_impl((errnum), __FILE__, __LINE__, __FUNC__))
 #endif
 
 #endif // defined(_GNU_SOURCE)
 
-
 // ---------------------------------------------------------------------------
 // Implementation detail
+
+// TBD - we don't want to use the Windows assert.h, we want to use our own,
+// so that we can support __func__ (Microsoft does not)
 
 // This is the one header in C and C++ that does not have an include guard
 // around the whole thing, and it can't use #pragma once either. This is to
@@ -79,18 +73,20 @@ extern "C" {
 // a function like this to do the actual work of the assert.
 // If you follow the C standard precisely, this writes a message on
 // the standard error stream and then calls the abort function.
-void __canonical_assert_impl(const char* assertion, const char* file,
+void __assert_impl(const char* assertion, const char* file,
                unsigned int line, const char* function);
 
 // This is typically a function that converts the errnum to a error
-// message string and then calls __canonical_assert_impl.
+// message string and then calls __assert_impl.
 #if defined(_GNU_SOURCE)
-void __canonical_assert_perror_impl(int errnum, const char* file,
+void __assert_perror_impl(int errnum, const char* file,
                unsigned int line, const char* function);
 #endif
 
 #ifdef  __cplusplus
 }
 #endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // CANONICAL_ISO_C18_ASSERT_H

@@ -10,7 +10,7 @@
 #error "Expected the diagnostic fcntl.h header"
 #endif
 
-#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32__FCNTL_H)
+#if defined(TEST_POSIX_ON_WIN32) && !defined(_POSIX_ON_WIN32_POSIX_FCNTL_H)
 #error "Expected the posix-on-win32 fcntl.h header"
 #endif
 

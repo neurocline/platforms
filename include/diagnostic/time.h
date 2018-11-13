@@ -1,12 +1,18 @@
 // <time.h>
+// - time types
 //
-// Diagnostic header that prints out usage of items
-// See canonical time.h for documentation on contents
+// Defined in ISO C18 Standard: 7.27 Date and time <time.h>.
+// Extended in POSIX.1-2017 <time.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html
 
+#pragma once
 #ifndef DIAGNOSTIC_ISO_C18_TIME_H
 #define DIAGNOSTIC_ISO_C18_TIME_H
 
 #include <internal/carp.h>
+
+// ---------------------------------------------------------------------------
+// Diagnostic header
 
 // If we don't have at least C11, then make new keywords vanish
 // so older compilers still work (notably MSVC))
@@ -15,14 +21,13 @@
 #define _Noreturn
 #endif
 
-// ----------------------------
-// C18
-
 // Null as in stddef.h
+#ifndef NULL
 #ifndef __cplusplus
-#define NULL ((void*) 0)
+#define NULL ((void *)0)
 #else
 #define NULL 0
+#endif
 #endif
 
 // the number per second of the value returned by the clock function
@@ -51,8 +56,8 @@ typedef int time_t;
 #endif
 
 // an interval specified in seconds and nanoseconds
-#ifndef DIAGNOSTIC_SYS_STAT_HAS_TIMESPEC
-#define DIAGNOSTIC_SYS_STAT_HAS_TIMESPEC
+#ifndef _HEADER_SYS_STAT_DEFINED_TIMESPEC
+#define _HEADER_SYS_STAT_DEFINED_TIMESPEC
 struct timespec {
     time_t tv_sec; // seconds
     long tv_nsec;  // nanoseconds
@@ -113,8 +118,8 @@ size_t strftime(char * restrict s, size_t maxsize, const char * restrict format,
 typedef int clockid_t;
 
 // as in locale.h
-#ifndef DIAGNOSTIC_LOCALE_HAS_LOCALE_T
-#define DIAGNOSTIC_LOCALE_HAS_LOCALE_T
+#ifndef _HEADER_LOCALE_DEFINED_LOCALE_T
+#define _HEADER_LOCALE_DEFINED_LOCALE_T
 typedef struct _locale_struct
 {
     int dummy; // until we figure out what we want
@@ -122,8 +127,8 @@ typedef struct _locale_struct
 #endif
 
 // as in sys/types.h
-#ifndef DIAGNOSTIC_SYS_TYPES_HAS_TIMER_T
-#define DIAGNOSTIC_SYS_TYPES_HAS_TIMER_T
+#ifndef _HEADER_SYS_TYPES_DEFINED_TIMER_T
+#define _HEADER_SYS_TYPES_DEFINED_TIMER_T
 typedef struct { int v; } timer_t;
 #endif
 
@@ -172,6 +177,11 @@ extern long   timezone;
 // set by tzset
 extern char*  tzname[];
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 char *asctime_r(const struct tm *restrict tm, char *restrict buf);
 
 int clock_getcpuclockid(pid_t pid, clockid_t *clock_id);
@@ -205,5 +215,11 @@ int timer_gettime(timer_t timerid, struct itimerspec *value);
 int timer_settime(timer_t timerid, int flags, const struct itimerspec *restrict value, struct itimerspec *restrict ovalue);
 
 void tzset(void);
+
+#ifdef  __cplusplus
+}
+#endif
+
+// -----------------------------------------------------------------------------------------------
 
 #endif // DIAGNOSTIC_ISO_C18_TIME_H

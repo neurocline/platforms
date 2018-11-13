@@ -1,16 +1,17 @@
 // <pwd.h>
+// - password structure
 //
 // Defined in POSIX.1-2017 <pwd.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pwd.h.html
 
 #pragma once
-#ifndef _POSIX_ON_WIN32__PWD_H
-#define _POSIX_ON_WIN32__PWD_H
+#ifndef _POSIX_ON_WIN32_POSIX_PWD_H
+#define _POSIX_ON_WIN32_POSIX_PWD_H
 
 // There is no Windows <pwd.h> file, so we don't need to override anything.
 
 // ---------------------------------------------------------------------------
-// Canonical header
+// POSIX on Win32 header
 
 // gid_t, uid_t, and size_t, as in <sys/types.h>
 typedef unsigned int gid_t; // Used for group IDs
@@ -37,6 +38,11 @@ struct passwd
     char* pw_gecos;     // User realname (and other personal data)
 };
 
+// Tell C++ this is a C header
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 void endpwent(void);
 struct passwd* getpwent(void);
 
@@ -48,6 +54,10 @@ int getpwuid_r(uid_t uid, struct passwd* pwd, char* buffer, size_t bufsize, stru
 
 void setpwent(void);
 
+#ifdef  __cplusplus
+}
+#endif
+
 // -----------------------------------------------------------------------------------------------
 
-#endif // _POSIX_ON_WIN32__PWD_H
+#endif // _POSIX_ON_WIN32_POSIX_PWD_H
