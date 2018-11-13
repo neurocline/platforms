@@ -132,7 +132,6 @@ extern "C" {
 void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
 char* strdup(const char* s);
 size_t strnlen(const char* s, size_t maxlen);
-
 char* stpcpy(char* restrict s1, const char* restrict s2);
 char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
 int strcoll_l(const char* s1, const char* s2, locale_t locale);

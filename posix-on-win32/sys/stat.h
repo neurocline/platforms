@@ -20,25 +20,14 @@
 #include <posix_win32_include_next.h>
 
 #pragma push_macro("_CRT_NO_TIME_T")
-#pragma push_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
-#undef _CRT_NONSTDC_NO_DEPRECATE
-#define _CRT_NONSTDC_NO_DEPRECATE
+#pragma push_macro("__STDC__")
+#undef __STDC__
+#define __STDC__ 1
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(sys/stat.h)
-#pragma pop_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #pragma pop_macro("_CRT_NO_TIME_T")
-
-// Undefine Microsoft stat constants because they will conflict with ours
-#if !__STDC__
-#undef S_IFMT
-#undef S_IFDIR
-#undef S_IFCHR
-#undef S_IFREG
-#undef S_IREAD
-#undef S_IWRITE
-#undef S_IEXEC
-#endif
+#pragma pop_macro("__STDC__")
 
 // ----------------------------
 // POSIX
@@ -147,6 +136,7 @@ int fchmod(int fildes, mode_t mode);
 int fstat(int fildes, struct stat* buf);
 int fstatat(int fd, const char* path, struct stat* buf, int flag);
 int lstat(const char* path, struct stat* buf);
+int stat(const char* path, struct stat* buf);
 int futimens(int fd, const struct timespec times[2]);
 int utimensat(int fd, const char* path, const struct timespec times[2], int flag);
 int mkdir(const char* path, mode_t mode);
@@ -156,13 +146,6 @@ int mkfifoat(int fd, const char *path, mode_t mode);
 int mknod(const char* path, mode_t mode, dev_t dev);
 int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
 mode_t umask(mode_t cmask);
-
-int _posix_on_win32_stat(const char* path, struct stat* buf);
-
-static inline int stat(const char* path, struct stat* buf) {
-    return _posix_on_win32_stat(path, buf);
-}
-
 
 #ifdef  __cplusplus
 }

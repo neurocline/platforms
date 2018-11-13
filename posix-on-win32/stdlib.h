@@ -21,14 +21,14 @@
 #include <posix_win32_include_next.h>
 
 #pragma push_macro("_CRT_NO_TIME_T")
-#pragma push_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
-#undef _CRT_NONSTDC_NO_DEPRECATE
-#define _CRT_NONSTDC_NO_DEPRECATE
+#pragma push_macro("__STDC__")
+#undef __STDC__
+#define __STDC__ 1
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(stdlib.h)
-#pragma pop_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #pragma pop_macro("_CRT_NO_TIME_T")
+#pragma pop_macro("__STDC__")
 
 // If we don't have at least C11, then make new keywords vanish
 // so older compilers still work (notably MSVC))
@@ -78,7 +78,7 @@ int mkstemp(char* template_);
 int posix_memalign(void** memptr, size_t alignment, size_t size);
 int posix_openpt(int oflag);
 char* ptsname(int fildes);
-// int putenv(char* string) is found in Microsoft's <stdlib.h> header
+int putenv(char* string);
 int rand_r(unsigned* seed);
 char* realpath(const char* restrict file_name, char* restrict resolved_name);
 int setenv(const char* envname, const char* envval, int overwrite);

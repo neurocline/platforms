@@ -116,18 +116,14 @@ typedef struct _locale_struct
 
 [CDECL]
 
-[MSVCRT]
 void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
 char* strdup(const char* s);
+[MSVCRT]
 size_t strnlen(const char* s, size_t maxlen);
 [/MSVCRT]
 [!MSVCRT]
-// The POSIX memccpy, strdup, and strnlen are in Microsoft headers
-// void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
-// char* strdup(const char* s);
-// size_t strnlen(const char* s, size_t maxlen);
+// size_t strnlen(const char* s, size_t maxlen) is in the Microsoft <string.h> header
 [/!MSVCRT]
-
 char* stpcpy(char* restrict s1, const char* restrict s2);
 char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
 int strcoll_l(const char* s1, const char* s2, locale_t locale);

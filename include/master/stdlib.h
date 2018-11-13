@@ -198,12 +198,7 @@ typedef struct lldiv_t
 [CARP posix_memalign()]int posix_memalign(void** memptr, size_t alignment, size_t size);
 [CARP posix_openpt()]int posix_openpt(int oflag);
 [CARP ptsname()]char* ptsname(int fildes);
-[MSVCRT]
 [CARP putenv()]int putenv(char* string);
-[/MSVCRT]
-[!MSVCRT]
-// int putenv(char* string) is found in Microsoft's <stdlib.h> header
-[/!MSVCRT]
 [CARP rand_r()]int rand_r(unsigned* seed);
 [CARP realpath()]char* realpath(const char* restrict file_name, char* restrict resolved_name);
 [CARP setenv()]int setenv(const char* envname, const char* envval, int overwrite);

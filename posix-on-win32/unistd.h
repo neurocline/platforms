@@ -572,7 +572,11 @@ int          dup(int);
 
 
 int          dup2(int, int);
-// _exit(int status); is found in Microsoft's <stlib.h> and <process.h> headers
+
+// _exit is in the Microsoft <stdlib.h> header file. Rather than include that
+// here, we just put a compatible definition, because _exit() is a POSIX
+// function that belongs in <unistd.h>, not an ISO function that belongs in <stdlib.h>
+_ACRTIMP __declspec(noreturn) void __cdecl _exit(_In_ int _Code);
 
 // [XSI]
 void         encrypt(char [64], int);
@@ -659,7 +663,7 @@ int          setuid(uid_t);
 unsigned     sleep(unsigned);
 
 // [XSI]
-void         swab(const void *restrict, void *restrict, ssize_t);
+void         swab(const void* restrict src, void* restrict dest, ssize_t nbytes);
 
 int          symlink(const char *, const char *);
 int          symlinkat(const char *, int, const char *);
@@ -673,7 +677,7 @@ int          tcsetpgrp(int, pid_t);
 int          truncate(const char *, off_t);
 char        *ttyname(int);
 int          ttyname_r(int, char *, size_t);
-// int unlink(const char *) is found in Microsoft's <stdio.h> header
+int          unlink(const char *);
 int          unlinkat(int, const char *, int);
 ssize_t      write(int, const void *, size_t);
 

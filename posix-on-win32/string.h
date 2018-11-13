@@ -21,14 +21,14 @@
 #include <posix_win32_include_next.h>
 
 #pragma push_macro("_CRT_NO_TIME_T")
-#pragma push_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
-#undef _CRT_NONSTDC_NO_DEPRECATE
-#define _CRT_NONSTDC_NO_DEPRECATE
+#pragma push_macro("__STDC__")
+#undef __STDC__
+#define __STDC__ 1
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(string.h)
-#pragma pop_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #pragma pop_macro("_CRT_NO_TIME_T")
+#pragma pop_macro("__STDC__")
 
 // If we don't have at least C11, then make new keywords vanish
 // so older compilers still work (notably MSVC))
@@ -54,11 +54,9 @@ typedef struct _locale_struct
 extern "C" {
 #endif
 
-// The POSIX memccpy, strdup, and strnlen are in Microsoft headers
-// void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
-// char* strdup(const char* s);
-// size_t strnlen(const char* s, size_t maxlen);
-
+void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
+char* strdup(const char* s);
+// size_t strnlen(const char* s, size_t maxlen) is in the Microsoft <string.h> header
 char* stpcpy(char* restrict s1, const char* restrict s2);
 char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
 int strcoll_l(const char* s1, const char* s2, locale_t locale);

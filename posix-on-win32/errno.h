@@ -21,11 +21,11 @@
 #include <posix_win32_include_next.h>
 
 #pragma push_macro("_CRT_NO_TIME_T")
-#pragma push_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #undef _CRT_NO_TIME_T
 #define _CRT_NO_TIME_T
-#undef _CRT_NONSTDC_NO_DEPRECATE
-#define _CRT_NONSTDC_NO_DEPRECATE
+#pragma push_macro("__STDC__")
+#undef __STDC__
+#define __STDC__ 1
 #ifdef errno
 #pragma push_macro("errno")
 #undef errno
@@ -34,8 +34,8 @@
 #else
 #include _MICROSOFT_UCRT_INCLUDE_NEXT(errno.h)
 #endif
-#pragma pop_macro("_CRT_NONSTDC_NO_DEPRECATE")
 #pragma pop_macro("_CRT_NO_TIME_T")
+#pragma pop_macro("__STDC__")
 
 // Only a few ERRNO constants are returned from Microsoft code.
 // - E2BIG, EACCES, EAGAIN, EBADF, ECHILD, EDEADLOC, EDOM,

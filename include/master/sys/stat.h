@@ -8,19 +8,6 @@
 [GUARD_POSIX]
 
 [BODY]
-[!MSVCRT]
-// Undefine Microsoft stat constants because they will conflict with ours
-#if !__STDC__
-#undef S_IFMT
-#undef S_IFDIR
-#undef S_IFCHR
-#undef S_IFREG
-#undef S_IREAD
-#undef S_IWRITE
-#undef S_IEXEC
-#endif
-
-[/!MSVCRT]
 [POSIX]
 // The <sys/stat.h> header shall define the [XSI] [Option Start] blkcnt_t, blksize_t, [Option End]
 // dev_t, ino_t, mode_t, nlink_t, uid_t, gid_t, off_t, and time_t types as described in <sys/types.h>.
@@ -117,7 +104,6 @@ struct stat {
 
 [CDECL]
 
-[MSVCRT]
 [CARP chmod()]int chmod(const char* path, mode_t mode);
 [CARP fchmodat()]int fchmodat(int fd, const char* path, mode_t mode, int flag);
 [CARP fchmod()]int fchmod(int fildes, mode_t mode);
@@ -134,31 +120,6 @@ struct stat {
 [CARP mknod()]int mknod(const char* path, mode_t mode, dev_t dev);
 [CARP mknodat()]int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
 [CARP umask()]mode_t umask(mode_t cmask);
-[/MSVCRT]
-[!MSVCRT]
-[CARP chmod()]int chmod(const char* path, mode_t mode);
-[CARP fchmodat()]int fchmodat(int fd, const char* path, mode_t mode, int flag);
-[CARP fchmod()]int fchmod(int fildes, mode_t mode);
-[CARP fstat()]int fstat(int fildes, struct stat* buf);
-[CARP fstatat()]int fstatat(int fd, const char* path, struct stat* buf, int flag);
-[CARP lstat()]int lstat(const char* path, struct stat* buf);
-[CARP futimens()]int futimens(int fd, const struct timespec times[2]);
-[CARP utimensat()]int utimensat(int fd, const char* path, const struct timespec times[2], int flag);
-[CARP mkdir()]int mkdir(const char* path, mode_t mode);
-[CARP mkdirat()]int mkdirat(int fd, const char *path, mode_t mode);
-[CARP mkfifo()]int mkfifo(const char* path, mode_t mode);
-[CARP mkfifoat()]int mkfifoat(int fd, const char *path, mode_t mode);
-[CARP mknod()]int mknod(const char* path, mode_t mode, dev_t dev);
-[CARP mknodat()]int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
-[CARP umask()]mode_t umask(mode_t cmask);
-
-int _posix_on_win32_stat(const char* path, struct stat* buf);
-
-[CARP stat()]static inline int stat(const char* path, struct stat* buf) {
-    return _posix_on_win32_stat(path, buf);
-}
-
-[/!MSVCRT]
 
 [/CDECL]
 

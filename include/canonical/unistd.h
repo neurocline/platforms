@@ -657,7 +657,7 @@ int          setuid(uid_t);
 unsigned     sleep(unsigned);
 
 // [XSI]
-void         swab(const void *restrict, void *restrict, ssize_t);
+void         swab(const void* restrict src, void* restrict dest, ssize_t nbytes);
 
 int          symlink(const char *, const char *);
 int          symlinkat(const char *, int, const char *);
