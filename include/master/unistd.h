@@ -564,23 +564,25 @@ typedef int     pid_t;
 [CDECL]
 
 [MSVCRT]
-int          access(const char *path, int amode);
+[CARP access()]int          access(const char *path, int amode);
 [/MSVCRT]
-unsigned     alarm(unsigned);
-int          chdir(const char *);
-int          chown(const char *, uid_t, gid_t);
-int          close(int);
-size_t       confstr(int, char *, size_t);
+[!MSVCRT]
+static inline int          access(const char *path, int amode);
+[/!MSVCRT]
+[CARP alarm()]unsigned     alarm(unsigned);
+[CARP chdir()]int          chdir(const char *);
+[CARP chown()]int          chown(const char *, uid_t, gid_t);
+[CARP close()]int          close(int);
+[CARP confstr()]size_t       confstr(int, char *, size_t);
 
 // [XSI]
-char        *crypt(const char *, const char *);
+[CARP crypt()]char        *crypt(const char *, const char *);
 
-int          dup(int);
+[CARP dup()]int          dup(int);
 
-
-int          dup2(int, int);
+[CARP dup2()]int          dup2(int, int);
 [MSVCRT]
-void         _exit(int status);
+[CARP _exit()]void         _exit(int status);
 [/MSVCRT]
 [!MSVCRT]
 
@@ -591,107 +593,106 @@ _ACRTIMP __declspec(noreturn) void __cdecl _exit(_In_ int _Code);
 [/!MSVCRT]
 
 // [XSI]
-void         encrypt(char [64], int);
+[CARP encrypt()]void         encrypt(char [64], int);
 
-int          execl(const char *, const char *, ...);
-int          execle(const char *, const char *, ...);
-int          execlp(const char *, const char *, ...);
-int          execv(const char *, char *const []);
-int          execve(const char *, char *const [], char *const []);
-int          execvp(const char *, char *const []);
-int          faccessat(int, const char *, int, int);
-int          fchdir(int);
-int          fchown(int, uid_t, gid_t);
-int          fchownat(int, const char *, uid_t, gid_t, int);
+[CARP execl()]int          execl(const char *, const char *, ...);
+[CARP execle()]int          execle(const char *, const char *, ...);
+[CARP execlp()]int          execlp(const char *, const char *, ...);
+[CARP execv()]int          execv(const char *, char *const []);
+[CARP execve()]int          execve(const char *, char *const [], char *const []);
+[CARP execvp()]int          execvp(const char *, char *const []);
+[CARP faccessat()]int          faccessat(int, const char *, int, int);
+[CARP fchdir()]int          fchdir(int);
+[CARP fchown()]int          fchown(int, uid_t, gid_t);
+[CARP fchownat()]int          fchownat(int, const char *, uid_t, gid_t, int);
 
 // [SIO]
-int          fdatasync(int);
+[CARP fdatasync()]int          fdatasync(int);
 
-int          fexecve(int, char *const [], char *const []);
-pid_t        fork(void);
-long         fpathconf(int, int);
+[CARP fexecve()]int          fexecve(int, char *const [], char *const []);
+[CARP fork()]pid_t        fork(void);
+[CARP fpathconf()]long         fpathconf(int, int);
 
 // [FSC]
-int          fsync(int);
+[CARP fsync()]int          fsync(int);
 
-int          ftruncate(int, off_t);
-char        *getcwd(char *, size_t);
-gid_t        getegid(void);
-uid_t        geteuid(void);
-gid_t        getgid(void);
-int          getgroups(int, gid_t []);
-
-// [XSI]
-long         gethostid(void);
-
-int          gethostname(char *, size_t);
-char        *getlogin(void);
-int          getlogin_r(char *, size_t);
-int          getopt(int, char * const [], const char *);
-pid_t        getpgid(pid_t);
-pid_t        getpgrp(void);
-pid_t        getpid(void);
-pid_t        getppid(void);
-pid_t        getsid(pid_t);
-uid_t        getuid(void);
-int          isatty(int);
-int          lchown(const char *, uid_t, gid_t);
-int          link(const char *, const char *);
-int          linkat(int, const char *, int, const char *, int);
+[CARP ftruncate()]int          ftruncate(int, off_t);
+[CARP getcwd()]char        *getcwd(char *, size_t);
+[CARP getegid()]gid_t        getegid(void);
+[CARP geteuid()]uid_t        geteuid(void);
+[CARP getgid()]gid_t        getgid(void);
+[CARP getgroups()]int          getgroups(int, gid_t []);
 
 // [XSI]
-int          lockf(int, int, off_t);
+[CARP gethostid()]long         gethostid(void);
 
-off_t        lseek(int, off_t, int);
+[CARP gethostname()]int          gethostname(char *, size_t);
+[CARP getlogin()]char        *getlogin(void);
+[CARP getlogin_r()]int          getlogin_r(char *, size_t);
+[CARP getopt()]int          getopt(int, char * const [], const char *);
+[CARP getpgid()]pid_t        getpgid(pid_t);
+[CARP getpgrp()]pid_t        getpgrp(void);
+[CARP getpid()]pid_t        getpid(void);
+[CARP getppid()]pid_t        getppid(void);
+[CARP getsid()]pid_t        getsid(pid_t);
+[CARP getuid()]uid_t        getuid(void);
+[CARP isatty()]int          isatty(int);
+[CARP lchown()]int          lchown(const char *, uid_t, gid_t);
+[CARP link()]int          link(const char *, const char *);
+[CARP linkat()]int          linkat(int, const char *, int, const char *, int);
 
 // [XSI]
-int          nice(int);
+[CARP lockf()]int          lockf(int, int, off_t);
 
-long         pathconf(const char *, int);
-int          pause(void);
-int          pipe(int [2]);
-ssize_t      pread(int, void *, size_t, off_t);
-ssize_t      pwrite(int, const void *, size_t, off_t);
-ssize_t      read(int, void *, size_t);
-ssize_t      readlink(const char *restrict, char *restrict, size_t);
-ssize_t      readlinkat(int, const char *restrict, char *restrict, size_t);
-int          rmdir(const char *);
-int          setegid(gid_t);
-int          seteuid(uid_t);
-int          setgid(gid_t);
+[CARP lseek()]off_t        lseek(int, off_t, int);
 
+// [XSI]
+[CARP nice()]int          nice(int);
 
-int          setpgid(pid_t, pid_t);
+[CARP pathconf()]long         pathconf(const char *, int);
+[CARP pause()]int          pause(void);
+[CARP pipe()]int          pipe(int [2]);
+[CARP pread()]ssize_t      pread(int, void *, size_t, off_t);
+[CARP pwrite()]ssize_t      pwrite(int, const void *, size_t, off_t);
+[CARP read()]ssize_t      read(int, void *, size_t);
+[CARP readlink()]ssize_t      readlink(const char *restrict, char *restrict, size_t);
+[CARP readlinkat()]ssize_t      readlinkat(int, const char *restrict, char *restrict, size_t);
+[CARP rmdir()]int          rmdir(const char *);
+[CARP setegid()]int          setegid(gid_t);
+[CARP seteuid()]int          seteuid(uid_t);
+[CARP setgid()]int          setgid(gid_t);
+
+[CARP setpgid()]int          setpgid(pid_t, pid_t);
 
 // [OB XSI]
-pid_t        setpgrp(void);
+[CARP setpgrp()]pid_t        setpgrp(void);
 
 // [XSI]
-int          setregid(gid_t, gid_t);
-int          setreuid(uid_t, uid_t);
+[CARP setregid()]int          setregid(gid_t, gid_t);
+[CARP setreuid()]int          setreuid(uid_t, uid_t);
 
-pid_t        setsid(void);
-int          setuid(uid_t);
-unsigned     sleep(unsigned);
-
-// [XSI]
-void         swab(const void* restrict src, void* restrict dest, ssize_t nbytes);
-
-int          symlink(const char *, const char *);
-int          symlinkat(const char *, int, const char *);
+[CARP setsid()]pid_t        setsid(void);
+[CARP setuid()]int          setuid(uid_t);
+[CARP sleep()]unsigned     sleep(unsigned);
 
 // [XSI]
-void         sync(void);
+[CARP swab()]void         swab(const void* restrict src, void* restrict dest, ssize_t nbytes);
 
-long         sysconf(int);
-pid_t        tcgetpgrp(int);
-int          tcsetpgrp(int, pid_t);
-int          truncate(const char *, off_t);
-char        *ttyname(int);
-int          ttyname_r(int, char *, size_t);
-int          unlink(const char *);
-int          unlinkat(int, const char *, int);
-ssize_t      write(int, const void *, size_t);
+[CARP symlink()]int          symlink(const char *, const char *);
+[CARP symlinkat()]int          symlinkat(const char *, int, const char *);
+
+// [XSI]
+[CARP sync()]void         sync(void);
+
+[CARP sysconf()]long         sysconf(int);
+[CARP tcgetpgrp()]pid_t        tcgetpgrp(int);
+[CARP tcsetpgrp()]int          tcsetpgrp(int, pid_t);
+[CARP truncate()]int          truncate(const char *, off_t);
+[CARP ttyname()]char        *ttyname(int);
+[CARP ttyname_r()]int          ttyname_r(int, char *, size_t);
+[CARP unlink()]int          unlink(const char *);
+[CARP unlinkat()]int          unlinkat(int, const char *, int);
+[CARP write()]ssize_t      write(int, const void *, size_t);
 
 [!MSVCRT]
 int _posix_on_win32_access(const char *path, int amode);

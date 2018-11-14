@@ -122,23 +122,23 @@ struct flock
 
 // Create a file. This is identical in behavior to
 // open(path, O_WRONLY|O_CREAT|O_TRUNC, mode);
-int creat(const char *path, mode_t mode);
+CARP("POSIX 2017.1: creat()") int creat(const char *path, mode_t mode);
 
 // Do file-control operation. The parameter list is really just a third
 // parameter which points to the appropriate control block for the command.
-int fcntl(int fildes, int cmd, ...);
+CARP("POSIX 2017.1: fcntl()") int fcntl(int fildes, int cmd, ...);
 
 // Open a file and return a file descriptor. The parameter list is an
 // optional third parameter mode_t mode, which is only needed for O_TMPFILE
 // and O_CREAT.
-int open(const char *path, int oflag, ...);
+CARP("POSIX 2017.1: open()") int open(const char *path, int oflag, ...);
 
 // Open a file relative to the directory of the passed-in fd (only valid for
 // relative paths).
-int openat(int fd, const char *path, int oflag, ...);
+CARP("POSIX 2017.1: openat()") int openat(int fd, const char *path, int oflag, ...);
 
-int posix_fadvise(int fd, off_t offset, off_t len, int advice);
-int posix_fallocate(int fd, off_t offset, off_t len);
+CARP("POSIX 2017.1: posix_fadvise()") int posix_fadvise(int fd, off_t offset, off_t len, int advice);
+CARP("POSIX 2017.1: posix_fallocate()") int posix_fallocate(int fd, off_t offset, off_t len);
 
 // exec* are in <unistd.h>
 // futimens is in <sys/stat.h>
@@ -149,8 +149,8 @@ int posix_fallocate(int fd, off_t offset, off_t len);
 
 typedef long long off64_t; // as in sys/types.h
 
-int posix_fadvise64(int fd, off64_t offset, off64_t len, int advice);
-int posix_fallocate64(int fd, off64_t offset, off64_t len);
+CARP("Glibc: posix_fadvise64()") int posix_fadvise64(int fd, off64_t offset, off64_t len, int advice);
+CARP("Glibc: posix_fallocate64()") int posix_fallocate64(int fd, off64_t offset, off64_t len);
 
 // ----------------------------
 // Microsoft

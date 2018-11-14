@@ -36,70 +36,70 @@ typedef unsigned int size_t;
 [CDECL]
 
 // 7.24.2.1
-void *memcpy(void * restrict s1, const void * restrict s2, size_t n);
+[CARP memcpy()]void *memcpy(void * restrict s1, const void * restrict s2, size_t n);
 
 // 7.24.2.2
-void *memmove(void *s1, const void *s2, size_t n);
+[CARP memmove()]void *memmove(void *s1, const void *s2, size_t n);
 
 // 7.24.2.3
-char *strcpy(char * restrict s1, const char * restrict s2);
+[CARP strcpy()]char *strcpy(char * restrict s1, const char * restrict s2);
 
 // 7.24.2.4
-char *strncpy(char * restrict s1, const char * restrict s2, size_t n);
+[CARP strncpy()]char *strncpy(char * restrict s1, const char * restrict s2, size_t n);
 
 // 7.24.3.1
-char *strcat(char * restrict s1, const char * restrict s2);
+[CARP strcat()]char *strcat(char * restrict s1, const char * restrict s2);
 
 // 7.24.3.2
-char *strncat(char * restrict s1, const char * restrict s2, size_t n);
+[CARP strncat()]char *strncat(char * restrict s1, const char * restrict s2, size_t n);
 
 // 7.24.4.1
-int memcmp(const void *s1, const void *s2, size_t n);
+[CARP memcmp()]int memcmp(const void *s1, const void *s2, size_t n);
 
 // 7.24.4.2
-int strcmp(const char *s1, const char *s2);
+[CARP strcmp()]int strcmp(const char *s1, const char *s2);
 
 // 7.24.4.3
-int strcoll(const char *s1, const char *s2);
+[CARP strcoll()]int strcoll(const char *s1, const char *s2);
 
 // 7.24.4.4
-int strncmp(const char *s1, const char *s2, size_t n);
+[CARP strncmp()]int strncmp(const char *s1, const char *s2, size_t n);
 
 // 7.24.4.5
-size_t strxfrm(char * restrict s1, const char * restrict s2, size_t n);
+[CARP strxfrm()]size_t strxfrm(char * restrict s1, const char * restrict s2, size_t n);
 
 // 7.24.5.1
-void *memchr(const void *s, int c, size_t n);
+[CARP memchr()]void *memchr(const void *s, int c, size_t n);
 
 // 7.24.5.2
-char *strchr(const char *s, int c);
+[CARP strchr()]char *strchr(const char *s, int c);
 
 // 7.24.5.3
-size_t strcspn(const char *s1, const char *s2);
+[CARP strcspn()]size_t strcspn(const char *s1, const char *s2);
 
 // 7.24.5.4
-char *strpbrk(const char *s1, const char *s2);
+[CARP strpbrk()]char *strpbrk(const char *s1, const char *s2);
 
 // 7.24.5.5
-char *strrchr(const char *s, int c);
+[CARP strrchr()]char *strrchr(const char *s, int c);
 
 // 7.24.5.6
-size_t strspn(const char *s1, const char *s2);
+[CARP strspn()]size_t strspn(const char *s1, const char *s2);
 
 // 7.24.5.7
-char *strstr(const char *s1, const char *s2);
+[CARP strstr()]char *strstr(const char *s1, const char *s2);
 
 // 7.24.5.8
-char *strtok(char * restrict s1, const char * restrict s2);
+[CARP strtok()]char *strtok(char * restrict s1, const char * restrict s2);
 
 // 7.24.6.1
-void *memset(void *s, int c, size_t n);
+[CARP memset()]void *memset(void *s, int c, size_t n);
 
 // 7.24.6.2
-char *strerror(int errnum);
+[CARP strerror()]char *strerror(int errnum);
 
 // 7.24.6.3
-size_t strlen(const char *s);
+[CARP strlen()]size_t strlen(const char *s);
 
 [/CDECL]
 
@@ -116,23 +116,23 @@ typedef struct _locale_struct
 
 [CDECL]
 
-void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
-char* strdup(const char* s);
+[CARP memccpy()]void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
+[CARP strdup()]char* strdup(const char* s);
 [MSVCRT]
-size_t strnlen(const char* s, size_t maxlen);
+[CARP strnlen()]size_t strnlen(const char* s, size_t maxlen);
 [/MSVCRT]
 [!MSVCRT]
 // size_t strnlen(const char* s, size_t maxlen) is in the Microsoft <string.h> header
 [/!MSVCRT]
-char* stpcpy(char* restrict s1, const char* restrict s2);
-char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
-int strcoll_l(const char* s1, const char* s2, locale_t locale);
-char* strndup(const char* s, size_t size);
-char* strerror_l(int errnum, locale_t locale);
-int strerror_r(int errnum, char* strerrbuf, size_t buflen);
-char* strsignal(int signum);
-char* strtok_r(char* restrict s, const char* restrict sep, char** restrict state);
-size_t strxfrm_l(char* restrict s1, const char* restrict s2, size_t n, locale_t locale);
+[CARP stpcpy()]char* stpcpy(char* restrict s1, const char* restrict s2);
+[CARP stpncpy()]char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
+[CARP strcoll_l()]int strcoll_l(const char* s1, const char* s2, locale_t locale);
+[CARP strndup()]char* strndup(const char* s, size_t size);
+[CARP strerror_l()]char* strerror_l(int errnum, locale_t locale);
+[CARP strerror_r()]int strerror_r(int errnum, char* strerrbuf, size_t buflen);
+[CARP strsignal()]char* strsignal(int signum);
+[CARP strtok_r()]char* strtok_r(char* restrict s, const char* restrict sep, char** restrict state);
+[CARP strxfrm_l()]size_t strxfrm_l(char* restrict s1, const char* restrict s2, size_t n, locale_t locale);
 
 [/CDECL]
 

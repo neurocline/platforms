@@ -582,7 +582,6 @@ char        *crypt(const char *, const char *);
 
 int          dup(int);
 
-
 int          dup2(int, int);
 void         _exit(int status);
 
@@ -655,7 +654,6 @@ int          rmdir(const char *);
 int          setegid(gid_t);
 int          seteuid(uid_t);
 int          setgid(gid_t);
-
 
 int          setpgid(pid_t, pid_t);
 

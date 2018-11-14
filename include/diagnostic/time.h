@@ -82,34 +82,34 @@ struct tm
 };
 
 // 7.27.2.1
-clock_t clock(void);
+CARP("ISO C95: clock()") clock_t clock(void);
 
 // 7.27.2.2
-double difftime(time_t time1, time_t time0);
+CARP("ISO C95: difftime()") double difftime(time_t time1, time_t time0);
 
 // 7.27.2.3
-time_t mktime(struct tm *timeptr);
+CARP("ISO C95: mktime()") time_t mktime(struct tm *timeptr);
 
 // 7.27.2.4
-time_t time(time_t *timer);
+CARP("ISO C95: time()") time_t time(time_t *timer);
 
 // 7.27.2.5
-int timespec_get(struct timespec *ts, int base);
+CARP("ISO C95: timespec_get()") int timespec_get(struct timespec *ts, int base);
 
 // 7.27.3.1
-char *asctime(const struct tm *timeptr);
+CARP("ISO C95: asctime()") char *asctime(const struct tm *timeptr);
 
 // 7.27.3.2
-char *ctime(const time_t *timer);
+CARP("ISO C95: ctime()") char *ctime(const time_t *timer);
 
 // 7.27.3.3
-struct tm *gmtime(const time_t *timer);
+CARP("ISO C95: gmtime()") struct tm *gmtime(const time_t *timer);
 
 // 7.27.3.4
-struct tm *localtime(const time_t *timer);
+CARP("ISO C95: localtime()") struct tm *localtime(const time_t *timer);
 
 // 7.27.3.5
-size_t strftime(char * restrict s, size_t maxsize, const char * restrict format, const struct tm * restrict timeptr);
+CARP("ISO C95: strftime()") size_t strftime(char * restrict s, size_t maxsize, const char * restrict format, const struct tm * restrict timeptr);
 
 // ----------------------------
 // POSIX
@@ -182,39 +182,39 @@ extern char*  tzname[];
 extern "C" {
 #endif
 
-char *asctime_r(const struct tm *restrict tm, char *restrict buf);
+CARP("POSIX 2017.1: asctime_r()") char *asctime_r(const struct tm *restrict tm, char *restrict buf);
 
-int clock_getcpuclockid(pid_t pid, clockid_t *clock_id);
+CARP("POSIX 2017.1: clock_getcpuclockid()") int clock_getcpuclockid(pid_t pid, clockid_t *clock_id);
 
-int clock_getres(clockid_t clock_id, struct timespec *res);
-int clock_gettime(clockid_t clock_id, struct timespec *tp);
-int clock_settime(clockid_t clock_id, const struct timespec *tp);
+CARP("POSIX 2017.1: clock_getres()") int clock_getres(clockid_t clock_id, struct timespec *res);
+CARP("POSIX 2017.1: clock_gettime()") int clock_gettime(clockid_t clock_id, struct timespec *tp);
+CARP("POSIX 2017.1: clock_settime()") int clock_settime(clockid_t clock_id, const struct timespec *tp);
 
-int clock_nanosleep(clockid_t clock_id, int flags, const struct timespec *rqtp, struct timespec *rmtp);
+CARP("POSIX 2017.1: clock_nanosleep()") int clock_nanosleep(clockid_t clock_id, int flags, const struct timespec *rqtp, struct timespec *rmtp);
 
-char *ctime_r(const time_t *clock, char *buf);
+CARP("POSIX 2017.1: ctime_r()") char *ctime_r(const time_t *clock, char *buf);
 
-struct tm *getdate(const char *string);
+CARP("POSIX 2017.1: getdate()") struct tm *getdate(const char *string);
 
-struct tm *gmtime_r(const time_t *restrict timer, struct tm *restrict result);
+CARP("POSIX 2017.1: gmtime_r()") struct tm *gmtime_r(const time_t *restrict timer, struct tm *restrict result);
 
-struct tm *localtime_r(const time_t *restrict timer, struct tm *restrict result);
+CARP("POSIX 2017.1: localtime_r()") struct tm *localtime_r(const time_t *restrict timer, struct tm *restrict result);
 
-int nanosleep(const struct timespec *rqtp, struct timespec *rmtp);
+CARP("POSIX 2017.1: nanosleep()") int nanosleep(const struct timespec *rqtp, struct timespec *rmtp);
 
-size_t strftime_l(char *restrict s, size_t maxsize, const char *restrict format, const struct tm *restrict timeptr, locale_t locale);
+CARP("POSIX 2017.1: strftime_l()") size_t strftime_l(char *restrict s, size_t maxsize, const char *restrict format, const struct tm *restrict timeptr, locale_t locale);
 
-char *strptime(const char *restrict buf, const char *restrict format, struct tm *restrict tm);
+CARP("POSIX 2017.1: strptime()") char *strptime(const char *restrict buf, const char *restrict format, struct tm *restrict tm);
 
-int timer_create(clockid_t clockid, struct sigevent *restrict evp, timer_t *restrict timerid);
+CARP("POSIX 2017.1: timer_create()") int timer_create(clockid_t clockid, struct sigevent *restrict evp, timer_t *restrict timerid);
 
-int timer_delete(timer_t timerid);
+CARP("POSIX 2017.1: timer_delete()") int timer_delete(timer_t timerid);
 
-int timer_getoverrun(timer_t timerid);
-int timer_gettime(timer_t timerid, struct itimerspec *value);
-int timer_settime(timer_t timerid, int flags, const struct itimerspec *restrict value, struct itimerspec *restrict ovalue);
+CARP("POSIX 2017.1: timer_getoverrun()") int timer_getoverrun(timer_t timerid);
+CARP("POSIX 2017.1: timer_gettime()") int timer_gettime(timer_t timerid, struct itimerspec *value);
+CARP("POSIX 2017.1: timer_settime()") int timer_settime(timer_t timerid, int flags, const struct itimerspec *restrict value, struct itimerspec *restrict ovalue);
 
-void tzset(void);
+CARP("POSIX 2017.1: tzset()") void tzset(void);
 
 #ifdef  __cplusplus
 }

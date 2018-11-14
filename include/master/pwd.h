@@ -36,16 +36,16 @@ struct passwd
 
 [CDECL]
 
-void endpwent(void);
-struct passwd* getpwent(void);
+[CARP endpwent()]void endpwent(void);
+[CARP getpwent()]struct passwd* getpwent(void);
 
-struct passwd* getpwnam(const char *name);
-int getpwnam_r(const char* name, struct passwd* pwd, char* buffer, size_t bufsize, struct passwd** result);
+[CARP getpwnam()]struct passwd* getpwnam(const char *name);
+[CARP getpwnam_r()]int getpwnam_r(const char* name, struct passwd* pwd, char* buffer, size_t bufsize, struct passwd** result);
 
-struct passwd* getpwuid(uid_t uid);
-int getpwuid_r(uid_t uid, struct passwd* pwd, char* buffer, size_t bufsize, struct passwd** result);
+[CARP getpwuid()]struct passwd* getpwuid(uid_t uid);
+[CARP getpwuid_r()]int getpwuid_r(uid_t uid, struct passwd* pwd, char* buffer, size_t bufsize, struct passwd** result);
 
-void setpwent(void);
+[CARP setpwent()]void setpwent(void);
 
 [/CDECL]
 

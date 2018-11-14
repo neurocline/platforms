@@ -63,20 +63,20 @@ struct posix_typed_mem_info
 
 [CDECL]
 
-int mlock(const void* addr, size_t len);
-int munlock(const void* addr, size_t len);
-int mlockall(int flags);
-int munlockall(void);
-void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
-int mprotect(void* addr, size_t len, int prot);
-int msync(void* addr, size_t len, int flags);
-int munmap(void* addr, size_t len);
-int posix_madvise(void* addr, size_t len, int advice);
-int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
-int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
-int posix_typed_mem_open(const char* name, int oflag, int tflag);
-int shm_open(const char* name, int oflag, mode_t mode);
-int shm_unlink(const char* name);
+[CARP mlock()]int mlock(const void* addr, size_t len);
+[CARP munlock()]int munlock(const void* addr, size_t len);
+[CARP mlockall()]int mlockall(int flags);
+[CARP munlockall()]int munlockall(void);
+[CARP mmap()]void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
+[CARP mprotect()]int mprotect(void* addr, size_t len, int prot);
+[CARP msync()]int msync(void* addr, size_t len, int flags);
+[CARP munmap()]int munmap(void* addr, size_t len);
+[CARP posix_madvise()]int posix_madvise(void* addr, size_t len, int advice);
+[CARP posix_mem_offset()]int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
+[CARP posix_typed_mem_get_info()]int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
+[CARP posix_typed_mem_open()]int posix_typed_mem_open(const char* name, int oflag, int tflag);
+[CARP shm_open()]int shm_open(const char* name, int oflag, mode_t mode);
+[CARP shm_unlink()]int shm_unlink(const char* name);
 
 [/CDECL]
 

@@ -43,70 +43,70 @@ extern "C" {
 #endif
 
 // 7.24.2.1
-void *memcpy(void * restrict s1, const void * restrict s2, size_t n);
+CARP("ISO C95: memcpy()") void *memcpy(void * restrict s1, const void * restrict s2, size_t n);
 
 // 7.24.2.2
-void *memmove(void *s1, const void *s2, size_t n);
+CARP("ISO C95: memmove()") void *memmove(void *s1, const void *s2, size_t n);
 
 // 7.24.2.3
-char *strcpy(char * restrict s1, const char * restrict s2);
+CARP("ISO C95: strcpy()") char *strcpy(char * restrict s1, const char * restrict s2);
 
 // 7.24.2.4
-char *strncpy(char * restrict s1, const char * restrict s2, size_t n);
+CARP("ISO C95: strncpy()") char *strncpy(char * restrict s1, const char * restrict s2, size_t n);
 
 // 7.24.3.1
-char *strcat(char * restrict s1, const char * restrict s2);
+CARP("ISO C95: strcat()") char *strcat(char * restrict s1, const char * restrict s2);
 
 // 7.24.3.2
-char *strncat(char * restrict s1, const char * restrict s2, size_t n);
+CARP("ISO C95: strncat()") char *strncat(char * restrict s1, const char * restrict s2, size_t n);
 
 // 7.24.4.1
-int memcmp(const void *s1, const void *s2, size_t n);
+CARP("ISO C95: memcmp()") int memcmp(const void *s1, const void *s2, size_t n);
 
 // 7.24.4.2
-int strcmp(const char *s1, const char *s2);
+CARP("ISO C95: strcmp()") int strcmp(const char *s1, const char *s2);
 
 // 7.24.4.3
-int strcoll(const char *s1, const char *s2);
+CARP("ISO C95: strcoll()") int strcoll(const char *s1, const char *s2);
 
 // 7.24.4.4
-int strncmp(const char *s1, const char *s2, size_t n);
+CARP("ISO C95: strncmp()") int strncmp(const char *s1, const char *s2, size_t n);
 
 // 7.24.4.5
-size_t strxfrm(char * restrict s1, const char * restrict s2, size_t n);
+CARP("ISO C95: strxfrm()") size_t strxfrm(char * restrict s1, const char * restrict s2, size_t n);
 
 // 7.24.5.1
-void *memchr(const void *s, int c, size_t n);
+CARP("ISO C95: memchr()") void *memchr(const void *s, int c, size_t n);
 
 // 7.24.5.2
-char *strchr(const char *s, int c);
+CARP("ISO C95: strchr()") char *strchr(const char *s, int c);
 
 // 7.24.5.3
-size_t strcspn(const char *s1, const char *s2);
+CARP("ISO C95: strcspn()") size_t strcspn(const char *s1, const char *s2);
 
 // 7.24.5.4
-char *strpbrk(const char *s1, const char *s2);
+CARP("ISO C95: strpbrk()") char *strpbrk(const char *s1, const char *s2);
 
 // 7.24.5.5
-char *strrchr(const char *s, int c);
+CARP("ISO C95: strrchr()") char *strrchr(const char *s, int c);
 
 // 7.24.5.6
-size_t strspn(const char *s1, const char *s2);
+CARP("ISO C95: strspn()") size_t strspn(const char *s1, const char *s2);
 
 // 7.24.5.7
-char *strstr(const char *s1, const char *s2);
+CARP("ISO C95: strstr()") char *strstr(const char *s1, const char *s2);
 
 // 7.24.5.8
-char *strtok(char * restrict s1, const char * restrict s2);
+CARP("ISO C95: strtok()") char *strtok(char * restrict s1, const char * restrict s2);
 
 // 7.24.6.1
-void *memset(void *s, int c, size_t n);
+CARP("ISO C95: memset()") void *memset(void *s, int c, size_t n);
 
 // 7.24.6.2
-char *strerror(int errnum);
+CARP("ISO C95: strerror()") char *strerror(int errnum);
 
 // 7.24.6.3
-size_t strlen(const char *s);
+CARP("ISO C95: strlen()") size_t strlen(const char *s);
 
 #ifdef  __cplusplus
 }
@@ -129,18 +129,18 @@ typedef struct _locale_struct
 extern "C" {
 #endif
 
-void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
-char* strdup(const char* s);
-size_t strnlen(const char* s, size_t maxlen);
-char* stpcpy(char* restrict s1, const char* restrict s2);
-char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
-int strcoll_l(const char* s1, const char* s2, locale_t locale);
-char* strndup(const char* s, size_t size);
-char* strerror_l(int errnum, locale_t locale);
-int strerror_r(int errnum, char* strerrbuf, size_t buflen);
-char* strsignal(int signum);
-char* strtok_r(char* restrict s, const char* restrict sep, char** restrict state);
-size_t strxfrm_l(char* restrict s1, const char* restrict s2, size_t n, locale_t locale);
+CARP("POSIX 2017.1: memccpy()") void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
+CARP("POSIX 2017.1: strdup()") char* strdup(const char* s);
+CARP("POSIX 2017.1: strnlen()") size_t strnlen(const char* s, size_t maxlen);
+CARP("POSIX 2017.1: stpcpy()") char* stpcpy(char* restrict s1, const char* restrict s2);
+CARP("POSIX 2017.1: stpncpy()") char* stpncpy(char* restrict s1, const char* restrict s2, size_t n);
+CARP("POSIX 2017.1: strcoll_l()") int strcoll_l(const char* s1, const char* s2, locale_t locale);
+CARP("POSIX 2017.1: strndup()") char* strndup(const char* s, size_t size);
+CARP("POSIX 2017.1: strerror_l()") char* strerror_l(int errnum, locale_t locale);
+CARP("POSIX 2017.1: strerror_r()") int strerror_r(int errnum, char* strerrbuf, size_t buflen);
+CARP("POSIX 2017.1: strsignal()") char* strsignal(int signum);
+CARP("POSIX 2017.1: strtok_r()") char* strtok_r(char* restrict s, const char* restrict sep, char** restrict state);
+CARP("POSIX 2017.1: strxfrm_l()") size_t strxfrm_l(char* restrict s1, const char* restrict s2, size_t n, locale_t locale);
 
 #ifdef  __cplusplus
 }

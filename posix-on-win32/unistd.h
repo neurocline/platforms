@@ -572,6 +572,7 @@ typedef int     pid_t;
 extern "C" {
 #endif
 
+static inline int          access(const char *path, int amode);
 unsigned     alarm(unsigned);
 int          chdir(const char *);
 int          chown(const char *, uid_t, gid_t);
@@ -582,7 +583,6 @@ size_t       confstr(int, char *, size_t);
 char        *crypt(const char *, const char *);
 
 int          dup(int);
-
 
 int          dup2(int, int);
 
@@ -660,7 +660,6 @@ int          rmdir(const char *);
 int          setegid(gid_t);
 int          seteuid(uid_t);
 int          setgid(gid_t);
-
 
 int          setpgid(pid_t, pid_t);
 

@@ -572,124 +572,122 @@ typedef int     pid_t;
 extern "C" {
 #endif
 
-int          access(const char *path, int amode);
-unsigned     alarm(unsigned);
-int          chdir(const char *);
-int          chown(const char *, uid_t, gid_t);
-int          close(int);
-size_t       confstr(int, char *, size_t);
+CARP("POSIX 2017.1: access()") int          access(const char *path, int amode);
+CARP("POSIX 2017.1: alarm()") unsigned     alarm(unsigned);
+CARP("POSIX 2017.1: chdir()") int          chdir(const char *);
+CARP("POSIX 2017.1: chown()") int          chown(const char *, uid_t, gid_t);
+CARP("POSIX 2017.1: close()") int          close(int);
+CARP("POSIX 2017.1: confstr()") size_t       confstr(int, char *, size_t);
 
 // [XSI]
-char        *crypt(const char *, const char *);
+CARP("POSIX 2017.1: crypt()") char        *crypt(const char *, const char *);
 
-int          dup(int);
+CARP("POSIX 2017.1: dup()") int          dup(int);
 
-
-int          dup2(int, int);
-void         _exit(int status);
+CARP("POSIX 2017.1: dup2()") int          dup2(int, int);
+CARP("POSIX 2017.1: _exit()") void         _exit(int status);
 
 // [XSI]
-void         encrypt(char [64], int);
+CARP("POSIX 2017.1: encrypt()") void         encrypt(char [64], int);
 
-int          execl(const char *, const char *, ...);
-int          execle(const char *, const char *, ...);
-int          execlp(const char *, const char *, ...);
-int          execv(const char *, char *const []);
-int          execve(const char *, char *const [], char *const []);
-int          execvp(const char *, char *const []);
-int          faccessat(int, const char *, int, int);
-int          fchdir(int);
-int          fchown(int, uid_t, gid_t);
-int          fchownat(int, const char *, uid_t, gid_t, int);
+CARP("POSIX 2017.1: execl()") int          execl(const char *, const char *, ...);
+CARP("POSIX 2017.1: execle()") int          execle(const char *, const char *, ...);
+CARP("POSIX 2017.1: execlp()") int          execlp(const char *, const char *, ...);
+CARP("POSIX 2017.1: execv()") int          execv(const char *, char *const []);
+CARP("POSIX 2017.1: execve()") int          execve(const char *, char *const [], char *const []);
+CARP("POSIX 2017.1: execvp()") int          execvp(const char *, char *const []);
+CARP("POSIX 2017.1: faccessat()") int          faccessat(int, const char *, int, int);
+CARP("POSIX 2017.1: fchdir()") int          fchdir(int);
+CARP("POSIX 2017.1: fchown()") int          fchown(int, uid_t, gid_t);
+CARP("POSIX 2017.1: fchownat()") int          fchownat(int, const char *, uid_t, gid_t, int);
 
 // [SIO]
-int          fdatasync(int);
+CARP("POSIX 2017.1: fdatasync()") int          fdatasync(int);
 
-int          fexecve(int, char *const [], char *const []);
-pid_t        fork(void);
-long         fpathconf(int, int);
+CARP("POSIX 2017.1: fexecve()") int          fexecve(int, char *const [], char *const []);
+CARP("POSIX 2017.1: fork()") pid_t        fork(void);
+CARP("POSIX 2017.1: fpathconf()") long         fpathconf(int, int);
 
 // [FSC]
-int          fsync(int);
+CARP("POSIX 2017.1: fsync()") int          fsync(int);
 
-int          ftruncate(int, off_t);
-char        *getcwd(char *, size_t);
-gid_t        getegid(void);
-uid_t        geteuid(void);
-gid_t        getgid(void);
-int          getgroups(int, gid_t []);
-
-// [XSI]
-long         gethostid(void);
-
-int          gethostname(char *, size_t);
-char        *getlogin(void);
-int          getlogin_r(char *, size_t);
-int          getopt(int, char * const [], const char *);
-pid_t        getpgid(pid_t);
-pid_t        getpgrp(void);
-pid_t        getpid(void);
-pid_t        getppid(void);
-pid_t        getsid(pid_t);
-uid_t        getuid(void);
-int          isatty(int);
-int          lchown(const char *, uid_t, gid_t);
-int          link(const char *, const char *);
-int          linkat(int, const char *, int, const char *, int);
+CARP("POSIX 2017.1: ftruncate()") int          ftruncate(int, off_t);
+CARP("POSIX 2017.1: getcwd()") char        *getcwd(char *, size_t);
+CARP("POSIX 2017.1: getegid()") gid_t        getegid(void);
+CARP("POSIX 2017.1: geteuid()") uid_t        geteuid(void);
+CARP("POSIX 2017.1: getgid()") gid_t        getgid(void);
+CARP("POSIX 2017.1: getgroups()") int          getgroups(int, gid_t []);
 
 // [XSI]
-int          lockf(int, int, off_t);
+CARP("POSIX 2017.1: gethostid()") long         gethostid(void);
 
-off_t        lseek(int, off_t, int);
+CARP("POSIX 2017.1: gethostname()") int          gethostname(char *, size_t);
+CARP("POSIX 2017.1: getlogin()") char        *getlogin(void);
+CARP("POSIX 2017.1: getlogin_r()") int          getlogin_r(char *, size_t);
+CARP("POSIX 2017.1: getopt()") int          getopt(int, char * const [], const char *);
+CARP("POSIX 2017.1: getpgid()") pid_t        getpgid(pid_t);
+CARP("POSIX 2017.1: getpgrp()") pid_t        getpgrp(void);
+CARP("POSIX 2017.1: getpid()") pid_t        getpid(void);
+CARP("POSIX 2017.1: getppid()") pid_t        getppid(void);
+CARP("POSIX 2017.1: getsid()") pid_t        getsid(pid_t);
+CARP("POSIX 2017.1: getuid()") uid_t        getuid(void);
+CARP("POSIX 2017.1: isatty()") int          isatty(int);
+CARP("POSIX 2017.1: lchown()") int          lchown(const char *, uid_t, gid_t);
+CARP("POSIX 2017.1: link()") int          link(const char *, const char *);
+CARP("POSIX 2017.1: linkat()") int          linkat(int, const char *, int, const char *, int);
 
 // [XSI]
-int          nice(int);
+CARP("POSIX 2017.1: lockf()") int          lockf(int, int, off_t);
 
-long         pathconf(const char *, int);
-int          pause(void);
-int          pipe(int [2]);
-ssize_t      pread(int, void *, size_t, off_t);
-ssize_t      pwrite(int, const void *, size_t, off_t);
-ssize_t      read(int, void *, size_t);
-ssize_t      readlink(const char *restrict, char *restrict, size_t);
-ssize_t      readlinkat(int, const char *restrict, char *restrict, size_t);
-int          rmdir(const char *);
-int          setegid(gid_t);
-int          seteuid(uid_t);
-int          setgid(gid_t);
+CARP("POSIX 2017.1: lseek()") off_t        lseek(int, off_t, int);
 
+// [XSI]
+CARP("POSIX 2017.1: nice()") int          nice(int);
 
-int          setpgid(pid_t, pid_t);
+CARP("POSIX 2017.1: pathconf()") long         pathconf(const char *, int);
+CARP("POSIX 2017.1: pause()") int          pause(void);
+CARP("POSIX 2017.1: pipe()") int          pipe(int [2]);
+CARP("POSIX 2017.1: pread()") ssize_t      pread(int, void *, size_t, off_t);
+CARP("POSIX 2017.1: pwrite()") ssize_t      pwrite(int, const void *, size_t, off_t);
+CARP("POSIX 2017.1: read()") ssize_t      read(int, void *, size_t);
+CARP("POSIX 2017.1: readlink()") ssize_t      readlink(const char *restrict, char *restrict, size_t);
+CARP("POSIX 2017.1: readlinkat()") ssize_t      readlinkat(int, const char *restrict, char *restrict, size_t);
+CARP("POSIX 2017.1: rmdir()") int          rmdir(const char *);
+CARP("POSIX 2017.1: setegid()") int          setegid(gid_t);
+CARP("POSIX 2017.1: seteuid()") int          seteuid(uid_t);
+CARP("POSIX 2017.1: setgid()") int          setgid(gid_t);
+
+CARP("POSIX 2017.1: setpgid()") int          setpgid(pid_t, pid_t);
 
 // [OB XSI]
-pid_t        setpgrp(void);
+CARP("POSIX 2017.1: setpgrp()") pid_t        setpgrp(void);
 
 // [XSI]
-int          setregid(gid_t, gid_t);
-int          setreuid(uid_t, uid_t);
+CARP("POSIX 2017.1: setregid()") int          setregid(gid_t, gid_t);
+CARP("POSIX 2017.1: setreuid()") int          setreuid(uid_t, uid_t);
 
-pid_t        setsid(void);
-int          setuid(uid_t);
-unsigned     sleep(unsigned);
-
-// [XSI]
-void         swab(const void* restrict src, void* restrict dest, ssize_t nbytes);
-
-int          symlink(const char *, const char *);
-int          symlinkat(const char *, int, const char *);
+CARP("POSIX 2017.1: setsid()") pid_t        setsid(void);
+CARP("POSIX 2017.1: setuid()") int          setuid(uid_t);
+CARP("POSIX 2017.1: sleep()") unsigned     sleep(unsigned);
 
 // [XSI]
-void         sync(void);
+CARP("POSIX 2017.1: swab()") void         swab(const void* restrict src, void* restrict dest, ssize_t nbytes);
 
-long         sysconf(int);
-pid_t        tcgetpgrp(int);
-int          tcsetpgrp(int, pid_t);
-int          truncate(const char *, off_t);
-char        *ttyname(int);
-int          ttyname_r(int, char *, size_t);
-int          unlink(const char *);
-int          unlinkat(int, const char *, int);
-ssize_t      write(int, const void *, size_t);
+CARP("POSIX 2017.1: symlink()") int          symlink(const char *, const char *);
+CARP("POSIX 2017.1: symlinkat()") int          symlinkat(const char *, int, const char *);
+
+// [XSI]
+CARP("POSIX 2017.1: sync()") void         sync(void);
+
+CARP("POSIX 2017.1: sysconf()") long         sysconf(int);
+CARP("POSIX 2017.1: tcgetpgrp()") pid_t        tcgetpgrp(int);
+CARP("POSIX 2017.1: tcsetpgrp()") int          tcsetpgrp(int, pid_t);
+CARP("POSIX 2017.1: truncate()") int          truncate(const char *, off_t);
+CARP("POSIX 2017.1: ttyname()") char        *ttyname(int);
+CARP("POSIX 2017.1: ttyname_r()") int          ttyname_r(int, char *, size_t);
+CARP("POSIX 2017.1: unlink()") int          unlink(const char *);
+CARP("POSIX 2017.1: unlinkat()") int          unlinkat(int, const char *, int);
+CARP("POSIX 2017.1: write()") ssize_t      write(int, const void *, size_t);
 
 // [OB] Implementations may also include the pthread_atfork() prototype as defined
 // in <pthread.h>. Implementations may also include the ctermid() prototype as

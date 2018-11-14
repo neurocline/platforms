@@ -72,20 +72,20 @@ struct posix_typed_mem_info
 extern "C" {
 #endif
 
-int mlock(const void* addr, size_t len);
-int munlock(const void* addr, size_t len);
-int mlockall(int flags);
-int munlockall(void);
-void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
-int mprotect(void* addr, size_t len, int prot);
-int msync(void* addr, size_t len, int flags);
-int munmap(void* addr, size_t len);
-int posix_madvise(void* addr, size_t len, int advice);
-int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
-int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
-int posix_typed_mem_open(const char* name, int oflag, int tflag);
-int shm_open(const char* name, int oflag, mode_t mode);
-int shm_unlink(const char* name);
+CARP("POSIX 2017.1: mlock()") int mlock(const void* addr, size_t len);
+CARP("POSIX 2017.1: munlock()") int munlock(const void* addr, size_t len);
+CARP("POSIX 2017.1: mlockall()") int mlockall(int flags);
+CARP("POSIX 2017.1: munlockall()") int munlockall(void);
+CARP("POSIX 2017.1: mmap()") void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
+CARP("POSIX 2017.1: mprotect()") int mprotect(void* addr, size_t len, int prot);
+CARP("POSIX 2017.1: msync()") int msync(void* addr, size_t len, int flags);
+CARP("POSIX 2017.1: munmap()") int munmap(void* addr, size_t len);
+CARP("POSIX 2017.1: posix_madvise()") int posix_madvise(void* addr, size_t len, int advice);
+CARP("POSIX 2017.1: posix_mem_offset()") int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
+CARP("POSIX 2017.1: posix_typed_mem_get_info()") int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
+CARP("POSIX 2017.1: posix_typed_mem_open()") int posix_typed_mem_open(const char* name, int oflag, int tflag);
+CARP("POSIX 2017.1: shm_open()") int shm_open(const char* name, int oflag, mode_t mode);
+CARP("POSIX 2017.1: shm_unlink()") int shm_unlink(const char* name);
 
 #ifdef  __cplusplus
 }

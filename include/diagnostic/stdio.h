@@ -92,139 +92,139 @@ extern "C" {
 #endif
 
 // 7.21.4.1
-int remove(const char *filename);
+CARP("ISO C95: remove()") int remove(const char *filename);
 
 // 7.21.4.2
-int rename(const char *old, const char *new);
+CARP("ISO C95: rename()") int rename(const char *old, const char *new);
 
 // 7.21.4.3
-FILE *tmpfile(void);
+CARP("ISO C95: tmpfile()") FILE *tmpfile(void);
 
 // 7.21.4.4
-char *tmpnam(char *s);
+CARP("ISO C95: tmpnam()") char *tmpnam(char *s);
 
 // 7.21.5.1
-int fclose(FILE *stream);
+CARP("ISO C95: fclose()") int fclose(FILE *stream);
 
 // 7.21.5.2
-int fflush(FILE *stream);
+CARP("ISO C95: fflush()") int fflush(FILE *stream);
 
 // 7.21.5.3
-FILE *fopen(const char * restrict filename, const char * restrict mode);
+CARP("ISO C95: fopen()") FILE *fopen(const char * restrict filename, const char * restrict mode);
 
 // 7.21.5.4
-FILE *freopen(const char * restrict filename, const char * restrict mode, FILE * restrict stream);
+CARP("ISO C95: freopen()") FILE *freopen(const char * restrict filename, const char * restrict mode, FILE * restrict stream);
 
 // 7.21.5.5
-void setbuf(FILE * restrict stream, char * restrict buf);
+CARP("ISO C95: setbuf()") void setbuf(FILE * restrict stream, char * restrict buf);
 
 // 7.21.5.6
-int setvbuf(FILE * restrict stream, char * restrict buf, int mode, size_t size);
+CARP("ISO C95: setvbuf()") int setvbuf(FILE * restrict stream, char * restrict buf, int mode, size_t size);
 
 // 7.21.6.1
-int fprintf(FILE * restrict stream, const char * restrict format, ...);
+CARP("ISO C95: fprintf()") int fprintf(FILE * restrict stream, const char * restrict format, ...);
 
 // 7.21.6.2
-int fscanf(FILE * restrict stream, const char * restrict format, ...);
+CARP("ISO C95: fscanf()") int fscanf(FILE * restrict stream, const char * restrict format, ...);
 
 // 7.21.6.3
-int printf(const char * restrict format, ...);
+CARP("ISO C95: printf()") int printf(const char * restrict format, ...);
 
 // 7.21.6.4
-int scanf(const char * restrict format, ...);
+CARP("ISO C95: scanf()") int scanf(const char * restrict format, ...);
 
 // 7.21.6.5
-int snprintf(char * restrict s, size_t n, const char * restrict format, ...);
+CARP("ISO C95: snprintf()") int snprintf(char * restrict s, size_t n, const char * restrict format, ...);
 
 // 7.21.6.6
-int sprintf(char * restrict s, const char * restrict format, ...);
+CARP("ISO C95: sprintf()") int sprintf(char * restrict s, const char * restrict format, ...);
 
 // 7.21.6.7
-int sscanf(const char * restrict s, const char * restrict format, ...);
+CARP("ISO C95: sscanf()") int sscanf(const char * restrict s, const char * restrict format, ...);
 
 // 7.21.6.8
-int vfprintf(FILE * restrict stream, const char * restrict format, va_list arg);
+CARP("ISO C95: vfprintf()") int vfprintf(FILE * restrict stream, const char * restrict format, va_list arg);
 
 // 7.21.6.9
-int vfscanf(FILE * restrict stream, const char * restrict format, va_list arg);
+CARP("ISO C95: vfscanf()") int vfscanf(FILE * restrict stream, const char * restrict format, va_list arg);
 
 // 7.21.6.10
-int vprintf(const char * restrict format, va_list arg);
+CARP("ISO C95: vprintf()") int vprintf(const char * restrict format, va_list arg);
 
 // 7.21.6.11
-int vscanf(const char * restrict format, va_list arg);
+CARP("ISO C95: vscanf()") int vscanf(const char * restrict format, va_list arg);
 
 // 7.21.6.12
-int vsnprintf(char * restrict s, size_t n, const char * restrict format, va_list arg);
+CARP("ISO C95: vsnprintf()") int vsnprintf(char * restrict s, size_t n, const char * restrict format, va_list arg);
 
 // 7.21.6.13
-int vsprintf(char * restrict s, const char * restrict format, va_list arg);
+CARP("ISO C95: vsprintf()") int vsprintf(char * restrict s, const char * restrict format, va_list arg);
 
 // 7.21.6.14
-int vsscanf(const char * restrict s, const char * restrict format, va_list arg);
+CARP("ISO C95: vsscanf()") int vsscanf(const char * restrict s, const char * restrict format, va_list arg);
 
 // 7.21.7.1
-int fgetc(FILE *stream);
+CARP("ISO C95: fgetc()") int fgetc(FILE *stream);
 
 // 7.21.7.2
-char *fgets(char * restrict s, int n, FILE * restrict stream);
+CARP("ISO C95: fgets()") char *fgets(char * restrict s, int n, FILE * restrict stream);
 
 // 7.21.7.3
-int fputc(int c, FILE *stream);
+CARP("ISO C95: fputc()") int fputc(int c, FILE *stream);
 
 // 7.21.7.4
-int fputs(const char * restrict s, FILE * restrict stream);
+CARP("ISO C95: fputs()") int fputs(const char * restrict s, FILE * restrict stream);
 
 // 7.21.7.5
-int getc(FILE *stream);
+CARP("ISO C95: getc()") int getc(FILE *stream);
 
 // 7.21.7.6
-int getchar(void);
+CARP("ISO C95: getchar()") int getchar(void);
 
 // 7.21.7.7
-int putc(int c, FILE *stream);
+CARP("ISO C95: putc()") int putc(int c, FILE *stream);
 
 // 7.21.7.8
-int putchar(int c);
+CARP("ISO C95: putchar()") int putchar(int c);
 
 // 7.21.7.9
-int puts(const char *s);
+CARP("ISO C95: puts()") int puts(const char *s);
 
 // 7.21.7.10
-int ungetc(int c, FILE *stream);
+CARP("ISO C95: ungetc()") int ungetc(int c, FILE *stream);
 
 // 7.21.8.1
-size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
+CARP("ISO C95: fread()") size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
 
 // 7.21.8.2
-size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
+CARP("ISO C95: fwrite()") size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
 
 // 7.21.9.1
-int fgetpos(FILE * restrict stream, fpos_t * restrict pos);
+CARP("ISO C95: fgetpos()") int fgetpos(FILE * restrict stream, fpos_t * restrict pos);
 
 // 7.21.9.2
-int fseek(FILE *stream, long int offset, int whence);
+CARP("ISO C95: fseek()") int fseek(FILE *stream, long int offset, int whence);
 
 // 7.21.9.3
-int fsetpos(FILE *stream, const fpos_t *pos);
+CARP("ISO C95: fsetpos()") int fsetpos(FILE *stream, const fpos_t *pos);
 
 // 7.21.9.4
-long int ftell(FILE *stream);
+CARP("ISO C95: ftell()") long int ftell(FILE *stream);
 
 // 7.21.9.5
-void rewind(FILE *stream);
+CARP("ISO C95: rewind()") void rewind(FILE *stream);
 
 // 7.21.10.1
-void clearerr(FILE *stream);
+CARP("ISO C95: clearerr()") void clearerr(FILE *stream);
 
 // 7.21.10.2
-int feof(FILE *stream);
+CARP("ISO C95: feof()") int feof(FILE *stream);
 
 // 7.21.10.3
-int ferror(FILE *stream);
+CARP("ISO C95: ferror()") int ferror(FILE *stream);
 
 // 7.21.10.4
-void perror(const char *s);
+CARP("ISO C95: perror()") void perror(const char *s);
 
 #ifdef  __cplusplus
 }
@@ -251,41 +251,41 @@ extern char* P_tmpdir;
 extern "C" {
 #endif
 
-char* ctermid(char *s);
-int dprintf(int fildes, const char* restrict format, ...);
+CARP("POSIX 2017.1: ctermid()") char* ctermid(char *s);
+CARP("POSIX 2017.1: dprintf()") int dprintf(int fildes, const char* restrict format, ...);
 
-void flockfile(FILE* file);
-int ftrylockfile(FILE* file);
-void funlockfile(FILE* file);
+CARP("POSIX 2017.1: flockfile()") void flockfile(FILE* file);
+CARP("POSIX 2017.1: ftrylockfile()") int ftrylockfile(FILE* file);
+CARP("POSIX 2017.1: funlockfile()") void funlockfile(FILE* file);
 
-FILE* fmemopen(void* restrict buf, size_t size, const char* restrict mode);
-int fseeko(FILE *stream, off_t offset, int whence);
-off_t ftello(FILE *stream);
+CARP("POSIX 2017.1: fmemopen()") FILE* fmemopen(void* restrict buf, size_t size, const char* restrict mode);
+CARP("POSIX 2017.1: fseeko()") int fseeko(FILE *stream, off_t offset, int whence);
+CARP("POSIX 2017.1: ftello()") off_t ftello(FILE *stream);
 
-int getc_unlocked(FILE *stream);
-int getchar_unlocked(void);
-int putc_unlocked(int c, FILE *stream);
-int putchar_unlocked(int c);
+CARP("POSIX 2017.1: getc_unlocked()") int getc_unlocked(FILE *stream);
+CARP("POSIX 2017.1: getchar_unlocked()") int getchar_unlocked(void);
+CARP("POSIX 2017.1: putc_unlocked()") int putc_unlocked(int c, FILE *stream);
+CARP("POSIX 2017.1: putchar_unlocked()") int putchar_unlocked(int c);
 
-ssize_t getdelim(char ** restrict lineptr, size_t* restrict n, int delimiter, FILE* restrict stream);
-ssize_t getline(char** restrict lineptr, size_t* restrict n, FILE* restrict stream);
+CARP("POSIX 2017.1: getdelim()") ssize_t getdelim(char ** restrict lineptr, size_t* restrict n, int delimiter, FILE* restrict stream);
+CARP("POSIX 2017.1: getline()") ssize_t getline(char** restrict lineptr, size_t* restrict n, FILE* restrict stream);
 
-FILE *open_memstream(char **bufp, size_t *sizep);
+CARP("POSIX 2017.1: open_memstream()") FILE *open_memstream(char **bufp, size_t *sizep);
 
-int pclose(FILE *stream);
-FILE *popen(const char *command, const char *mode);
+CARP("POSIX 2017.1: pclose()") int pclose(FILE *stream);
+CARP("POSIX 2017.1: popen()") FILE *popen(const char *command, const char *mode);
 
-int renameat(int oldfd, const char* old, int newfd, const char* new);
+CARP("POSIX 2017.1: renameat()") int renameat(int oldfd, const char* old, int newfd, const char* new);
 
-int vdprintf(int fildes, const char* restrict format, va_list ap);
+CARP("POSIX 2017.1: vdprintf()") int vdprintf(int fildes, const char* restrict format, va_list ap);
 
 // ----------------------------
 // Glibc
 
 typedef long long off64_t;
 
-int fseeko64(FILE *stream, off64_t offset, int whence);
-off64_t ftello64(FILE *stream);
+CARP("Glibc: fseeko64()") int fseeko64(FILE *stream, off64_t offset, int whence);
+CARP("Glibc: ftello64()") off64_t ftello64(FILE *stream);
 
 // Tell C++ this is a C header
 #ifdef  __cplusplus
