@@ -37,6 +37,12 @@ project "diagnostic-test"
     defines { "TEST_DIAGNOSTIC" }
     files { "test/inclusion/*" }
 
+project "posix-on-win32"
+    location "build"
+    kind "StaticLib"
+    files { "posix-on-win32/**" }
+    includedirs { "posix-on-win32" }
+
 project "posix-on-win32-test"
     kind "ConsoleApp"
     --language "C++"
@@ -47,6 +53,7 @@ project "posix-on-win32-test"
     files { "test/posix/*" }
     defines { "TEST_POSIX_ON_WIN32" }
     files { "test/inclusion/*" }
+    links { "posix-on-win32" }
 
 project "sandbox"
     kind "ConsoleApp"

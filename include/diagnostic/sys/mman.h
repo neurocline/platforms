@@ -16,15 +16,16 @@
 // POSIX
 
 // protection options
-#define PROT_EXEC       1   // Page can be executed.
-#define PROT_NONE       2   // Page cannot be accessed.
-#define PROT_READ       3   // Page can be read.
-#define PROT_WRITE      4   // Page can be written.
+#define PROT_NONE       0       // Page cannot be accessed.
+#define PROT_READ       (1<<2)  // Page can be read.
+#define PROT_WRITE      (1<<1)  // Page can be written.
+#define PROT_EXEC       (1<<0)  // Page can be executed.
 
 // flag options
-#define MAP_FIXED       1   // Interpret addr exactly.
-#define MAP_PRIVATE     2   // Changes are private.
-#define MAP_SHARED      3   // Share changes.
+#define MAP_SHARED      (1<<0)   // Share changes.
+#define MAP_PRIVATE     (1<<1)   // Changes are private.
+#define MAP_FIXED       (1<<2)   // Interpret addr exactly.
+#define MAP_ANON        (1<<3)   // Don't use a file. (proposed for POSIX)
 
 // msync() options
 #define MS_ASYNC        1   // Perform asynchronous writes.
@@ -67,25 +68,31 @@ struct posix_typed_mem_info
     size_t  posix_tmi_length;   // Maximum length which may be allocated from a typed memory object.
 };
 
+// ----------------------------
+// Glibc
+
+// Additional flag options
+#define MAP_ANONYMOUS   MAP_ANON // Don't use a file (Glibc name)
+
 // Tell C++ this is a C header
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
-CARP("POSIX 2017.1: mlock()") int mlock(const void* addr, size_t len);
-CARP("POSIX 2017.1: munlock()") int munlock(const void* addr, size_t len);
-CARP("POSIX 2017.1: mlockall()") int mlockall(int flags);
-CARP("POSIX 2017.1: munlockall()") int munlockall(void);
-CARP("POSIX 2017.1: mmap()") void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
-CARP("POSIX 2017.1: mprotect()") int mprotect(void* addr, size_t len, int prot);
-CARP("POSIX 2017.1: msync()") int msync(void* addr, size_t len, int flags);
-CARP("POSIX 2017.1: munmap()") int munmap(void* addr, size_t len);
-CARP("POSIX 2017.1: posix_madvise()") int posix_madvise(void* addr, size_t len, int advice);
-CARP("POSIX 2017.1: posix_mem_offset()") int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
-CARP("POSIX 2017.1: posix_typed_mem_get_info()") int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
-CARP("POSIX 2017.1: posix_typed_mem_open()") int posix_typed_mem_open(const char* name, int oflag, int tflag);
-CARP("POSIX 2017.1: shm_open()") int shm_open(const char* name, int oflag, mode_t mode);
-CARP("POSIX 2017.1: shm_unlink()") int shm_unlink(const char* name);
+CARP("Glibc: mlock()") int mlock(const void* addr, size_t len);
+CARP("Glibc: munlock()") int munlock(const void* addr, size_t len);
+CARP("Glibc: mlockall()") int mlockall(int flags);
+CARP("Glibc: munlockall()") int munlockall(void);
+CARP("Glibc: mmap()") void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
+CARP("Glibc: mprotect()") int mprotect(void* addr, size_t len, int prot);
+CARP("Glibc: msync()") int msync(void* addr, size_t len, int flags);
+CARP("Glibc: munmap()") int munmap(void* addr, size_t len);
+CARP("Glibc: posix_madvise()") int posix_madvise(void* addr, size_t len, int advice);
+CARP("Glibc: posix_mem_offset()") int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
+CARP("Glibc: posix_typed_mem_get_info()") int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
+CARP("Glibc: posix_typed_mem_open()") int posix_typed_mem_open(const char* name, int oflag, int tflag);
+CARP("Glibc: shm_open()") int shm_open(const char* name, int oflag, mode_t mode);
+CARP("Glibc: shm_unlink()") int shm_unlink(const char* name);
 
 #ifdef  __cplusplus
 }

@@ -16,15 +16,16 @@
 // POSIX
 
 // protection options
-#define PROT_EXEC       1   // Page can be executed.
-#define PROT_NONE       2   // Page cannot be accessed.
-#define PROT_READ       3   // Page can be read.
-#define PROT_WRITE      4   // Page can be written.
+#define PROT_NONE       0       // Page cannot be accessed.
+#define PROT_READ       (1<<2)  // Page can be read.
+#define PROT_WRITE      (1<<1)  // Page can be written.
+#define PROT_EXEC       (1<<0)  // Page can be executed.
 
 // flag options
-#define MAP_FIXED       1   // Interpret addr exactly.
-#define MAP_PRIVATE     2   // Changes are private.
-#define MAP_SHARED      3   // Share changes.
+#define MAP_SHARED      (1<<0)   // Share changes.
+#define MAP_PRIVATE     (1<<1)   // Changes are private.
+#define MAP_FIXED       (1<<2)   // Interpret addr exactly.
+#define MAP_ANON        (1<<3)   // Don't use a file. (proposed for POSIX)
 
 // msync() options
 #define MS_ASYNC        1   // Perform asynchronous writes.
@@ -66,6 +67,12 @@ struct posix_typed_mem_info
 {
     size_t  posix_tmi_length;   // Maximum length which may be allocated from a typed memory object.
 };
+
+// ----------------------------
+// Glibc
+
+// Additional flag options
+#define MAP_ANONYMOUS   MAP_ANON // Don't use a file (Glibc name)
 
 // Tell C++ this is a C header
 #ifdef  __cplusplus

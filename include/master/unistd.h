@@ -589,7 +589,7 @@ static inline int          access(const char *path, int amode);
 // _exit is in the Microsoft <stdlib.h> header file. Rather than include that
 // here, we just put a compatible definition, because _exit() is a POSIX
 // function that belongs in <unistd.h>, not an ISO function that belongs in <stdlib.h>
-_ACRTIMP __declspec(noreturn) void __cdecl _exit(_In_ int _Code);
+[CARP _exit()]_ACRTIMP __declspec(noreturn) void __cdecl _exit(_In_ int _Code);
 [/!MSVCRT]
 
 // [XSI]
@@ -626,7 +626,12 @@ _ACRTIMP __declspec(noreturn) void __cdecl _exit(_In_ int _Code);
 // [XSI]
 [CARP gethostid()]long         gethostid(void);
 
+[MSVCRT]
 [CARP gethostname()]int          gethostname(char *, size_t);
+[/MSVCRT]
+[!MSVCRT]
+[CARP gethostname()]int          __stdcall gethostname(char* name, int namelen); // mirror winsock.h
+[/!MSVCRT]
 [CARP getlogin()]char        *getlogin(void);
 [CARP getlogin_r()]int          getlogin_r(char *, size_t);
 [CARP getopt()]int          getopt(int, char * const [], const char *);

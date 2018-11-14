@@ -625,7 +625,7 @@ int          getgroups(int, gid_t []);
 // [XSI]
 long         gethostid(void);
 
-int          gethostname(char *, size_t);
+int          __stdcall gethostname(char* name, int namelen); // mirror winsock.h
 char        *getlogin(void);
 int          getlogin_r(char *, size_t);
 int          getopt(int, char * const [], const char *);
