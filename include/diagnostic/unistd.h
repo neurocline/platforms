@@ -269,20 +269,34 @@ _POSIX_TIMESTAMP_RESOLUTION
 The resolution in nanoseconds for all file timestamps.
 _POSIX2_SYMLINKS
 Symbolic links can be created.
-Constants for Functions
-The <unistd.h> header shall define NULL as described in <stddef.h>.
+#endif
 
-The <unistd.h> header shall define the following symbolic constants for use with the access() function. The values shall be suitable for use in #if preprocessing directives.
+// ----------------------
+// Constants for Functions
 
-F_OK
-Test for existence of file.
-R_OK
-Test for read permission.
-W_OK
-Test for write permission.
-X_OK
-Test for execute (search) permission.
-The constants F_OK, R_OK, W_OK, and X_OK and the expressions R_OK|W_OK, R_OK|X_OK, and R_OK|W_OK|X_OK shall all have distinct values.
+// The <unistd.h> header shall define NULL as described in <stddef.h>.
+#ifndef NULL
+#ifndef __cplusplus
+#define NULL ((void*) 0)
+#else
+#define NULL 0
+#endif
+#endif
+
+// The <unistd.h> header shall define the following symbolic constants for
+// use with the access() function. The values shall be suitable for use
+// in #if preprocessing directives.
+
+// The constants F_OK, R_OK, W_OK, and X_OK and the
+// expressions R_OK|W_OK, R_OK|X_OK, and R_OK|W_OK|X_OK shall all have distinct values.
+
+// We make these match the order of rwx in stat permissions
+#define F_OK 0 // Test for existence of file.
+#define R_OK 4 // Test for read permission.
+#define W_OK 2 // Test for write permission.
+#define X_OK 1 // Test for execute (search) permission.
+
+#if 0
 
 The <unistd.h> header shall define the following symbolic constants for the confstr() function:
 
@@ -558,7 +572,7 @@ typedef int     pid_t;
 extern "C" {
 #endif
 
-int          access(const char *, int);
+int          access(const char *path, int amode);
 unsigned     alarm(unsigned);
 int          chdir(const char *);
 int          chown(const char *, uid_t, gid_t);

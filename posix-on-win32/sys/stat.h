@@ -73,9 +73,12 @@ struct stat {
     gid_t st_gid;
     dev_t st_rdev;
     off_t st_size;
-    struct timespec st_atime;
-    struct timespec st_mtime;
-    struct timespec st_ctime;
+    struct timespec st_atim;
+    struct timespec st_mtim;
+    struct timespec st_ctim;
+#define st_atime st_atim.tv_sec // Backward compatibility.
+#define st_mtime st_mtim.tv_sec
+#define st_ctime st_ctim.tv_sec
     blksize_t st_blksize;
     blkcnt_t st_blocks;
 };
@@ -133,10 +136,8 @@ extern "C" {
 int chmod(const char* path, mode_t mode);
 int fchmodat(int fd, const char* path, mode_t mode, int flag);
 int fchmod(int fildes, mode_t mode);
-int fstat(int fildes, struct stat* buf);
 int fstatat(int fd, const char* path, struct stat* buf, int flag);
 int lstat(const char* path, struct stat* buf);
-int stat(const char* path, struct stat* buf);
 int futimens(int fd, const struct timespec times[2]);
 int utimensat(int fd, const char* path, const struct timespec times[2], int flag);
 int mkdir(const char* path, mode_t mode);
@@ -146,6 +147,16 @@ int mkfifoat(int fd, const char *path, mode_t mode);
 int mknod(const char* path, mode_t mode, dev_t dev);
 int mknodat(int fd, const char* path, mode_t mode, dev_t dev);
 mode_t umask(mode_t cmask);
+
+int _posix_on_win32_fstat(int fildes, struct stat* buf);
+static inline int fstat(int fildes, struct stat* buf) {
+    return _posix_on_win32_fstat(fildes, buf);
+}
+
+int _posix_on_win32_stat(const char* path, struct stat* buf);
+static inline int stat(const char* path, struct stat* buf) {
+    return _posix_on_win32_stat(path, buf);
+}
 
 #ifdef  __cplusplus
 }

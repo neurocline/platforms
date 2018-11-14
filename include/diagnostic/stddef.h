@@ -16,10 +16,12 @@
 // Null pointer constant.
 // [CX] The macro shall expand to an integer constant expression with the value 0 cast to type void *.
 // For C++, NULL is simply the value 0.
+#ifndef NULL
 #ifndef __cplusplus
 #define NULL ((void*) 0)
 #else
 #define NULL 0
+#endif
 #endif
 
 // Integer constant expression of type size_t, the value of which is the

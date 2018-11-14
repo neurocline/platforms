@@ -121,18 +121,33 @@ struct flock
 
 // --------------------------------------
 
+[MSVCRT]
 // Create a file. This is identical in behavior to
 // open(path, O_WRONLY|O_CREAT|O_TRUNC, mode);
 int creat(const char *path, mode_t mode);
+[/MSVCRT]
+[!MSVCRT]
+// Create a file. This is identical in behavior to
+// open(path, O_WRONLY|O_CREAT|O_TRUNC, mode);
+static inline int creat(const char *path, mode_t mode);
+[/!MSVCRT]
 
 // Do file-control operation. The parameter list is really just a third
 // parameter which points to the appropriate control block for the command.
 int fcntl(int fildes, int cmd, ...);
 
+[MSVCRT]
 // Open a file and return a file descriptor. The parameter list is an
 // optional third parameter mode_t mode, which is only needed for O_TMPFILE
 // and O_CREAT.
 int open(const char *path, int oflag, ...);
+[/MSVCRT]
+[!MSVCRT]
+// Open a file and return a file descriptor. The parameter list is an
+// optional third parameter mode_t mode, which is only needed for O_TMPFILE
+// and O_CREAT.
+static inline int open(const char *path, int oflag, ...);
+[/!MSVCRT]
 
 // Open a file relative to the directory of the passed-in fd (only valid for
 // relative paths).
@@ -145,6 +160,24 @@ int posix_fallocate(int fd, off_t offset, off_t len);
 // futimens is in <sys/stat.h>
 // posix_madvise is in <sys/mman.h>
 
+[!MSVCRT]
+// To implement creat() and open(), we need to supply static inline functions
+// so we don't conflict with Microsoft functions of the same name in system
+// libraries
+#include <stdarg.h>
+int _posix_on_win32_creat(const char *path, mode_t mode);
+int _posix_on_win32_vaopen(const char *path, int oflag, va_list args);
+
+static inline int creat(const char *path, mode_t mode) {
+    return _posix_on_win32_creat(path, mode);
+}
+static inline int open(const char *path, int oflag, ...) {
+    va_list args;
+    va_start(args, oflag);
+    return _posix_on_win32_vaopen(path, oflag, args);
+}
+
+[/!MSVCRT]
 [Glibc]
 typedef long long off64_t; // as in sys/types.h
 

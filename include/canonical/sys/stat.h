@@ -55,9 +55,12 @@ struct stat {
     gid_t st_gid;
     dev_t st_rdev;
     off_t st_size;
-    struct timespec st_atime;
-    struct timespec st_mtime;
-    struct timespec st_ctime;
+    struct timespec st_atim;
+    struct timespec st_mtim;
+    struct timespec st_ctim;
+#define st_atime st_atim.tv_sec // Backward compatibility.
+#define st_mtime st_mtim.tv_sec
+#define st_ctime st_ctim.tv_sec
     blksize_t st_blksize;
     blkcnt_t st_blocks;
 };
