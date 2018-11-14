@@ -153,7 +153,7 @@ int munmap(void* addr, size_t len)
     {
         errno = EACCES;
         return -1;
-   }
+    }
 
     // Do the unmap and remove this entry (we don't own the file,
     // so it stays open)

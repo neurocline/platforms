@@ -22,6 +22,7 @@ project "canonical-test"
     language "C"
     cdialect "C11"
     includedirs { "include/canonical" }
+    files { ".editorconfig" }
     files { "test/canonical/*" }
     defines { "TEST_CANONICAL" }
     files { "test/inclusion/*" }
@@ -33,6 +34,7 @@ project "diagnostic-test"
     language "C"
     cdialect "C11"
 	includedirs { "include/diagnostic" }
+    files { ".editorconfig" }
     files { "test/diagnostic/*" }
     defines { "TEST_DIAGNOSTIC" }
     files { "test/inclusion/*" }
@@ -40,6 +42,7 @@ project "diagnostic-test"
 project "posix-on-win32"
     location "build"
     kind "StaticLib"
+    files { ".editorconfig" }
     files { "posix-on-win32/**" }
     includedirs { "posix-on-win32" }
 
@@ -50,6 +53,7 @@ project "posix-on-win32-test"
     language "C"
     cdialect "C11"
     includedirs { "posix-on-win32" }
+    files { ".editorconfig" }
     files { "test/posix/*" }
     defines { "TEST_POSIX_ON_WIN32" }
     files { "test/inclusion/*" }
@@ -59,4 +63,5 @@ project "sandbox"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
+    files { ".editorconfig" }
     files { "test/sandbox/*" }
