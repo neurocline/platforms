@@ -166,11 +166,11 @@ CARP("Glibc: posix_fallocate64()") int posix_fallocate64(int fd, off64_t offset,
 #define O_U8TEXT        (1 << 23)   // file mode is UTF8, no BOM
 
 #define O_NOINHERIT     (1 << 24)
-#define O_TEMPORARY     O_TMPFILE
-#define O_SHORT_LIVED   (1 << 25)
+#define O_TEMPORARY     (1 << 25)
+#define O_SHORT_LIVED   (1 << 26)
 #define O_OBTAIN_DIR    O_DIRECTORY
-#define O_SEQUENTIAL    (1 << 26)
-#define O_RANDOM        (1 << 27)
+#define O_SEQUENTIAL    (1 << 27)
+#define O_RANDOM        (1 << 28)
 
 // -----------------------------------------------------------------------------------------------
 

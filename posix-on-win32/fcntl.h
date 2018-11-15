@@ -8,22 +8,26 @@
 #ifndef _POSIX_ON_WIN32_POSIX_FCNTL_H
 #define _POSIX_ON_WIN32_POSIX_FCNTL_H
 
-// Default to not using the Windows fcntl.h file
+// Default to using the Windows fcntl.h file
 #ifndef _POSIX_ON_WIN32_NO_WIN32_FCNTL
-// #define _POSIX_ON_WIN32_USE_WIN32_FCNTL
+#define _POSIX_ON_WIN32_USE_WIN32_FCNTL
 #endif
 
 // -----------------------------------------------------------------------------------------------
 
 #if defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
+// Get MSVC emulation of #include_next
+#include <posix_win32_include_next.h>
 
-#error "This path not supported"
-
-#endif // defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
-
-// -----------------------------------------------------------------------------------------------
-
-#if !defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
+#pragma push_macro("_CRT_NO_TIME_T")
+#undef _CRT_NO_TIME_T
+#define _CRT_NO_TIME_T
+#pragma push_macro("__STDC__")
+#undef __STDC__
+#define __STDC__ 1
+#include _MICROSOFT_UCRT_INCLUDE_NEXT(fcntl.h)
+#pragma pop_macro("_CRT_NO_TIME_T")
+#pragma pop_macro("__STDC__")
 
 // Microsoft doesn't really have fcntl.h. The functions that are supposed to be
 // in fcntl.h are in other, nonstandard, header files. Only two fcntl.h
@@ -199,11 +203,19 @@ int posix_fallocate64(int fd, off64_t offset, off64_t len);
 #define O_U8TEXT        (1 << 23)   // file mode is UTF8, no BOM
 
 #define O_NOINHERIT     (1 << 24)
-#define O_TEMPORARY     O_TMPFILE
-#define O_SHORT_LIVED   (1 << 25)
+#define O_TEMPORARY     (1 << 25)
+#define O_SHORT_LIVED   (1 << 26)
 #define O_OBTAIN_DIR    O_DIRECTORY
-#define O_SEQUENTIAL    (1 << 26)
-#define O_RANDOM        (1 << 27)
+#define O_SEQUENTIAL    (1 << 27)
+#define O_RANDOM        (1 << 28)
+
+#endif // defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
+
+// -----------------------------------------------------------------------------------------------
+
+#if !defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
+
+#error "This path not supported"
 
 #endif // !defined(_POSIX_ON_WIN32_USE_WIN32_FCNTL)
 

@@ -94,7 +94,12 @@ struct tm
 [CARP mktime()]time_t mktime(struct tm *timeptr);
 
 // 7.27.2.4
+[MSVCRT]
 [CARP time()]time_t time(time_t *timer);
+[/MSVCRT]
+[!MSVCRT]
+static inline time_t time(time_t *timer);
+[/!MSVCRT]
 
 // 7.27.2.5
 [CARP timespec_get()]int timespec_get(struct timespec *ts, int base);
@@ -103,7 +108,12 @@ struct tm
 [CARP asctime()]char *asctime(const struct tm *timeptr);
 
 // 7.27.3.2
+[MSVCRT]
 [CARP ctime()]char *ctime(const time_t *timer);
+[/MSVCRT]
+[!MSVCRT]
+static inline char *ctime(const time_t *timer);
+[/!MSVCRT]
 
 // 7.27.3.3
 [CARP gmtime()]struct tm *gmtime(const time_t *timer);
@@ -213,6 +223,18 @@ extern char*  tzname[];
 [CARP timer_settime()]int timer_settime(timer_t timerid, int flags, const struct itimerspec *restrict value, struct itimerspec *restrict ovalue);
 
 [CARP tzset()]void tzset(void);
+
+[!MSVCRT]
+char* _posix_on_win32_ctime(const time_t *timer);
+static inline char *ctime(const time_t *timer) {
+    return _posix_on_win32_ctime(timer);
+}
+
+time_t _posix_on_win32_time(time_t *timer);
+static inline time_t time(time_t *timer) {
+    return _posix_on_win32_time(timer);
+}
+[/!MSVCRT]
 
 [/CDECL]
 

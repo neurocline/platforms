@@ -108,7 +108,7 @@ double difftime(time_t time1, time_t time0);
 time_t mktime(struct tm *timeptr);
 
 // 7.27.2.4
-time_t time(time_t *timer);
+static inline time_t time(time_t *timer);
 
 // 7.27.2.5
 int timespec_get(struct timespec *ts, int base);
@@ -117,7 +117,7 @@ int timespec_get(struct timespec *ts, int base);
 char *asctime(const struct tm *timeptr);
 
 // 7.27.3.2
-char *ctime(const time_t *timer);
+static inline char *ctime(const time_t *timer);
 
 // 7.27.3.3
 struct tm *gmtime(const time_t *timer);
@@ -232,6 +232,16 @@ int timer_gettime(timer_t timerid, struct itimerspec *value);
 int timer_settime(timer_t timerid, int flags, const struct itimerspec *restrict value, struct itimerspec *restrict ovalue);
 
 void tzset(void);
+
+char* _posix_on_win32_ctime(const time_t *timer);
+static inline char *ctime(const time_t *timer) {
+    return _posix_on_win32_ctime(timer);
+}
+
+time_t _posix_on_win32_time(time_t *timer);
+static inline time_t time(time_t *timer) {
+    return _posix_on_win32_time(timer);
+}
 
 #ifdef  __cplusplus
 }

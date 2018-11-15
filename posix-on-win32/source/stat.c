@@ -1,210 +1,139 @@
 // stat.c
 
 #define _WIN32_LEAN_AND_MEAN
+#define __STDC__ 1
 
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
 #include <Windows.h>
 
-#define __STDC__ 1
-#include <io.h> // for _access
+static void convert_stat64_to_stat(struct _stat64* wbuf, struct stat* buf)
+{
+    // I hate macros
+    #pragma push_macro("st_atime")
+    #pragma push_macro("st_ctime")
+    #pragma push_macro("st_mtime")
+    #undef st_atime
+    #undef st_ctime
+    #undef st_mtime
+    __int64 atime = wbuf->st_atime;
+    __int64 ctime = wbuf->st_ctime;
+    __int64 mtime = wbuf->st_mtime;
+    #pragma pop_macro("st_atime")
+    #pragma pop_macro("st_ctime")
+    #pragma pop_macro("st_mtime")
+
+    buf->st_dev = wbuf->st_dev;
+    buf->st_ino = wbuf->st_ino;
+    buf->st_mode = wbuf->st_mode;
+    buf->st_nlink = wbuf->st_nlink;
+    buf->st_uid = wbuf->st_uid;
+    buf->st_gid = wbuf->st_gid;
+    buf->st_rdev = wbuf->st_rdev;
+    buf->st_size = wbuf->st_size;
+    buf->st_atim.tv_sec = (time_t) atime;
+    buf->st_atim.tv_nsec = 0;
+    buf->st_mtim.tv_sec = (time_t) ctime;
+    buf->st_mtim.tv_nsec = 0;
+    buf->st_ctim.tv_sec = (time_t) mtime;
+    buf->st_ctim.tv_nsec = 0;
+    buf->st_blksize = 512;
+    buf->st_blocks = (blkcnt_t)((buf->st_size + buf->st_blksize - 1) / buf->st_blksize);
+}
 
 int _posix_on_win32_fstat(int fildes, struct stat* buf)
 {
-    fildes = 0; buf = NULL;
-    return -1;
+    struct _stat64 wbuf;
+    int ret = _fstat64(fildes, &wbuf);
+    if (ret == -1)
+        return -1;
+
+    convert_stat64_to_stat(&wbuf, buf);
+    return 0;
 }
 
 int _posix_on_win32_stat(const char* path, struct stat* buf)
 {
-    path = NULL; buf = NULL;
-    return -1;
-}
-
-struct _maps
-{
-    HANDLE file; // backing store file
-    HANDLE view; // view object
-    void* addr;  // the mapped view itself
-    size_t len;  // how much was mapped
-} maps[16];
-
-void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off)
-{
-    // We don't support mapping into a fixed address
-    if (addr != NULL)
-    {
-        errno = EADDRNOTAVAIL;
-        return MAP_FAILED;
-    }
-
-    // Find a new slot to put a mapping into
-    int slot;
-    for (slot = 0; slot < 16; slot++)
-        if (maps[slot].addr == NULL)
-            break;
-    if (slot == 16)
-    {
-        errno = ENOBUFS;
-        return MAP_FAILED;
-    }
-
-    // Convert POSIX prot and flags into Win32 values. We only handle
-    // some combinations at the moment
-    DWORD winProt = 0;
-    DWORD winAccess = 0;
-
-    if (prot == (PROT_EXEC|PROT_WRITE|PROT_READ))
-    {
-        winProt = PAGE_EXECUTE_READWRITE;
-        winAccess = FILE_MAP_ALL_ACCESS;
-    }
-    else if (prot == (PROT_EXEC|PROT_READ))
-    {
-        winProt = PAGE_EXECUTE_READ;
-        winAccess = FILE_MAP_READ;
-    }
-    else if (prot == (PROT_WRITE|PROT_READ))
-    {
-        winProt = PAGE_READWRITE;
-        winAccess = FILE_MAP_WRITE;
-    }
-    else if (prot == PROT_READ)
-    {
-        winProt = PAGE_READONLY;
-        winAccess = FILE_MAP_READ;
-    }
-    else
-    {
-        // This is a combination we don't allow just now (ever?)
-        // Specifically, Windows doesn't allow write-only access,
-        // and we shouldn't lie and give the user a readwrite view.
-        errno = EACCES;
-        return MAP_FAILED;
-    }
-
-    // Now interpret flags
-    if ((flags & (MAP_PRIVATE|MAP_SHARED|MAP_FIXED)) == MAP_PRIVATE)
-    {
-        winAccess |= FILE_MAP_COPY;
-    }
-    else if ((flags & (MAP_PRIVATE|MAP_SHARED|MAP_FIXED)) == MAP_SHARED)
-    {
-        // this is the default
-    }
-    else
-    {
-        // Ilegal combination for us
-        errno = EACCES;
-        return MAP_FAILED;
-    }
-
-    // Anonymous mmap can't specify a fildes, non-anonymous must have a file
-    bool anon = (flags & MAP_ANON) == MAP_ANON;
-    if (anon && fildes != -1 || !anon && fildes == -1)
-    {
-        errno = EACCES;
-        return MAP_FAILED;
-    }
-
-    // If there is a backing file, get it
-    HANDLE backing = INVALID_HANDLE_VALUE;
-    if (fildes != -1)
-        backing = (HANDLE) _get_osfhandle(fildes);
-
-    // Microsoft APIs pass 64-bit values as two 32-bit values in many places
-    DWORD lenhi = (DWORD)((unsigned long long)len >> 32);
-    DWORD lenlo = (DWORD)(len & 0xFFFFFFFF);
-    DWORD offhi = (DWORD)((unsigned long long)off >> 32);
-    DWORD offlo = (DWORD)(off & 0xFFFFFFFF);
-
-    maps[slot].file = backing;
-    maps[slot].view = CreateFileMapping(maps[slot].file, NULL, winProt, lenhi, lenlo, NULL);
-    maps[slot].addr = MapViewOfFile(maps[slot].view, winAccess, offhi, offlo, len);
-    maps[slot].len = len;
-
-    return maps[slot].addr;
-}
-
-int munmap(void* addr, size_t len)
-{
-    // Find the object in our list
-    int slot;
-    for (slot = 0; slot < 16; slot++)
-        if (maps[slot].addr == addr)
-            break;
-    if (slot == 16)
-    {
-        errno = EINVAL;
+    struct _stat64 wbuf;
+    int ret = _stat64(path, &wbuf);
+    if (ret == -1)
         return -1;
-    }
 
-    // Right now, we only support "unmap everything you mapped". TBD to handle
-    // splitting of mapped views, which means we need to compare the passed-in
-    // address and length against every range
-    if (maps[slot].len != len)
-    {
-        errno = EACCES;
-        return -1;
-    }
-
-    // Do the unmap and remove this entry (we don't own the file,
-    // so it stays open)
-    BOOL ok = UnmapViewOfFile(maps[slot].view);
-    if (!ok)
-    {
-        errno = EACCES;
-        _set_doserrno(GetLastError());
-        return -1;
-    }
-
-    maps[slot].addr = NULL;
-    maps[slot].view = NULL;
-    maps[slot].file = NULL;
-    maps[slot].len = 0;
-
+    convert_stat64_to_stat(&wbuf, buf);
     return 0;
 }
 
-int mkstemp(char* template_)
+// mkstemp is a Linux mkstemp clone, which gets a path
+// of the form <path>XXXXXX, where all the X characters at the
+// end are turned into something that makes for a unique path.
+int mkstemp(char* template)
 {
-    template_ = 0;
-    return -1;
-}
+    char parent[MAX_PATH];
+    char temppath[MAX_PATH];
+    char prefix[MAX_PATH];
+    int size; // size of incoming template
+    int num_pat; // number of characters to append to the prefix
+    char* pat;
+    char* name;
+    char leaf[MAX_PATH];
 
-int _posix_on_win32_access(const char *path, int amode)
-{
-    if (amode == 0)
-        return _access(path, 0); // this is F_OK
-    int rbit = amode & R_OK;
-    int wbit = amode & W_OK;
-    // the underlying _access can't handle the execute bit
-    // int xbit = amode & X_OK;
+    // If the template is too long for a path, give up
+    size = strlen(template);
+    if (size >= MAX_PATH)
+        return -1;
 
-    // Translate to Microsoft _access bit model
-    int mode = 0;
-    if (rbit != 0) mode |= 0x01;
-    if (wbit != 0) mode |= 0x02;
-    return _access(path, mode);
+    // Break into parent + prefix + suffix
+    pat = template + size - 1;
+    while (pat > template && *pat == 'X')
+        pat--;
+
+    // Strip off parent - if this is a relative path, then
+    // parent = '.'
+    if (template[0] == '/' || template[1] == ':')
+    {
+        name = strrchr(parent, '/');
+        strncpy(parent, template, name - template);
+        *name = 0;
+    }
+    else
+    {
+        name = template;
+        strcpy(parent, ".");
+    }
+
+    // Get the prefix
+    *pat = 0;
+    strncpy(prefix, name+1, pat-name);
+
+    // The user wants size-pat characters added to the
+    // prefix. If num_pat > 4, then we'll need to generate
+    // more prefix on our own, because we are going to generate
+    // a random number in the range 1000-9999.
+    num_pat = template + size - pat;
+
+    // Start with 1000
+    // TBD - ditch GetTempFileNameA and do it all ourselves
+    UINT uUnique = 1000;
+    UINT result = GetTempFileNameA(parent, leaf, uUnique, temppath);
+    if (result == 0)
+        return -1;
+
+    // This is not correct, but it's good enough for now
+    strncpy(template, temppath, size);
+
+    // Now open it
+    return open(template, O_RDWR|O_CREAT|O_EXCL, S_IRUSR|S_IWUSR /*0700*/);
 }
 
 int _posix_on_win32_creat(const char *path, mode_t mode)
 {
     path = 0; mode = 0;
-    return -1;
-}
-
-int _posix_on_win32_vaopen(const char *path, int oflag, va_list args)
-{
-    path = 0; oflag = 0;
-    va_end(args);
     return -1;
 }
 
