@@ -630,7 +630,10 @@ static inline int          access(const char *path, int amode);
 [CARP gethostname()]int          gethostname(char *, size_t);
 [/MSVCRT]
 [!MSVCRT]
-[CARP gethostname()]int          __stdcall gethostname(char* name, int namelen); // mirror winsock.h
+// gethostname is in Winsock2.h, so we just mirror the definition here
+// for convenience. The executable or DLL needs to link against Ws2_32.lib.
+__declspec(dllimport) int __stdcall gethostname(char* name, int namelen);
+
 [/!MSVCRT]
 [CARP getlogin()]char        *getlogin(void);
 [CARP getlogin_r()]int          getlogin_r(char *, size_t);

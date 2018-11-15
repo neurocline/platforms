@@ -625,7 +625,10 @@ int          getgroups(int, gid_t []);
 // [XSI]
 long         gethostid(void);
 
-int          __stdcall gethostname(char* name, int namelen); // mirror winsock.h
+// gethostname is in Winsock2.h, so we just mirror the definition here
+// for convenience. The executable or DLL needs to link against Ws2_32.lib.
+__declspec(dllimport) int __stdcall gethostname(char* name, int namelen);
+
 char        *getlogin(void);
 int          getlogin_r(char *, size_t);
 int          getopt(int, char * const [], const char *);

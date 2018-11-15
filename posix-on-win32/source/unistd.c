@@ -13,6 +13,7 @@
 #include <Windows.h>
 #define SECURITY_WIN32
 #include <security.h>
+#include <WinSock2.h>
 
 int _posix_on_win32_access(const char *path, int amode)
 {
@@ -61,8 +62,28 @@ struct passwd* getpwuid(uid_t uid)
     GetCurrentDirectoryA(size, dir);
     strcpy(shell, "cmd.exe");
     strcpy(passwd, "x");
+
+    #if 1
+    strcpy(gecos, ",,,");
+    #elif 1
+    // NameDisplay only possible on machine on domain,
+    // and NameSamCompatible gets the host name
     size = 256;
-    GetUserNameExA(NameSamCompatible, gecos, &size); // NameDisplay only possible on machine on domain
+    GetUserNameExA(NameSamCompatible, gecos, &size);
+    char* term= strrchr(gecos, '\\');
+    if (term != NULL && 0 == strcmp(term+1, name))
+        *term = 0;
+    strcat(gecos, ",,,");
+
+    // gethostname can take seconds... it's an expensive
+    // way to get the host name on Windows.
+    #elif 1
+    WSADATA wsaData;
+    WSAStartup(MAKEWORD(2,2), &wsaData);
+    gethostname(gecos, 256);
+    WSACleanup();
+    strcat(gecos, ",,,");
+    #endif
 
     static struct passwd pw;
     pw.pw_name = name;
