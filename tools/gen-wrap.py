@@ -50,7 +50,9 @@ def gen_preamble(header, c_type, is_posix):
                 text += [ '// Extended in POSIX.1-2017 <%s>' % header ]
 
             posix_link = header.replace('/', '_')
-            text += [ '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link ],
+            text += [ '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link ]
+        if header in Glib_extended:
+            text += [ '// Has Glibc 2.28 extensions' ]
         text += [
             '',
             '#pragma once',
@@ -63,7 +65,11 @@ def gen_preamble(header, c_type, is_posix):
             '// - %s' % POSIX_blurb[header],
             '//',
             '// Defined in POSIX.1-2017 <%s>' % header,
-            '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link,
+            '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link
+        ]
+        if header in Glib_extended:
+            text += [ '// Has Glibc 2.28 extensions' ]
+        text += [
             '',
             '#pragma once',
             '[GUARD_POSIX]',
@@ -153,36 +159,44 @@ POSIX_aligned = [
     "tgmath.h",
 ]
 
+Glib_extended = [
+    "assert.h",
+    "fcntl.h",
+    "stdio.h",
+    "sys/mman.h",
+]
+
+# Aligned with C18 standard
 C_blurb = {
-    'assert.h': "Diagnostics",
-    'complex.h': "Complex arithmetic",
-    'ctype.h': "Character handling",
-    'errno.h': "Errors",
-    'fenv.h': "Floating-point environment",
-    'float.h': "Characteristics of floating types",
-    'inttypes.h': "Format conversions of integer types",
-    'iso646.h': "Alternative spellings",
-    'limits.h': "Sizes of integer types",
-    'locale.h': "Localization",
-    'math.h': "Mathematics",
-    'setjmp.h': "Nonlocal jumps",
-    'signal.h': "Signal handling",
-    'stdalign.h': "Alignment",
-    'stdarg.h': "Variable arguments",
-    'stdatomic.h': "Atomics",
-    'stdbool.h': "Boolean type and values",
-    'stddef.h': "Common definitions",
-    'stdint.h': "Integer types",
-    'stdio.h': "Input/output",
-    'stdlib.h': "General utilities",
-    'stdnoreturn.h': "_Noreturn",
-    'string.h': "String handling",
-    'tgmath.h': "Type-generic math",
-    'threads.h': "Threads",
-    'time.h': "Date and time",
-    'uchar.h': "Unicode utilities",
-    'wchar.h': "Extended multibyte and wide character utilities",
-    'wctype.h': "Wide character classification and mapping utilities",
+    'assert.h': "7.2 Diagnostics",
+    'complex.h': "7.3 Complex arithmetic",
+    'ctype.h': "7.4 Character handling",
+    'errno.h': "7.5 Errors",
+    'fenv.h': "7.6 Floating-point environment",
+    'float.h': "7.7 Characteristics of floating types",
+    'inttypes.h': "7.8 Format conversions of integer types",
+    'iso646.h': "7.9 Alternative spellings",
+    'limits.h': "7.10 Sizes of integer types",
+    'locale.h': "7.11 Localization",
+    'math.h': "7.12 Mathematics",
+    'setjmp.h': "7.13 Nonlocal jumps",
+    'signal.h': "7.14 Signal handling",
+    'stdalign.h': "7.15 Alignment",
+    'stdarg.h': "7.16 Variable arguments",
+    'stdatomic.h': "7.17 Atomics",
+    'stdbool.h': "7.18 Boolean type and values",
+    'stddef.h': "7.19 Common definitions",
+    'stdint.h': "7.20 Integer types",
+    'stdio.h': "7.21 Input/output",
+    'stdlib.h': "7.22 General utilities",
+    'stdnoreturn.h': "7.23 _Noreturn",
+    'string.h': "7.24 String handling",
+    'tgmath.h': "7.25 Type-generic math",
+    'threads.h': "7.26 Threads",
+    'time.h': "7.27 Date and time",
+    'uchar.h': "7.28 Unicode utilities",
+    'wchar.h': "7.29 Extended multibyte and wide character utilities",
+    'wctype.h': "7.30 Wide character classification and mapping utilities",
 }
 
 POSIX_blurb = {
