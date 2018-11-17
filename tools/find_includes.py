@@ -5,11 +5,32 @@ import os
 import sys
 
 def main():
+	if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]):
+		raise Exception("need valid paths")
+
 	headers = build()
-	found = find_files(headers)
+	found = []
+	if os.path.exists(sys.argv[2]):
+		found = load_found(sys.argv[2])
+	else:
+		found = find_files(headers)
+		save_found(found, sys.argv[2])
+
 	show_files(found, headers)
 	print("\n")
 	show_paths(found, headers)
+
+def load_found(path):
+	found = []
+	with open(path, "rt", encoding="utf-8") as f:
+		for line in f:
+			found.append(line.rstrip())
+	return found
+
+def save_found(found, path):
+	with open(path, "wt", encoding="utf-8") as f:
+		for entry in found:
+			print("%s" % entry, file=f)
 
 def show_files(found, headers):
 	byfile = dict()
