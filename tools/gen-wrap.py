@@ -465,18 +465,6 @@ POSIX_2017_headers = [
     "wordexp.h",
 ]
 
-Unix_headers = [
-    "sys/poll.h",
-]
-
-# Glibc has added functionality to some ISO/POSIX headers (all? this is partial)
-Glib_extended = [
-    "assert.h",
-    "fcntl.h",
-    "stdio.h",
-    "sys/mman.h",
-]
-
 # POSIX titles for headers
 POSIX_blurb = {
     'aio.h': "asynchronous input and output",
@@ -563,10 +551,26 @@ POSIX_blurb = {
     'wordexp.h': "word-expansion types",
 }
 
+# ------------------------------------------------------------------------------------------------
+
+Unix_headers = [
+    "sys/poll.h",
+    "sys/ioctl.h",
+]
+
 # Unix titles for headers
 Unix_blurb = {
     'sys/poll.h': "definitions for the poll() function (nonstandard file)",
+    "sys/ioctl.h" :"ioctl function",
 }
+
+# Glibc has added functionality to some ISO/POSIX headers (all? this is partial)
+Glib_extended = [
+    "assert.h",
+    "fcntl.h",
+    "stdio.h",
+    "sys/mman.h",
+]
 
 # ------------------------------------------------------------------------------------------------
 
@@ -599,7 +603,7 @@ Windows_C_POSIX_headers = [
     "sys/types.h",
     # "threads.h", there is a thr/threads.h which looks like C11 threads but no docs point to it
     "time.h",
-    "utime.h",
+    # "utime.h",
     "wchar.h",
     "wctype.h",
 ]
@@ -608,6 +612,7 @@ Windows_C_POSIX_headers = [
 # ucrt in Windows kits. These remain in the VC headers
 Windows_VC_headers = [
     "limits.h",
+    "stdint.h",
 ]
 
 # Some Windows headers need to be ignored by default
