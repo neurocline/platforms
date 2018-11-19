@@ -28,7 +28,6 @@ typedef char* va_list;
 
 // 7.16.1.4
 #define va_start(VA_LIST, VA_PARAM) (void)(VA_LIST = (char*)&VA_PARAM)
-
 [/MSVCRT]
 [!MSVCRT]
 // We declare a complete-for-our-purposes and compatible <starg.h>, not
@@ -89,5 +88,4 @@ typedef char* va_list;
 
 // 7.16.1.3
 #define va_end(va) ((void)(va = (va_list)0))
-
 [/!MSVCRT]

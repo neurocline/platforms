@@ -1,22 +1,4 @@
-// <sys/mman.h>
-// - memory management declarations
-//
-// Defined in POSIX.1-2017 <sys/mman.h>
-// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_mman.h.html
-// Has Glibc 2.28 extensions
-
-#pragma once
-#ifndef _POSIX_ON_WIN32_POSIX_SYS_MMAN_H
-#define _POSIX_ON_WIN32_POSIX_SYS_MMAN_H
-
-// There is no Windows <sys/mman.h> file, so we don't need to override anything.
-
-// ---------------------------------------------------------------------------
-// POSIX on Win32 header
-
-// ----------------------------
-// POSIX
-
+[POSIX]
 // protection options
 #define PROT_NONE       0       // Page cannot be accessed.
 #define PROT_READ       (1<<2)  // Page can be read.
@@ -70,36 +52,25 @@ struct posix_typed_mem_info
     size_t  posix_tmi_length;   // Maximum length which may be allocated from a typed memory object.
 };
 
-// ----------------------------
-// Glibc
-
+[Glibc]
 // Additional flag options
 #define MAP_ANONYMOUS   MAP_ANON // Don't use a file (Glibc name)
 
-// Tell C++ this is a C header
-#ifdef  __cplusplus
-extern "C" {
-#endif
+[CDECL]
 
-int mlock(const void* addr, size_t len);
-int munlock(const void* addr, size_t len);
-int mlockall(int flags);
-int munlockall(void);
-void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
-int mprotect(void* addr, size_t len, int prot);
-int msync(void* addr, size_t len, int flags);
-int munmap(void* addr, size_t len);
-int posix_madvise(void* addr, size_t len, int advice);
-int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
-int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
-int posix_typed_mem_open(const char* name, int oflag, int tflag);
-int shm_open(const char* name, int oflag, mode_t mode);
-int shm_unlink(const char* name);
+[CARP mlock()]int mlock(const void* addr, size_t len);
+[CARP munlock()]int munlock(const void* addr, size_t len);
+[CARP mlockall()]int mlockall(int flags);
+[CARP munlockall()]int munlockall(void);
+[CARP mmap()]void* mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off);
+[CARP mprotect()]int mprotect(void* addr, size_t len, int prot);
+[CARP msync()]int msync(void* addr, size_t len, int flags);
+[CARP munmap()]int munmap(void* addr, size_t len);
+[CARP posix_madvise()]int posix_madvise(void* addr, size_t len, int advice);
+[CARP posix_mem_offset()]int posix_mem_offset(const void* addr, size_t len, off_t* off, size_t* contig_len, int* fildes);
+[CARP posix_typed_mem_get_info()]int posix_typed_mem_get_info(int fildes, struct posix_typed_mem_info* info);
+[CARP posix_typed_mem_open()]int posix_typed_mem_open(const char* name, int oflag, int tflag);
+[CARP shm_open()]int shm_open(const char* name, int oflag, mode_t mode);
+[CARP shm_unlink()]int shm_unlink(const char* name);
 
-#ifdef  __cplusplus
-}
-#endif
-
-// -----------------------------------------------------------------------------------------------
-
-#endif // _POSIX_ON_WIN32_POSIX_SYS_MMAN_H
+[/CDECL]

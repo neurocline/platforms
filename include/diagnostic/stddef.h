@@ -3,6 +3,7 @@
 //
 // Defined in ISO C18 Standard: 7.19 Common definitions <stddef.h>.
 // Aligned with POSIX.1-2017 <stddef.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stddef.h.html
 
 #pragma once
 #ifndef DIAGNOSTIC_ISO_C18_STDDEF_H

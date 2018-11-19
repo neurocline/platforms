@@ -8,6 +8,11 @@
 #ifndef _POSIX_ON_WIN32_POSIX_UNISTD_H
 #define _POSIX_ON_WIN32_POSIX_UNISTD_H
 
+// There is no Windows <unistd.h> file, so we don't need to override anything.
+
+// ---------------------------------------------------------------------------
+// POSIX on Win32 header
+
 // *** WARNING ***
 // Not finished.
 
@@ -16,11 +21,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-
-// There is no Windows <unistd.h> file, so we don't need to override anything.
-
-// ---------------------------------------------------------------------------
-// POSIX on Win32 header
 
 // ----------------------------
 // POSIX

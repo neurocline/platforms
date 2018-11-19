@@ -3,6 +3,7 @@
 //
 // Defined in ISO C18 Standard: 7.19 Common definitions <stddef.h>.
 // Aligned with POSIX.1-2017 <stddef.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stddef.h.html
 
 #pragma once
 [GUARD]
@@ -14,7 +15,6 @@
 // suppress it would be that the Windows stddef.h, like many other Microsoft header
 // files, puts things in the wrong places, and that's more of a maintenance issue,
 // not a correctness issue.
-
 [/!MSVCRT]
 [MSVCRT]
 // Null pointer constant.
@@ -57,7 +57,7 @@ typedef unsigned long long size_t;
 #else
 typedef unsigned int size_t;
 #endif
-
 [/MSVCRT]
+
 [FOOTER]
 [/GUARD]

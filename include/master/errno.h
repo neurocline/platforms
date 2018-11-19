@@ -128,7 +128,6 @@ extern int errno;
 
 // Support EDEADLOCK for compatibility
 #define EDEADLOCK EDEADLK
-
 [/MSVCRT]
 [!MSVCRT]
 // Only a few ERRNO constants are returned from Microsoft code.
@@ -142,7 +141,7 @@ extern int errno;
 // Errno values missing from Microsoft headers. Use numbers well outside their range.
 #define EDQUOT          300  // Reserved.
 #define EMULTIHOP       301  // Reserved.
-
 [/!MSVCRT]
+
 [FOOTER]
 [/GUARD]

@@ -7,8 +7,8 @@
 
 #pragma once
 [GUARD]
-
 [IGNOREWINDOWS]
+
 [BODY]
 [!MSVCRT]
 // The Windows <time.h> functionality is just broken enough that we don't want to

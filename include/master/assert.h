@@ -2,8 +2,9 @@
 // - verify program assertion
 //
 // Defined in ISO C18 Standard: 7.2 Diagnostics <assert.h>.
-// POSIX.1-2017 <assert.h> aligned with ISO C.
-// Glibc extensions.
+// Aligned with POSIX.1-2017 <assert.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/assert.h.html
+// Has Glibc 2.28 extensions
 
 [BODY]
 [MSVCRT]

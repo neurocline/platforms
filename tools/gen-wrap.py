@@ -49,9 +49,14 @@ def load_body(header, kits):
     if os.path.exists(path):
         return loadfile(path)
 
+    path = os.path.join(kits, "posix", header)
+    if os.path.exists(path):
+        return loadfile(path)
+
     path = os.path.join(kits, "unix", header)
     if os.path.exists(path):
         return loadfile(path)
+
     return []
 
 def loadfile(path):
@@ -123,6 +128,11 @@ def gen_c_preamble(text, header, tag):
 
     if header in Glib_extended:
         text += [ '// Has Glibc 2.28 extensions' ]
+
+    # assert.h is special. It cannot have a guard around the whole file, so it has
+    # an embedded guard deep in the body
+    if header == 'assert.h':
+        return text
 
     text += [
         '',
@@ -204,6 +214,14 @@ def gen_body(header, tag, body):
         '[BODY]',
     ]
     text += body
+
+    # assert.h is special. It cannot have a guard around the whole file, so it has
+    # an embedded guard deep in the body, so we need to finish this one differently
+    if header == 'assert.h':
+        text += [ '[FOOTER]' ]
+        return text
+
+    # Add footer tag and the right guard tag
     text += [
         '',
         '[FOOTER]',

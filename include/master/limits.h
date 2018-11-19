@@ -2,14 +2,13 @@
 // - implementation-defined constants
 //
 // Defined in ISO C18 Standard: 7.10 Sizes of integer types <limits.h>.
-// (and really defined in 5.2.4.2.1)
 // Extended in POSIX.1-2017 <limits.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/limits.h.html
 
 #pragma once
 [GUARD]
-
 [MICROSOFT_VC_INCLUDE]
+
 [BODY]
 [MSVCRT]
 // number of bits for smallest object that is not a bit-field (byte)

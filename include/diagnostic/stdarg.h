@@ -1,8 +1,9 @@
 // <stdarg.h>
 // - handle variable argument list
 //
-// Defined in ISO C18 Standard: 7.16 Input/output <stdarg.h>.
+// Defined in ISO C18 Standard: 7.16 Variable arguments <stdarg.h>.
 // Aligned with POSIX.1-2017 <stdarg.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdarg.h.html
 
 #pragma once
 #ifndef DIAGNOSTIC_ISO_C18_STDARG_H

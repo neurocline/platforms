@@ -1,14 +1,3 @@
-// <fcntl.h>
-// - file control options
-//
-// Defined in POSIX.1-2017 <fcntl.h>
-// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html
-// Has Glibc 2.28 extensions
-
-#pragma once
-[GUARD_POSIX]
-
-[BODY]
 [!MSVCRT]
 // Microsoft doesn't really have fcntl.h. The functions that are supposed to be
 // in fcntl.h are in other, nonstandard, header files. Only two fcntl.h
@@ -201,6 +190,3 @@ typedef long long off64_t; // as in sys/types.h
 #define O_OBTAIN_DIR    O_DIRECTORY
 #define O_SEQUENTIAL    (1 << 27)
 #define O_RANDOM        (1 << 28)
-
-[FOOTER]
-[/GUARD_POSIX]

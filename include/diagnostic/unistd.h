@@ -8,6 +8,11 @@
 #ifndef DIAGNOSTIC_POSIX_2017_UNISTD_H
 #define DIAGNOSTIC_POSIX_2017_UNISTD_H
 
+#include <internal/carp.h>
+
+// ---------------------------------------------------------------------------
+// Diagnostic header
+
 // *** WARNING ***
 // Not finished.
 
@@ -16,11 +21,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-
-#include <internal/carp.h>
-
-// ---------------------------------------------------------------------------
-// Diagnostic header
 
 // ----------------------------
 // POSIX

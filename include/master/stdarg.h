@@ -1,13 +1,14 @@
 // <stdarg.h>
 // - handle variable argument list
 //
-// Defined in ISO C18 Standard: 7.16 Input/output <stdarg.h>.
+// Defined in ISO C18 Standard: 7.16 Variable arguments <stdarg.h>.
 // Aligned with POSIX.1-2017 <stdarg.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdarg.h.html
 
 #pragma once
 [GUARD]
-
 [IGNOREWINDOWS]
+
 [BODY]
 [MSVCRT]
 // The function-like macros in <stdarg.h> need compiler knowledge in order
@@ -39,7 +40,6 @@ typedef char* va_list;
 
 // 7.16.1.4
 #define va_start(VA_LIST, VA_PARAM) (void)(VA_LIST = (char*)&VA_PARAM)
-
 [/MSVCRT]
 [!MSVCRT]
 // We declare a complete-for-our-purposes and compatible <starg.h>, not
@@ -100,7 +100,7 @@ typedef char* va_list;
 
 // 7.16.1.3
 #define va_end(va) ((void)(va = (va_list)0))
-
 [/!MSVCRT]
+
 [FOOTER]
 [/GUARD]

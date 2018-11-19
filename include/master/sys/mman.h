@@ -3,6 +3,8 @@
 // - memory management declarations
 //
 // Defined in POSIX.1-2017 <sys/mman.h>
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_mman.h.html
+// Has Glibc 2.28 extensions
 
 #pragma once
 [GUARD_POSIX]

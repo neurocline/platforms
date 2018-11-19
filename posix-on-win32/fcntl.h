@@ -3,6 +3,7 @@
 //
 // Defined in POSIX.1-2017 <fcntl.h>
 // See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html
+// Has Glibc 2.28 extensions
 
 #pragma once
 #ifndef _POSIX_ON_WIN32_POSIX_FCNTL_H

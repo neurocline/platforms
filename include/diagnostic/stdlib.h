@@ -3,7 +3,7 @@
 //
 // Defined in ISO C18 Standard: 7.22 General utilities <stdlib.h>.
 // Extended in POSIX.1-2017 <stdlib.h>
-// See http://pubs.opengroup.org/onlinepubs/9699919799.2018edition/basedefs/stdlib.h.html
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdlib.h.html
 
 #pragma once
 #ifndef DIAGNOSTIC_ISO_C18_STDLIB_H

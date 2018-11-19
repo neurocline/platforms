@@ -1,14 +1,3 @@
-// <sys/types.h>
-// - data types
-//
-// Defined in POSIX.1-2017 <sys/types.h>
-// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_types.h.html
-
-#pragma once
-[GUARD_POSIX]
-[IGNOREWINDOWS]
-
-[BODY]
 [!MSVCRT]
 // The Microsoft sys/types.h file itself is pretty much useless,
 // so we just bypass it. There are bits of sys/types.h in other
@@ -137,6 +126,3 @@ typedef struct { int v; } trace_attr_t;    // [OB TRC] Used to identify a trace 
 typedef struct { int v; } trace_event_id_t;    // [OB TRC] Used to identify a trace event type.
 typedef struct { int v; } trace_event_set_t;    // [OB TEF] Used to identify a trace event type set.
 typedef struct { int v; } trace_id_t;    // [OB TRC] Used to identify a trace stream.
-
-[FOOTER]
-[/GUARD_POSIX]

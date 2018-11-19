@@ -3,7 +3,8 @@
 //
 // Defined in ISO C18 Standard: 7.21 Input/output <stdio.h>.
 // Extended in POSIX.1-2017 <stdio.h>
-// See http://pubs.opengroup.org/onlinepubs/9699919799.2018edition/basedefs/stdio.h.html
+// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdio.h.html
+// Has Glibc 2.28 extensions
 
 #pragma once
 #ifndef _POSIX_ON_WIN32_ISO_STDIO_H
@@ -108,9 +109,8 @@ typedef long long off64_t;
 int fseeko64(FILE *stream, off64_t offset, int whence);
 off64_t ftello64(FILE *stream);
 
-// Tell C++ this is a C header
 #ifdef  __cplusplus
-extern "C" {
+}
 #endif
 
 #endif // defined(_POSIX_ON_WIN32_USE_WIN32_STDIO)

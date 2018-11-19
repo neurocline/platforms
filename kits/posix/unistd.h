@@ -1,14 +1,3 @@
-[NOWINDOWS]
-// <unistd.h>
-// - standard symbolic constants and types
-//
-// Defined in POSIX.1-2017 <unistd.h>
-// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/unistd.h.html
-
-#pragma once
-[GUARD_POSIX]
-
-[BODY]
 // *** WARNING ***
 // Not finished.
 
@@ -721,6 +710,3 @@ extern int    optind;
 extern int    optopt;
 
 [/CDECL]
-
-[FOOTER]
-[/GUARD_POSIX]
