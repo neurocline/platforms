@@ -1,172 +1,315 @@
 #! python3
 # coding=utf-8
 
+# The point of the gen-wrap.py program is to create wrapping headers for any
+# header that might be on the target system, so we can evaluate cross-compiling.
+# Currently, this only targets posix-on-win32, e.g. building POSIX apps on
+# Windows. This could be expanded into a matrix, allowing building Win32 code
+# on Linux, Mac, etc. But it seems like the need currently is building POSIX-using
+# code on Windows.
+
+# These are the four domains:
+# - ISO C
+# - POSIX (subsumes most but not all ISO C)
+# - Unix (non-POSIX extensions)
+# - Windows
+# and these are the 7 products we observe as being possible
+# - ISO-C
+# - POSIX
+# - Windows
+# - ISO-C + POSIX
+# - ISO-C + POSIX + Windows
+# - POSIX + Windows
+# - Unix
+#
+# For non-Windows files, obviously we aren't actually wrapping, we are shimming.
+# This lets us test what specific non-Windows features are being used. For any
+# categories that involve Windows, we wrap so that we can make sure the POSIX/Unix
+# code works as-is on Windows (Microsoft doesn't implement all of POSIX, and some
+# of what it implements diverges from POSIX).
+
 import os
 import sys
 
 def main():
-    if len(sys.argv) < 2:
-        raise Exception("need output directory")
+    if len(sys.argv) < 3:
+        raise Exception("need output directory and kits directory")
 
     headers = build()
-    gen(headers, sys.argv[1])
+    gen_all(headers, sys.argv[1], sys.argv[2])
 
-def gen(headers, outdir):
-    for header in sorted(headers):
-        c_type = headers[header][0] if headers[header][0] != 'POSIX.1-2017' else None
-        is_posix = True if 'POSIX.1-2017' in headers[header] else False
-        # print("%s C:%s POSIX:%s" % (header, c_type, is_posix))
+def gen_all(headers, outdir, kitsdir):
+    for header, tag in sorted(headers.items()):
+        # print(header, tag)
+        body = load_body(header, kitsdir)
+        gen_header(header, outdir, tag, body)
 
-        gen_header(header, outdir, c_type, is_posix)
+def load_body(header, kits):
+    path = os.path.join(kits, "iso-c", header)
+    if os.path.exists(path):
+        return loadfile(path)
 
-def gen_header(header, outdir, c_type, is_posix):
+    path = os.path.join(kits, "unix", header)
+    if os.path.exists(path):
+        return loadfile(path)
+    return []
+
+def loadfile(path):
+    lines = []
+    with open(path, "rt", encoding="utf-8") as fin:
+        for line in fin:
+            lines.append(line.rstrip())
+    return lines
+
+def gen_header(header, outdir, tag, body):
     outpath = os.path.join(outdir, header)
     os.makedirs(os.path.dirname(outpath), exist_ok=True)
     with open(outpath, "wt", encoding="utf-8") as fout:
-        text = gen_preamble(header, c_type, is_posix)
-        text += gen_body(header, c_type, is_posix)
+        text = gen_preamble(header, tag)
+        text += gen_body(header, tag, body)
 
         for line in text:
             print("%s" % line, file=fout)
 
-def gen_preamble(header, c_type, is_posix):
+def gen_preamble(header, tag):
     text = []
-    if header not in Windows_headers:
-        text += [ '[NOWINDOWS]' ]
-    if c_type is not None:
-        text += [
-            '// <%s>' % header,
-        ]
-        if header in POSIX_blurb:
-            text += [ '// - %s' % POSIX_blurb[header] ]
-        text += [
-            '//',
-            '// Defined in ISO C18 Standard: %s <%s>.' % (C_blurb[header], header)
-        ]
-        if is_posix:
-            if header in POSIX_aligned:
-                text += [ '// Aligned with POSIX.1-2017 <%s>' % header ]
-            else:
-                text += [ '// Extended in POSIX.1-2017 <%s>' % header ]
 
-            posix_link = header.replace('/', '_')
-            text += [ '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link ]
-        if header in Glib_extended:
-            text += [ '// Has Glibc 2.28 extensions' ]
-        text += [
-            '',
-            '#pragma once',
-            '[GUARD]',
-        ]
+    # If this header isn't found anywhere in Windows, then no need to wrap anything
+    if tag.find('Windows') == -1:
+        text += [ '[NOWINDOWS]' ]
+
+    # Handle ISOC, ISOC+POSIX, ISOC+POSIX+WINDOWS, ISOC+POSIX
+    if tag.find('ISOC') != -1:
+        return gen_c_preamble(text, header, tag)
+
+    # Handle POSIX, POSIX+Windows
+    elif tag.find('POSIX') != -1:
+        return gen_POSIX_preamble(text, header, tag)
+
+    # Handle Unix
+    elif tag.find('Unix') != -1:
+        return gen_Unix_preamble(text, header, tag)
+
+    # Handle Windows
+    elif tag.find('Windows') != -1:
+        return gen_Windows_preamble(text, header, tag)
+
     else:
+        raise Exception("don't know")
+
+# This is for all headers in the ISO C standard, some of which
+# are extended by POSIX or munged by Windows
+def gen_c_preamble(text, header, tag):
+    text += [
+        '// <%s>' % header,
+    ]
+
+    if tag.find('POSIX') != -1:
+        text += [ '// - %s' % POSIX_blurb[header] ]
+
+    text += [
+        '//',
+        '// Defined in ISO C18 Standard: %s <%s>.' % (C_blurb[header], header)
+    ]
+
+    # Show extra notes for ISO C headers extended by POSIX
+    if tag.find('POSIX') != -1:
+        if header in POSIX_ISO_aligned:
+            text += [ '// Aligned with POSIX.1-2017 <%s>' % header ]
+        else:
+            text += [ '// Extended in POSIX.1-2017 <%s>' % header ]
         posix_link = header.replace('/', '_')
-        text += [
-            '// <%s>' % header,
-            '// - %s' % POSIX_blurb[header],
-            '//',
-            '// Defined in POSIX.1-2017 <%s>' % header,
-            '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link
-        ]
-        if header in Glib_extended:
-            text += [ '// Has Glibc 2.28 extensions' ]
-        text += [
-            '',
-            '#pragma once',
-            '[GUARD_POSIX]',
-        ]
+        text += [ '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link ]
+
+    if header in Glib_extended:
+        text += [ '// Has Glibc 2.28 extensions' ]
+
+    text += [
+        '',
+        '#pragma once',
+        '[GUARD]',
+    ]
+    return text
+
+# This is for all headers in POSIX that aren't also in ISO C. Some of these
+# are munged by Windows.
+def gen_POSIX_preamble(text, header, tag):
+    posix_link = header.replace('/', '_')
+    text += [
+        '// <%s>' % header,
+        '// - %s' % POSIX_blurb[header],
+        '//',
+        '// Defined in POSIX.1-2017 <%s>' % header,
+        '// See http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/%s.html' % posix_link
+    ]
+
+    if header in Glib_extended:
+        text += [ '// Has Glibc 2.28 extensions' ]
+
+    text += [
+        '',
+        '#pragma once',
+        '[GUARD_POSIX]',
+    ]
 
     return text
 
-def gen_body(header, c_type, is_posix):
-    text = [
+# These are not in POSIX or ISO C, but are used in some Unix systems (Glibc, MUSL, etc)
+def gen_Unix_preamble(text, header, tag):
+    text += [
+        '// <%s>' % header,
+        '// - %s' % Unix_blurb[header],
+        '//',
+        '// Unix header <%s>' % header,
+    ]
+
+    if header in Glib_extended:
+        text += [ '// Has Glibc 2.28 extensions' ]
+
+    text += [
+        '',
+        '#pragma once',
+        '[GUARD_UNIX]',
+    ]
+
+    return text
+
+# These are only in Windows
+def gen_Windows_preamble(text, header, tag):
+    text += [
+        '// <%s>' % header,
+        '// - %s' % Windows_blurb[header],
+        '//',
+        '// Windows header <%s>' % header,
+    ]
+
+    text += [
+        '',
+        '#pragma once',
+        '[GUARD_WINDOWS]',
+    ]
+
+    return text
+
+def gen_body(header, tag, body):
+    text = []
+
+    if header in Windows_VC_headers:
+        text += [ '[MICROSOFT_VC_INCLUDE]' ]
+    if header in Windows_Ignore_headers:
+        text += [ '[IGNOREWINDOWS]' ]
+
+    text += [
         '',
         '[BODY]',
+    ]
+    text += body
+    text += [
+        '',
         '[FOOTER]',
     ]
 
-    if c_type is not None:
+    if tag.find('ISOC') != -1:
         text += [ '[/GUARD]' ]
-    else:
+    elif tag.find('POSIX') != -1:
         text += [ '[/GUARD_POSIX]' ]
+    elif tag.find('Unix') != -1:
+        text += [ '[/GUARD_UNIX]' ]
+    elif tag.find('Windows') != -1:
+        text += [ '[/GUARD_WINDOWS]' ]
+    else:
+        raise Exception("unexpected %s: %s" % (header, tag))
 
     return text
 
+# ------------------------------------------------------------------------------------------------
+
+# Make a master list of headers and what "kind" of header it is:
+# - ISOC
+# - ISOC+POSIX
+# - ISOC+POSIX+Windows
+# - ISOC+Windows
+# - POSIX
+# - POSIX+Windows
+# - Unix
+# - Windows
+# Other combinations are not handled yet
+
 def build():
     headers = dict()
-    add(headers, C_headers, 'C')
-    add(headers, C95_headers, 'C95')
-    add(headers, C99_headers, 'C99')
-    add(headers, C11_headers, 'C11')
-    add(headers, POSIX_2017_headers, 'POSIX.1-2017')
+
+    for k,v in ISO_C_headers.items():
+        headers[k] = "ISOC"
+
+    add(headers, POSIX_2017_headers, 'POSIX')
+    add(headers, Windows_headers, 'Windows')
+    add(headers, Windows_C_POSIX_headers, 'Windows')
+    add(headers, Unix_headers, 'Unix')
+
+    if 0:
+        allowed = {'ISOC', 'ISOC+POSIX', 'ISOC+POSIX+Windows', 'ISOC+Windows', 'POSIX', 'POSIX+Windows', 'Unix', 'Windows'}
+        stats = dict()
+        for h in headers:
+            if headers[h] not in allowed:
+                raise Exception("weird combo for %s: %s" % (h, headers[h]))
+            if headers[h] not in stats:
+                stats[headers[h]] = []
+            stats[headers[h]].append(h)
+
+        for tag in sorted(stats):
+            print("%s: %d" % (tag, len(stats[tag])))
+            for h in sorted(stats[tag]):
+                print("    %s" % h)
+
     return headers
 
 def add(h, L, tag):
     for item in L:
-        if item not in h:
-            h[item] = []
-        h[item].append(tag)
+        if item in h:
+            h[item] = h[item] + "+" + tag
+        else:
+            h[item] = tag
 
-C_headers = [
-    "assert.h",
-    "ctype.h",
-    "errno.h",
-    "float.h",
-    "limits.h",
-    "locale.h",
-    "math.h",
-    "setjmp.h",
-    "signal.h",
-    "stdarg.h",
-    "stddef.h",
-    "stdio.h",
-    "stdlib.h",
-    "string.h",
-    "time.h",
-]
+# ------------------------------------------------------------------------------------------------
 
-C95_headers = [
-    "iso646.h",
-    "wchar.h",
-    "wctype.h",
-]
+# ISO C headers, from the ISO C 2018 specification, broken down by when they were first introduced.
+# Microsoft doesn't fully implement C99 or C11.
+ISO_C_headers = {
+    "assert.h": "C",
+    "ctype.h":  "C",
+    "errno.h":  "C",
+    "float.h":  "C",
+    "limits.h": "C",
+    "locale.h": "C",
+    "math.h":   "C",
+    "setjmp.h": "C",
+    "signal.h": "C",
+    "stdarg.h": "C",
+    "stddef.h": "C",
+    "stdio.h":  "C",
+    "stdlib.h": "C",
+    "string.h": "C",
+    "time.h":   "C",
 
-C99_headers = [
-    "complex.h",
-    "fenv.h",
-    "inttypes.h",
-    "stdbool.h",
-    "stdint.h",
-    "tgmath.h",
-]
+    "iso646.h": "C95",
+    "wchar.h":  "C95",
+    "wctype.h": "C95",
 
-C11_headers = [
-    "stdalign.h",
-    "stdatomic.h",
-    "stdnoreturn.h",
-    "threads.h",
-    "uchar.h",
-]
+    "complex.h":  "C99",
+    "fenv.h":     "C99",
+    "inttypes.h": "C99",
+    "stdbool.h":  "C99",
+    "stdint.h":   "C99",
+    "tgmath.h":   "C99",
 
-POSIX_aligned = [
-    "assert.h",
-    "complex.h",
-    "fenv.h",
-    "float.h",
-    "iso646.h",
-    "stdarg.h",
-    "stdbool.h",
-    "stddef.h",
-    "tgmath.h",
-]
+    "stdalign.h":    "C11",
+    "stdatomic.h":   "C11",
+    "stdnoreturn.h": "C11",
+    "threads.h":     "C11",
+    "uchar.h":       "C11",
+}
 
-Glib_extended = [
-    "assert.h",
-    "fcntl.h",
-    "stdio.h",
-    "sys/mman.h",
-]
-
-# Aligned with C18 standard
+# ISO C titles for headers
 C_blurb = {
     'assert.h': "7.2 Diagnostics",
     'complex.h': "7.3 Complex arithmetic",
@@ -199,6 +342,124 @@ C_blurb = {
     'wctype.h': "7.30 Wide character classification and mapping utilities",
 }
 
+# ------------------------------------------------------------------------------------------------
+
+# POSIX subsumes the ISO C Standard, although this is true only up through C99;
+# POSIX-2007.1 is the most recent standard, which predates C11.
+
+# Some of the POSIX headers are aligned with the ISO - the rest have
+# POSIX-specific extensions.
+POSIX_ISO_aligned = [
+    "assert.h",
+    "complex.h",
+    "fenv.h",
+    "float.h",
+    "iso646.h",
+    "stdarg.h",
+    "stdbool.h",
+    "stddef.h",
+    "tgmath.h",
+]
+
+# POSIX-2007.1 headers
+POSIX_2017_headers = [
+    "aio.h",
+    "arpa/inet.h",
+    "assert.h",
+    "complex.h",
+    "cpio.h",
+    "ctype.h",
+    "dirent.h",
+    "dlfcn.h",
+    "errno.h",
+    "fcntl.h",
+    "fenv.h",
+    "float.h",
+    "fmtmsg.h",
+    "fnmatch.h",
+    "ftw.h",
+    "glob.h",
+    "grp.h",
+    "iconv.h",
+    "inttypes.h",
+    "iso646.h",
+    "langinfo.h",
+    "libgen.h",
+    "limits.h",
+    "locale.h",
+    "math.h",
+    "monetary.h",
+    "mqueue.h",
+    "ndbm.h",
+    "net/if.h",
+    "netdb.h",
+    "netinet/in.h",
+    "netinet/tcp.h",
+    "nl_types.h",
+    "poll.h",
+    "pthread.h",
+    "pwd.h",
+    "regex.h",
+    "sched.h",
+    "search.h",
+    "semaphore.h",
+    "setjmp.h",
+    "signal.h",
+    "spawn.h",
+    "stdarg.h",
+    "stdbool.h",
+    "stddef.h",
+    "stdint.h",
+    "stdio.h",
+    "stdlib.h",
+    "string.h",
+    "strings.h",
+    "stropts.h",
+    "sys/ipc.h",
+    "sys/mman.h",
+    "sys/msg.h",
+    "sys/resource.h",
+    "sys/select.h",
+    "sys/sem.h",
+    "sys/shm.h",
+    "sys/socket.h",
+    "sys/stat.h",
+    "sys/statvfs.h",
+    "sys/time.h",
+    "sys/times.h",
+    "sys/types.h",
+    "sys/uio.h",
+    "sys/un.h",
+    "sys/utsname.h",
+    "sys/wait.h",
+    "syslog.h",
+    "tar.h",
+    "termios.h",
+    "tgmath.h",
+    "time.h",
+    "trace.h",
+    "ulimit.h",
+    "unistd.h",
+    "utime.h",
+    "utmpx.h",
+    "wchar.h",
+    "wctype.h",
+    "wordexp.h",
+]
+
+Unix_headers = [
+    "sys/poll.h",
+]
+
+# Glibc has added functionality to some ISO/POSIX headers (all? this is partial)
+Glib_extended = [
+    "assert.h",
+    "fcntl.h",
+    "stdio.h",
+    "sys/mman.h",
+]
+
+# POSIX titles for headers
 POSIX_blurb = {
     'aio.h': "asynchronous input and output",
     'arpa/inet.h': "definitions for internet operations",
@@ -284,124 +545,77 @@ POSIX_blurb = {
     'wordexp.h': "word-expansion types",
 }
 
+# Unix titles for headers
+Unix_blurb = {
+    'sys/poll.h': "definitions for the poll() function (nonstandard file)",
+}
+
+# ------------------------------------------------------------------------------------------------
+
+# These are the Windows headers that overlap with ISO C and POSIX headers. Windows POSIX
+# functionality is limited and in some cases contradicts the POSIX standard.
+Windows_C_POSIX_headers = [
+    "assert.h",
+    "complex.h",
+    "ctype.h",
+    "errno.h",
+    "fcntl.h",
+    "fenv.h",
+    "float.h",
+    "inttypes.h",
+    "iso646.h",
+    "limits.h",
+    "locale.h",
+    "math.h",
+    "search.h",
+    "setjmp.h",
+    "signal.h",
+    "stdarg.h",
+    "stdbool.h",
+    "stddef.h",
+    "stdint.h",
+    "stdio.h",
+    "stdlib.h",
+    "string.h",
+    "sys/stat.h",
+    "sys/types.h",
+    # "threads.h", there is a thr/threads.h which looks like C11 threads but no docs point to it
+    "time.h",
+    "utime.h",
+    "wchar.h",
+    "wctype.h",
+]
+
+# In Windows 2013 and up, some headers were split out of the CRT and put into the
+# ucrt in Windows kits. These remain in the VC headers
+Windows_VC_headers = [
+    "limits.h",
+]
+
+# Some Windows headers need to be ignored by default
+Windows_Ignore_headers = [
+    "stdarg.h",
+    "sys/types.h",
+    "time.h",
+]
+
+# These headers contain POSIX functionality, in non-standard header names and sometimes
+# not matching behavior in the POSIX standard. These would never be included in non-Windows
+# source code, but are often referenced in projects attempting cross-platform behavior.
 Windows_headers = [
-    "assert.h",
-    "complex.h",
-    "ctype.h",
-    "errno.h",
-    "fcntl.h",
-    "fenv.h",
-    "float.h",
-    "inttypes.h",
-    "iso646.h",
-    "limits.h",
-    "locale.h",
-    "math.h",
-    "search.h",
-    "setjmp.h",
-    "signal.h",
-    "stdarg.h",
-    "stdbool.h",
-    "stddef.h",
-    "stdint.h",
-    "stdio.h",
-    "stdlib.h",
-    "string.h",
-    "sys/stat.h",
-    "sys/types.h",
-    "threads.h",
-    "time.h",
-    "utime.h",
-    "wchar.h",
-    "wctype.h",
+    "direct.h",
+    "io.h",
+    "malloc.h",
+    "process.h",
 ]
 
-# If I care, break it down
-
-POSIX_2017_headers = [
-    "aio.h",
-    "arpa/inet.h",
-    "assert.h",
-    "complex.h",
-    "cpio.h",
-    "ctype.h",
-    "dirent.h",
-    "dlfcn.h",
-    "errno.h",
-    "fcntl.h",
-    "fenv.h",
-    "float.h",
-    "fmtmsg.h",
-    "fnmatch.h",
-    "ftw.h",
-    "glob.h",
-    "grp.h",
-    "iconv.h",
-    "inttypes.h",
-    "iso646.h",
-    "langinfo.h",
-    "libgen.h",
-    "limits.h",
-    "locale.h",
-    "math.h",
-    "monetary.h",
-    "mqueue.h",
-    "ndbm.h",
-    "net/if.h",
-    "netdb.h",
-    "netinet/in.h",
-    "netinet/tcp.h",
-    "nl_types.h",
-    "poll.h",
-    "pthread.h",
-    "pwd.h",
-    "regex.h",
-    "sched.h",
-    "search.h",
-    "semaphore.h",
-    "setjmp.h",
-    "signal.h",
-    "spawn.h",
-    "stdarg.h",
-    "stdbool.h",
-    "stddef.h",
-    "stdint.h",
-    "stdio.h",
-    "stdlib.h",
-    "string.h",
-    "strings.h",
-    "stropts.h",
-    "sys/ipc.h",
-    "sys/mman.h",
-    "sys/msg.h",
-    "sys/resource.h",
-    "sys/select.h",
-    "sys/sem.h",
-    "sys/shm.h",
-    "sys/socket.h",
-    "sys/stat.h",
-    "sys/statvfs.h",
-    "sys/time.h",
-    "sys/times.h",
-    "sys/types.h",
-    "sys/uio.h",
-    "sys/un.h",
-    "sys/utsname.h",
-    "sys/wait.h",
-    "syslog.h",
-    "tar.h",
-    "termios.h",
-    "tgmath.h",
-    "time.h",
-    "trace.h",
-    "ulimit.h",
-    "unistd.h",
-    "utime.h",
-    "utmpx.h",
-    "wchar.h",
-    "wctype.h",
-    "wordexp.h",
-]
+# Windows titles for headers
+Windows_blurb = {
+    "direct.h": "directory handling and creation",
+    "io.h": "low-level I/O and file handling",
+    "malloc.h": "memory allocation",
+    "process.h": "process control (exec and spawn)",
+}
 
 # -----------------------------------------------------------------------------------------------
 

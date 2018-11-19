@@ -6,22 +6,25 @@ import os
 import sys
 
 def main():
-    master = sys.argv[1]
-    canonical = sys.argv[2]
-    diagnostic = sys.argv[3]
-    posix = sys.argv[4]
+    # OK, this is getting ridiculous
+    master_dir = sys.argv[1]
+    canonical_dir = sys.argv[2]
+    diagnostic_dir = sys.argv[3]
+    posix_dir = sys.argv[4]
 
-    for path in glob.glob("%s/**" % master, recursive=True):
+    for path in glob.glob("%s/**" % master_dir, recursive=True):
         if os.path.isdir(path):
             continue
         print("path: %s" % path)
-        parse(path, master, canonical, diagnostic, posix)
+        parse(path, master_dir, canonical_dir, diagnostic_dir, posix_dir)
 
 def parse(path, master, canonical, diagnostic, posix):
     print("Reading master from %s" % path)
     make_canonical(path, master, canonical)
     make_diagnostic(path, master, diagnostic)
     make_posix(path, master, posix)
+
+# ------------------------------------------------------------------------------------------------
 
 def make_canonical(path, master, canonical):
     header = path[len(master)+1:].replace('\\', '/')
@@ -32,20 +35,21 @@ def make_canonical(path, master, canonical):
     target = canonical + path[len(master):]
     guard = make_guard("CANONICAL_ISO_C18", header)
     posix_guard = make_guard("CANONICAL_POSIX_2017", header)
-    # print("Guard is %s" % guard)
+    unix_guard = make_guard("CANONICAL_UNIX_2017", header)
+    windows_guard = make_guard("CANONICAL_WINDOWS_2017", header)
     #if os.path.exists(target):
     #    print("Skipping - existing %s" % target)
     #    return
 
     print("Writing canonical to %s" % target)
     lines = loadfile(path)
-    lines = canonical_markup(lines, guard, posix_guard)
+    lines = canonical_markup(lines, guard, posix_guard, unix_guard, windows_guard)
 
     with open(target, "wt", encoding="utf-8") as fout:
         for line in lines:
             print("%s" % line, file=fout)
 
-def canonical_markup(lines, guard, posix_guard):
+def canonical_markup(lines, guard, posix_guard, unix_guard, windows_guard):
     n = len(lines)
     i = 0
     while i < n:
@@ -80,7 +84,7 @@ def canonical_markup(lines, guard, posix_guard):
             i = i + len(replaced) - 1
             continue
 
-        replaced = expand_line(line, guard, posix_guard)
+        replaced = expand_line(line, guard, posix_guard, unix_guard, windows_guard)
         if replaced is not None:
             #print("expanded", replaced)
             lines[i-1:i] = replaced
@@ -110,6 +114,8 @@ def canonical_markup(lines, guard, posix_guard):
 
     return lines
 
+# ------------------------------------------------------------------------------------------------
+
 def make_diagnostic(path, master, diagnostic):
     header = path[len(master)+1:].replace('\\', '/')
     hdir = os.path.join(diagnostic, os.path.dirname(header))
@@ -119,6 +125,8 @@ def make_diagnostic(path, master, diagnostic):
     target = diagnostic + path[len(master):]
     guard = make_guard("DIAGNOSTIC_ISO_C18", header)
     posix_guard = make_guard("DIAGNOSTIC_POSIX_2017", header)
+    unix_guard = make_guard("DIAGNOSTIC_UNIX_2017", header)
+    windows_guard = make_guard("DIAGNOSTIC_WINDOWS_2017", header)
     #print("Guard is %s" % guard)
     #if os.path.exists(target):
     #    print("Skipping - existing %s" % target)
@@ -126,13 +134,13 @@ def make_diagnostic(path, master, diagnostic):
 
     print("Writing diagnostic to %s" % target)
     lines = loadfile(path)
-    lines = diagnostic_markup(lines, guard, posix_guard)
+    lines = diagnostic_markup(lines, guard, posix_guard, unix_guard, windows_guard)
 
     with open(target, "wt", encoding="utf-8") as fout:
         for line in lines:
             print("%s" % line, file=fout)
 
-def diagnostic_markup(lines, guard, posix_guard):
+def diagnostic_markup(lines, guard, posix_guard, unix_guard, windows_guard):
     carpmap = {'[C99]': 'ISO C99', '[C11]': 'ISO C11', '[C18]': 'ISO C18',
                '[POSIX]': 'POSIX 2017.1', '[Glibc]': 'Glibc', '[Microsoft]': 'Microsoft'}
     carp_kind = 'ISO C95'
@@ -177,7 +185,7 @@ def diagnostic_markup(lines, guard, posix_guard):
             carp_kind = carpmap[line]
 
         # Do common expansions
-        replaced = expand_line(line, guard, posix_guard)
+        replaced = expand_line(line, guard, posix_guard, unix_guard, windows_guard)
         if replaced is not None:
             #print("expanded", replaced)
             lines[i-1:i] = replaced
@@ -207,6 +215,8 @@ def diagnostic_markup(lines, guard, posix_guard):
 
     return lines
 
+# ------------------------------------------------------------------------------------------------
+
 def make_posix(path, master, posix):
     header = path[len(master)+1:].replace('\\', '/')
     hdir = os.path.join(posix, os.path.dirname(header))
@@ -216,20 +226,21 @@ def make_posix(path, master, posix):
     target = posix + path[len(master):]
     guard = make_guard("_POSIX_ON_WIN32_ISO", header)
     posix_guard = make_guard("_POSIX_ON_WIN32_POSIX", header)
-    #print("Guard is %s" % guard)
+    unix_guard = make_guard("_POSIX_ON_WIN32_UNIX_2017", header)
+    windows_guard = make_guard("_POSIX_ON_WIN32_WINDOWS_2017", header)
     #if os.path.exists(target):
     #    print("Skipping - existing %s" % target)
     #    return
 
     print("Writing posix-on-win32 to %s" % target)
     lines = loadfile(path)
-    lines = posix_markup(lines, guard, posix_guard, header)
+    lines = posix_markup(lines, guard, posix_guard, unix_guard, windows_guard, header)
 
     with open(target, "wt", encoding="utf-8") as fout:
         for line in lines:
             print("%s" % line, file=fout)
 
-def posix_markup(lines, guard, posix_guard, header):
+def posix_markup(lines, guard, posix_guard, unix_guard, windows_guard, header):
     nowindows = False
     ignoreWindows = False
     vcInclude = False
@@ -301,7 +312,7 @@ def posix_markup(lines, guard, posix_guard, header):
             i = i + len(replaced) - 1
             continue
 
-        replaced = expand_line(line, guard, posix_guard)
+        replaced = expand_line(line, guard, posix_guard, unix_guard, windows_guard)
         if replaced is not None:
             #print("expanded", replaced)
             lines[i-1:i] = replaced
@@ -334,12 +345,19 @@ def posix_markup(lines, guard, posix_guard, header):
 
 def posix_header(header, vcInclude, nowindows, ignoreWindows):
     if nowindows:
-        return [
+        lines = [
             '// There is no Windows <%s> file, so we don\'t need to override anything.' % header,
             '',
             '// ---------------------------------------------------------------------------',
             '// POSIX on Win32 header',
             '']
+        #if header == "sys/poll.h":
+        #    lines += [
+        #        '',
+        #        '// <sys/poll.h> is a nonstandard name for <poll.h>',
+        #        '#include <poll.h>',
+        #    ]
+        return lines
 
     macroize = header.upper().replace('.', '_').replace('/', '_').replace('\\', '_')
     macroize = macroize[:-2]
@@ -453,6 +471,8 @@ def posix_footer(header, nowindows, ignoreWindows):
         '',
     ]
 
+# ------------------------------------------------------------------------------------------------
+
 def find_section(lines, start, endtag):
     i = start
     n = len(lines)
@@ -462,7 +482,7 @@ def find_section(lines, start, endtag):
         i = i + 1
     raise Exception("could not find %s" % endtag)
 
-def expand_line(line, guard, posix_guard):
+def expand_line(line, guard, posix_guard, unix_guard, windows_guard):
 
     # If this is markup we expand, then expand it
     if line == '[C99]':
@@ -524,6 +544,24 @@ def expand_line(line, guard, posix_guard):
             '// -----------------------------------------------------------------------------------------------',
             '',
             '#endif // %s' % posix_guard]
+    elif line == '[GUARD_UNIX]':
+        return [
+            '#ifndef %s' % unix_guard,
+            '#define %s' % unix_guard]
+    elif line == '[/GUARD_UNIX]':
+        return [
+            '// -----------------------------------------------------------------------------------------------',
+            '',
+            '#endif // %s' % unix_guard]
+    elif line == '[GUARD_WINDOWS]':
+        return [
+            '#ifndef %s' % windows_guard,
+            '#define %s' % windows_guard]
+    elif line == '[/GUARD_WINDOWS]':
+        return [
+            '// -----------------------------------------------------------------------------------------------',
+            '',
+            '#endif // %s' % windows_guard]
 
     return None
 

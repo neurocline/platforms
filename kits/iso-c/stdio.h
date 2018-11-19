@@ -1,14 +1,3 @@
-// <stdio.h>
-// - standard buffered input/output
-//
-// Defined in ISO C18 Standard: 7.21 Input/output <stdio.h>.
-// Extended in POSIX.1-2017 <stdio.h>
-// See http://pubs.opengroup.org/onlinepubs/9699919799.2018edition/basedefs/stdio.h.html
-
-#pragma once
-[GUARD]
-
-[BODY]
 // If we don't have at least C11, then make new keywords vanish
 // so older compilers still work (notably MSVC))
 #if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 201112L
@@ -273,6 +262,3 @@ typedef long long off64_t;
 [CARP ftello64()]off64_t ftello64(FILE *stream);
 
 [/CDECL]
-
-[FOOTER]
-[/GUARD]
