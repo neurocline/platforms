@@ -6,6 +6,10 @@ import os
 import re
 import sys
 
+# This takes the results of an MSVC compile and shows warnings/errors as symbol: file1 ... fileN
+# This was used in combination with include/diagnostic, which shows a diagnostic warning every
+# time a symbol is used; a poor man's reference to what the code is actually compiling against.
+
 def main():
     lines = loadfile(sys.argv[1])
 
